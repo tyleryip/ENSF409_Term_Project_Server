@@ -1,6 +1,16 @@
-package com.KerrYip.Model;
+package com.KerrYip.ServerModel;
+
 import java.util.ArrayList;
 
+/**
+ * This class represents a course a student can enroll in or an administrator
+ * can modify
+ * 
+ * @author tyleryip
+ * @version 2.0
+ * @since 04/07/20
+ *
+ */
 public class Course {
 
 	private String courseName;
@@ -32,11 +42,11 @@ public class Course {
 				System.err.println("Error! This section belongs to another course!");
 				return;
 			}
-			
+
 			offeringList.add(offering);
 		}
 	}
-	
+
 	public void addPreReq(Course preReqCourse) {
 		preReq.add(preReqCourse);
 	}
@@ -56,7 +66,7 @@ public class Course {
 	public void setCourseNum(int courseNum) {
 		this.courseNum = courseNum;
 	}
-	
+
 	public ArrayList<Course> getPreReq() {
 		return preReq;
 	}
@@ -64,17 +74,17 @@ public class Course {
 	public void setPreReq(ArrayList<Course> preReq) {
 		this.preReq = preReq;
 	}
-	
+
 	@Override
-	public String toString () {
+	public String toString() {
 		String st = "\n";
-		st += getCourseName() + " " + getCourseNum ();
+		st += getCourseName() + " " + getCourseNum();
 		st += "\n---------------------------------------";
 		st += "\nAll course sections:\n";
 		for (CourseOffering c : offeringList)
 			st += c;
 		st += "\nAll course prerequisites:\n";
-		for(Course c: preReq)
+		for (Course c : preReq)
 			st += c.getCourseName() + " " + c.getCourseNum();
 		st += "\n---------------------------------------\n";
 		return st;
@@ -85,8 +95,7 @@ public class Course {
 		if (i < 0 || i >= offeringList.size()) {
 			System.out.println("Offering " + i + " does not exist.");
 			return null;
-			}
-		else
+		} else
 			return offeringList.get(i);
 	}
 

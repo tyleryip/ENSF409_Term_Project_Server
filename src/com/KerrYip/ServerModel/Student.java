@@ -1,14 +1,23 @@
-package com.KerrYip.Model;
+package com.KerrYip.ServerModel;
+
 import java.util.ArrayList;
 
+/**
+ * This class represents a student
+ * 
+ * @author tyleryip
+ * @version 2.0
+ * @since 04/07/20
+ *
+ */
 public class Student {
-	
+
 	private String studentName;
 	private int studentId;
-	//private ArrayList<CourseOffering> offeringList;
+	// private ArrayList<CourseOffering> offeringList;
 	private ArrayList<Registration> studentRegList;
 
-	public Student (String studentName, int studentId) {
+	public Student(String studentName, int studentId) {
 		this.setStudentName(studentName);
 		this.setStudentId(studentId);
 		studentRegList = new ArrayList<Registration>();
@@ -29,7 +38,7 @@ public class Student {
 	public void setStudentId(int studentId) {
 		this.studentId = studentId;
 	}
-	
+
 	public ArrayList<Registration> getStudentRegList() {
 		return studentRegList;
 	}
@@ -37,21 +46,20 @@ public class Student {
 	public void setStudentRegList(ArrayList<Registration> studentRegList) {
 		this.studentRegList = studentRegList;
 	}
-	
+
 	public Registration searchStudentReg(Course theCourse) {
-		for(Registration reg: studentRegList) {
-			if(reg.getTheOffering().getTheCourse().equals(theCourse)) {
+		for (Registration reg : studentRegList) {
+			if (reg.getTheOffering().getTheCourse().equals(theCourse)) {
 				return reg;
 			}
 		}
 		System.out.println("Error: Could not find the registration matching that course!");
 		return null;
 	}
-	
+
 	@Override
-	public String toString () {
-		String st = "Student Name: " + getStudentName() + "\n" +
-				"Student Id: " + getStudentId() + "\n\n";
+	public String toString() {
+		String st = "Student Name: " + getStudentName() + "\n" + "Student Id: " + getStudentId() + "\n\n";
 		return st;
 	}
 

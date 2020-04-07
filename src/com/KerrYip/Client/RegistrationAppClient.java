@@ -1,15 +1,21 @@
-package com.KerrYip.Model;
+package com.KerrYip.Client;
 import java.util.Scanner;
-import java.sql.*;
 
-public class RegistrationApp {
+import com.KerrYip.ServerController.CourseController;
+import com.KerrYip.ServerController.StudentController;
+import com.KerrYip.ServerModel.Course;
+import com.KerrYip.ServerModel.CourseOffering;
+import com.KerrYip.ServerModel.Registration;
+import com.KerrYip.ServerModel.Student;
+
+public class RegistrationAppClient {
 	
 	public static Scanner scan = new Scanner(System.in);
 	
 	public static void main (String [] args) {
 
-		CourseCatalogue cat = new CourseCatalogue();
-		StudentManager SM = new StudentManager();
+		CourseController cat = new CourseController();
+		StudentController SM = new StudentController();
 		
 		//Simulating adding students to courses to show functionalities of the menu below
 		//NOTE: THESE LINES OF CODE ARE PURELY FOR SIMULATION, THEY DONT ADD FUNCTIONALITY
