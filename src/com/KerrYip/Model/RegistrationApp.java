@@ -1,5 +1,6 @@
 package com.KerrYip.Model;
 import java.util.Scanner;
+import java.sql.*;
 
 public class RegistrationApp {
 	
