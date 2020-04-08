@@ -1,5 +1,7 @@
 package com.KerrYip.ServerModel;
 
+import java.io.Serializable;
+
 /**
  * This class represents a registration for a course between a course offering
  * and a student; it also tracks a student's grade in the course
@@ -8,7 +10,14 @@ package com.KerrYip.ServerModel;
  * @version 2.0
  * @since 04/07/20
  */
-public class Registration {
+public class Registration implements Serializable{
+	
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9101593004016454800L;
+	
 	private Student theStudent;
 	private CourseOffering theOffering;
 	private char grade;

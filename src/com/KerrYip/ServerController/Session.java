@@ -8,6 +8,10 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import com.KerrYip.ServerModel.Course;
+import com.KerrYip.ServerModel.Registration;
+import com.KerrYip.ServerModel.Student;
+
 /**
  * This class implements the runnable interface so that user can interact with
  * the application during runtime
@@ -60,8 +64,10 @@ public class Session implements Runnable {
 
 		this.studentController = studentController;
 		this.courseController = courseController;
-		this.databaseController = databaseController;
 
+		// We might not need the database controller here depending on how we set up the
+		// database
+		this.databaseController = databaseController;
 	}
 
 	@Override
@@ -93,6 +99,7 @@ public class Session implements Runnable {
 	public void executeCommand(String command) {
 		switch (command) {
 		case "add course":
+
 			return;
 
 		case "remove course":
@@ -109,6 +116,49 @@ public class Session implements Runnable {
 			return;
 		}
 
+	}
+
+	/**
+	 * This method takes a student and course from the client, looks for the course,
+	 * and if successful, adds it to the student and returns the student object to
+	 * client
+	 */
+	public void addCourse() {
+		Student clientStudent = null;
+		Course clientCourse = null;
+		
+		try {
+			clientStudent = (Student) objectIn.readObject();
+		} catch (ClassNotFoundException e) {
+			System.err.println("Error: the class of this object was not found");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("Error: I/O error");
+			e.printStackTrace();
+		}
+		
+		try {
+			clientCourse = (Course)objectIn.readObject();
+		} catch (ClassNotFoundException e) {
+			System.err.println("Error: the class of this object was not found");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("Error: I/O error");
+			e.printStackTrace();
+		}
+		
+		Student theStudent = studentController.searchStudent(clientStudent.getStudentName());
+		Course toAdd = courseController.searchCat(clientCourse.getCourseName(), clientCourse.getCourseNum());
+		if(theStudent != null && toAdd != null) {
+			Registration newReg = new Registration();
+			newReg.completeRegistration(theStudent, toAdd.getCourseOfferingAt(0));
+			try {
+				objectOut.writeObject(theStudent);
+			} catch (IOException e) {
+				System.err.println("Error: could not write object");
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
