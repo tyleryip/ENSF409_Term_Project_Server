@@ -2,7 +2,7 @@ package com.KerrYip.ClientApplication;
 
 import java.util.Scanner;
 
-import com.KerrYip.ClientController.ClientController;
+import com.KerrYip.ClientController.ClientCommunicationController;
 import com.KerrYip.ServerController.CourseController;
 import com.KerrYip.ServerController.StudentController;
 import com.KerrYip.ServerModel.Course;
@@ -21,7 +21,7 @@ import com.KerrYip.ServerModel.Student;
  */
 public class RegistrationAppClient {
 
-	private ClientController clientController;
+	private ClientCommunicationController clientController;
 
 	public static Scanner scan = new Scanner(System.in);
 
