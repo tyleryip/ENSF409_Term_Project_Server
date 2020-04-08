@@ -1,6 +1,11 @@
 package com.KerrYip.ServerController;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
@@ -19,6 +24,14 @@ public class ServerCommunicationController {
 
 	private ServerSocket serverSocket;
 	private Socket aSocket;
+	
+	//These deal with sending and receiving data and instructions to and from the client
+	private PrintWriter stringOut;
+	private BufferedReader stringIn;
+	
+	//These I/O streams deal with sending Student objects back and forth between the client
+	private ObjectInputStream objectIn;
+	private ObjectOutputStream objectOut;
 	
 	//This thread pool isn't used yet but is a placeholder for milestone
 	private ExecutorService pool;
@@ -41,13 +54,29 @@ public class ServerCommunicationController {
 	 * Accept connections from clients
 	 */
 	public void acceptConnections() {
+		try {
+			aSocket = serverSocket.accept();
+			runApplication();
+		} catch (IOException e) {
+			System.err.println("Error: problems accepting client socket");
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void runApplication() {
+		try {
+			stringIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
+			stringOut = new PrintWriter(aSocket.getOutputStream());
+			
+			
+		} catch (IOException e) {
+			System.err.println("Error: problem with setting up input output streams");
+			e.printStackTrace();
+		}
+		
 		while(true) {
-			try {
-				aSocket = serverSocket.accept();
-			} catch (IOException e) {
-				System.err.println("Error: problem with accepting client socket");
-				e.printStackTrace();
-			}
+			
 		}
 	}
 	
