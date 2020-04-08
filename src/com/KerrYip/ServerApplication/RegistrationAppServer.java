@@ -14,6 +14,6 @@ public class RegistrationAppServer {
 	public static void main(String[] args) {
 
 		ServerCommunicationController sCommController = new ServerCommunicationController(9090);
-		sCommController.acceptConnections();
+		sCommController.listen();
 	}
 }

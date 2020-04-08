@@ -24,20 +24,14 @@ public class ServerCommunicationController {
 
 	private ServerSocket serverSocket;
 	private Socket aSocket;
-	
-	//These deal with sending and receiving data and instructions to and from the client
-	private PrintWriter stringOut;
-	private BufferedReader stringIn;
-	
-	//These I/O streams deal with sending Student objects back and forth between the client
-	private ObjectInputStream objectIn;
-	private ObjectOutputStream objectOut;
-	
-	//This thread pool isn't used yet but is a placeholder for milestone
+
+	// This thread pool isn't used yet but is a placeholder for milestone
 	private ExecutorService pool;
-	
+
 	/**
-	 * The constructor for class ServerCommunicationsController opens up a port and sets up a thread pool
+	 * The constructor for class ServerCommunicationsController opens up a port and
+	 * sets up a thread pool
+	 * 
 	 * @param port the port to open the server connection on
 	 */
 	public ServerCommunicationController(int port) {
@@ -49,37 +43,23 @@ public class ServerCommunicationController {
 		}
 		pool = Executors.newCachedThreadPool();
 	}
-	
-	/**
-	 * Accept connections from clients
-	 */
-	public void acceptConnections() {
-		try {
-			aSocket = serverSocket.accept();
-			runApplication();
-		} catch (IOException e) {
-			System.err.println("Error: problems accepting client socket");
-			e.printStackTrace();
-		}
 
-	}
-	
-	public void runApplication() {
-		try {
-			stringIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
-			stringOut = new PrintWriter(aSocket.getOutputStream());
-			
-			
-		} catch (IOException e) {
-			System.err.println("Error: problem with setting up input output streams");
-			e.printStackTrace();
-		}
-		
-		while(true) {
-			
+	/**
+	 * Accept connections from clients and start threads when they connect
+	 */
+	public void listen() {
+		while (true) {
+			try {
+				aSocket = serverSocket.accept();
+				Session newSession = new Session(aSocket);
+				pool.execute(newSession);
+			} catch (IOException e) {
+				System.err.println("Error: problems accepting client socket");
+				e.printStackTrace();
+			}
 		}
 	}
-	
+
 	public ServerSocket getServerSocket() {
 		return serverSocket;
 	}
@@ -96,5 +76,4 @@ public class ServerCommunicationController {
 		this.aSocket = aSocket;
 	}
 
-	
 }
