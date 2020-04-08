@@ -19,6 +19,7 @@ public class StudentController {
 	private ArrayList<Student> studentList;
 
 	public StudentController(DatabaseController db) {
+		this.databaseController = db;
 		studentList = new ArrayList<Student>();
 		loadFromDatabase();
 	}

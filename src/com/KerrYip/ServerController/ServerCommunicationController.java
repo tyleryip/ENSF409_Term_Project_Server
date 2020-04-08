@@ -57,6 +57,7 @@ public class ServerCommunicationController {
 	 * Accept connections from clients and start threads when they connect
 	 */
 	public void listen() {
+		System.out.println("Server is listening for clients...");
 		while (true) {
 			try {
 				aSocket = serverSocket.accept();
