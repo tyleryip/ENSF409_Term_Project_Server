@@ -63,14 +63,6 @@ public class CourseController {
 		System.err.println("Course was not found!");
 	}
 
-	public ArrayList<Course> getCourseList() {
-		return courseList;
-	}
-
-	public void setCourseList(ArrayList<Course> courseList) {
-		this.courseList = courseList;
-	}
-
 	@Override
 	public String toString() {
 		String st = "All courses in the catalogue: \n";
@@ -135,6 +127,14 @@ public class CourseController {
 		}
 		displayCourseNotFoundError();
 		return;
+	}
+	
+	public ArrayList<Course> getCourseList() {
+		return courseList;
+	}
+
+	public void setCourseList(ArrayList<Course> courseList) {
+		this.courseList = courseList;
 	}
 
 }

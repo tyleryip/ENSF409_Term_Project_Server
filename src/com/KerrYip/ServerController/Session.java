@@ -2,6 +2,7 @@ package com.KerrYip.ServerController;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -53,8 +54,8 @@ public class Session implements Runnable {
 
 		// Set up object I/O
 		try {
-			stringIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
-			stringOut = new PrintWriter(aSocket.getOutputStream());
+			objectIn = new ObjectInputStream(aSocket.getInputStream());
+			objectOut = new ObjectOutputStream(aSocket.getOutputStream());
 		} catch (IOException e) {
 			System.err.println("Error: problem with setting up input output streams");
 			e.printStackTrace();
@@ -93,16 +94,19 @@ public class Session implements Runnable {
 	public void executeCommand(String command) {
 		switch (command) {
 		case "add course":
-
+			addCourse();
 			return;
 
 		case "remove course":
+			removeCourse();
 			return;
 
 		case "browse courses":
+			
 			return;
 
 		case "search for course":
+			
 			return;
 
 		default:
@@ -118,19 +122,38 @@ public class Session implements Runnable {
 	 * client
 	 */
 	public void addCourse() {
-		Student clientStudent = null;
-		Course clientCourse = null;
+		Student clientStudent = readStudentFromClient();
+		Course clientCourse = readCourseFromClient();
 		
-		try {
-			clientStudent = (Student) objectIn.readObject();
-		} catch (ClassNotFoundException e) {
-			System.err.println("Error: the class of this object was not found");
-			e.printStackTrace();
-		} catch (IOException e) {
-			System.err.println("Error: I/O error");
-			e.printStackTrace();
+		clientStudent = studentController.searchStudent(clientStudent.getStudentName());
+		clientCourse = courseController.searchCat(clientCourse.getCourseName(), clientCourse.getCourseNum());
+		if(clientStudent != null && clientCourse != null) {
+			Registration newReg = new Registration();
+			newReg.completeRegistration(clientStudent, clientCourse.getCourseOfferingAt(0));
+			stringOut.write("Sucessfullyy added this course to your courses.");
+			return;
 		}
+		stringOut.write("Unable to add this course to your courses.");
+	}
+	
+	public void removeCourse() {
+		Student clientStudent = readStudentFromClient();
+		Course clientCourse = readCourseFromClient();
 		
+		clientStudent = studentController.searchStudent(clientStudent.getStudentName());
+		if(clientStudent != null) {
+			Registration removeReg = clientStudent.searchStudentReg(clientCourse);
+				if(removeReg != null) {
+					clientStudent.getStudentRegList().remove(removeReg);
+					stringOut.write("Successfully removed this course from your courses.");
+				}
+			stringOut.write("Unable to add this course to your courses: could not find this course in your courses.");
+		}
+		stringOut.write("Unable to remove this course from your courses.");
+	}
+	
+	public Course readCourseFromClient(){
+		Course clientCourse = null;
 		try {
 			clientCourse = (Course)objectIn.readObject();
 		} catch (ClassNotFoundException e) {
@@ -140,19 +163,23 @@ public class Session implements Runnable {
 			System.err.println("Error: I/O error");
 			e.printStackTrace();
 		}
-		
-		Student theStudent = studentController.searchStudent(clientStudent.getStudentName());
-		Course toAdd = courseController.searchCat(clientCourse.getCourseName(), clientCourse.getCourseNum());
-		if(theStudent != null && toAdd != null) {
-			Registration newReg = new Registration();
-			newReg.completeRegistration(theStudent, toAdd.getCourseOfferingAt(0));
+		return clientCourse;
+	}
+	
+	public Student readStudentFromClient() {
+		Student clientStudent = null;
 			try {
-				objectOut.writeObject(theStudent);
+				clientStudent = (Student) objectIn.readObject();
+			} catch (ClassNotFoundException e) {
+				System.err.println("Error: the class of this object was not found");
+				e.printStackTrace();
 			} catch (IOException e) {
-				System.err.println("Error: could not write object");
+				System.err.println("Error: I/O error");
 				e.printStackTrace();
 			}
-		}
+		return clientStudent;
 	}
+	
+
 
 }
