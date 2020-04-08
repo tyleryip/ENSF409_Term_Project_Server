@@ -35,15 +35,13 @@ public class Session implements Runnable {
 	// same controllers
 	private CourseController courseController;
 	private StudentController studentController;
-	private DatabaseController databaseController;
 
 	/**
 	 * Constructor for session connects I/O
 	 * 
 	 * @param aSocket
 	 */
-	public Session(Socket aSocket, CourseController courseController, StudentController studentController,
-			DatabaseController databaseController) {
+	public Session(Socket aSocket, CourseController courseController, StudentController studentController) {
 		// Set up instruction I/O
 		try {
 			stringIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
@@ -64,10 +62,6 @@ public class Session implements Runnable {
 
 		this.studentController = studentController;
 		this.courseController = courseController;
-
-		// We might not need the database controller here depending on how we set up the
-		// database
-		this.databaseController = databaseController;
 	}
 
 	@Override

@@ -15,14 +15,44 @@ import com.KerrYip.ServerModel.*;
  */
 public class DatabaseController {
 
+	ArrayList<Student> studentList;
 	ArrayList<Course> courseList;
-	ArrayList<CourseOffering> offeringList;
 
+	/**
+	 * Constructor for class DatabaseController creates ArrayLists and populates
+	 * them with simulated data, this data will be replaced with data from the SQL
+	 * database in a future milestone
+	 */
 	public DatabaseController() {
 		courseList = new ArrayList<Course>();
+		studentList = new ArrayList<Student>();
+		
+		readCoursesFromDatabase();
+		readStudentsFromDatabase();
+	}
+	
+	public ArrayList<Student> loadStudents(){
+		return studentList;
+	}
+	
+	public ArrayList<Course> loadCourses(){
+		return courseList;
+	}
+	
+
+	private void readStudentsFromDatabase() {
+		studentList.add(new Student("Sara", 1));
+		studentList.add(new Student("Sam", 2));
+		studentList.add(new Student("Tom", 3));
+		studentList.add(new Student("David", 4));
+		studentList.add(new Student("John", 5));
+		studentList.add(new Student("Jenny", 6));
+		studentList.add(new Student("Alex", 7));
+		studentList.add(new Student("Megan", 8));
+		studentList.add(new Student("Mike", 8));
 	}
 
-	public ArrayList<Course> readCoursesFromDataBase() {
+	private void readCoursesFromDatabase() {
 		// Simulating courses
 		courseList.add(new Course("ENGG", 233));
 		courseList.get(0).addOffering(new CourseOffering(1, 100));
@@ -47,8 +77,6 @@ public class DatabaseController {
 		courseList.get(1).addPreReq(courseList.get(4));
 		courseList.get(4).addPreReq(courseList.get(3));
 		courseList.get(2).addPreReq(courseList.get(3));
-
-		return courseList;
 	}
 
 }

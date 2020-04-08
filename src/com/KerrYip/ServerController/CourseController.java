@@ -15,16 +15,17 @@ import com.KerrYip.ServerModel.CourseOffering;
  */
 public class CourseController {
 
+	private DatabaseController databaseController;
+	
 	private ArrayList<Course> courseList;
 
-	public CourseController() {
+	public CourseController(DatabaseController db) {
+		this.databaseController = db;
 		loadFromDataBase();
 	}
 
 	private void loadFromDataBase() {
-		// TODO Auto-generated method stub
-		DatabaseController db = new DatabaseController();
-		setCourseList(db.readCoursesFromDataBase());
+		setCourseList(databaseController.loadCourses());
 
 	}
 
