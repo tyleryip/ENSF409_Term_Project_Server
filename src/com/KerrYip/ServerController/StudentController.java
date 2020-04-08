@@ -1,6 +1,5 @@
 package com.KerrYip.ServerController;
 
-import com.KerrYip.ServerModel.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -16,25 +15,16 @@ import com.KerrYip.ServerModel.Student;
  */
 public class StudentController {
 
+	private DatabaseController databaseController;
 	private ArrayList<Student> studentList;
 
-	public StudentController() {
+	public StudentController(DatabaseController db) {
 		studentList = new ArrayList<Student>();
-		readStudentsFromDataBase();
+		loadFromDatabase();
 	}
 
-	public void readStudentsFromDataBase() {
-		// Simulating students
-		studentList.add(new Student("Sara", 1));
-		studentList.add(new Student("Sam", 2));
-		studentList.add(new Student("Tom", 3));
-		studentList.add(new Student("David", 4));
-		studentList.add(new Student("John", 5));
-		studentList.add(new Student("Jenny", 6));
-		studentList.add(new Student("Alex", 7));
-		studentList.add(new Student("Megan", 8));
-		studentList.add(new Student("Mike", 8));
-
+	private void loadFromDatabase() {
+		setStudentList(databaseController.loadStudents());
 	}
 
 	public Student searchStudent(String name) {
@@ -55,5 +45,21 @@ public class StudentController {
 		Student newStudent = new Student(name, id + 1);
 		studentList.add(newStudent);
 		System.out.println("New student " + name + " created successfully with an id of: " + id);
+	}
+	
+	public DatabaseController getDatabaseController() {
+		return databaseController;
+	}
+
+	public void setDatabaseController(DatabaseController databaseController) {
+		this.databaseController = databaseController;
+	}
+
+	public ArrayList<Student> getStudentList() {
+		return studentList;
+	}
+
+	public void setStudentList(ArrayList<Student> studentList) {
+		this.studentList = studentList;
 	}
 }

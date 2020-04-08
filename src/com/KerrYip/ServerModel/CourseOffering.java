@@ -1,5 +1,6 @@
 package com.KerrYip.ServerModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -9,8 +10,13 @@ import java.util.ArrayList;
  * @version 2.0
  * @since 04/07/20
  */
-public class CourseOffering {
+public class CourseOffering implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3885505324085384368L;
+	
 	private int secNum;
 	private int secCap;
 	private Course theCourse;

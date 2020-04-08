@@ -15,16 +15,17 @@ import com.KerrYip.ServerModel.CourseOffering;
  */
 public class CourseController {
 
+	private DatabaseController databaseController;
+	
 	private ArrayList<Course> courseList;
 
-	public CourseController() {
+	public CourseController(DatabaseController db) {
+		this.databaseController = db;
 		loadFromDataBase();
 	}
 
 	private void loadFromDataBase() {
-		// TODO Auto-generated method stub
-		DatabaseController db = new DatabaseController();
-		setCourseList(db.readCoursesFromDataBase());
+		setCourseList(databaseController.loadCourses());
 
 	}
 
@@ -60,14 +61,6 @@ public class CourseController {
 	private void displayCourseNotFoundError() {
 		// TODO Auto-generated method stub
 		System.err.println("Course was not found!");
-	}
-
-	public ArrayList<Course> getCourseList() {
-		return courseList;
-	}
-
-	public void setCourseList(ArrayList<Course> courseList) {
-		this.courseList = courseList;
 	}
 
 	@Override
@@ -134,6 +127,14 @@ public class CourseController {
 		}
 		displayCourseNotFoundError();
 		return;
+	}
+	
+	public ArrayList<Course> getCourseList() {
+		return courseList;
+	}
+
+	public void setCourseList(ArrayList<Course> courseList) {
+		this.courseList = courseList;
 	}
 
 }

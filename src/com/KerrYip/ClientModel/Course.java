@@ -13,7 +13,7 @@ public class Course implements Serializable{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -1906184008472813731L;
+	private static final long serialVersionUID = 2108036660174376139L;
 	
 	private String courseName;
 	private int courseNum;

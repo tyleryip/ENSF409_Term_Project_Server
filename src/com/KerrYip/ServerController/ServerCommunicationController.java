@@ -17,19 +17,18 @@ import java.util.concurrent.Executors;
  */
 public class ServerCommunicationController {
 
-	//This is the server's own socket used to accept new connections from clients
+	// This is the server's own socket used to accept new connections from clients
 	private ServerSocket serverSocket;
-	
-	//This is a socket used to hand off client connections to a new thread
+
+	// This is a socket used to hand off client connections to a new thread
 	private Socket aSocket;
 
 	// This thread pool isn't used yet but is a placeholder for milestone
 	private ExecutorService pool;
-	
-	//These are the other controllers for the server side
+
+	// These are the other controllers for the server side
 	private CourseController courseController;
 	private StudentController studentController;
-	private DatabaseController databaseController;
 
 	/**
 	 * The constructor for class ServerCommunicationsController opens up a port and
@@ -45,10 +44,13 @@ public class ServerCommunicationController {
 			e.printStackTrace();
 		}
 		pool = Executors.newCachedThreadPool();
-		
-		courseController = new CourseController();
-		studentController = new StudentController();
-		databaseController = new DatabaseController();
+
+		// Create the database first so we can let course controller and student
+		// controller use it
+		DatabaseController databaseController = new DatabaseController();
+
+		courseController = new CourseController(databaseController);
+		studentController = new StudentController(databaseController);
 	}
 
 	/**
@@ -58,11 +60,11 @@ public class ServerCommunicationController {
 		while (true) {
 			try {
 				aSocket = serverSocket.accept();
-				
-				//Create a new session for the new client that joined
-				Session newSession = new Session(aSocket, courseController, studentController, databaseController);
-				
-				//Add client to the thread pool and execute
+
+				// Create a new session for the new client that joined
+				Session newSession = new Session(aSocket, courseController, studentController);
+
+				// Add client to the thread pool and execute
 				pool.execute(newSession);
 			} catch (IOException e) {
 				System.err.println("Error: problems accepting client socket");
@@ -110,15 +112,5 @@ public class ServerCommunicationController {
 	public void setStudentController(StudentController studentController) {
 		this.studentController = studentController;
 	}
-
-	public DatabaseController getDatabaseController() {
-		return databaseController;
-	}
-
-	public void setDatabaseController(DatabaseController databaseController) {
-		this.databaseController = databaseController;
-	}
-	
-	
 
 }
