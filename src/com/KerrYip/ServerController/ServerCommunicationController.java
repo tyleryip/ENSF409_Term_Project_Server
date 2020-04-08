@@ -1,11 +1,6 @@
 package com.KerrYip.ServerController;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
@@ -22,11 +17,19 @@ import java.util.concurrent.Executors;
  */
 public class ServerCommunicationController {
 
+	//This is the server's own socket used to accept new connections from clients
 	private ServerSocket serverSocket;
+	
+	//This is a socket used to hand off client connections to a new thread
 	private Socket aSocket;
 
 	// This thread pool isn't used yet but is a placeholder for milestone
 	private ExecutorService pool;
+	
+	//These are the other controllers for the server side
+	private CourseController courseController;
+	private StudentController studentController;
+	private DatabaseController databaseController;
 
 	/**
 	 * The constructor for class ServerCommunicationsController opens up a port and
@@ -42,6 +45,10 @@ public class ServerCommunicationController {
 			e.printStackTrace();
 		}
 		pool = Executors.newCachedThreadPool();
+		
+		courseController = new CourseController();
+		studentController = new StudentController();
+		databaseController = new DatabaseController();
 	}
 
 	/**
@@ -51,7 +58,11 @@ public class ServerCommunicationController {
 		while (true) {
 			try {
 				aSocket = serverSocket.accept();
-				Session newSession = new Session(aSocket);
+				
+				//Create a new session for the new client that joined
+				Session newSession = new Session(aSocket, courseController, studentController, databaseController);
+				
+				//Add client to the thread pool and execute
 				pool.execute(newSession);
 			} catch (IOException e) {
 				System.err.println("Error: problems accepting client socket");
@@ -75,5 +86,39 @@ public class ServerCommunicationController {
 	public void setaSocket(Socket aSocket) {
 		this.aSocket = aSocket;
 	}
+
+	public ExecutorService getPool() {
+		return pool;
+	}
+
+	public void setPool(ExecutorService pool) {
+		this.pool = pool;
+	}
+
+	public CourseController getCourseController() {
+		return courseController;
+	}
+
+	public void setCourseController(CourseController courseController) {
+		this.courseController = courseController;
+	}
+
+	public StudentController getStudentController() {
+		return studentController;
+	}
+
+	public void setStudentController(StudentController studentController) {
+		this.studentController = studentController;
+	}
+
+	public DatabaseController getDatabaseController() {
+		return databaseController;
+	}
+
+	public void setDatabaseController(DatabaseController databaseController) {
+		this.databaseController = databaseController;
+	}
+	
+	
 
 }
