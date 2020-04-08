@@ -35,7 +35,20 @@ public class StudentController {
 				return check;
 			}
 		}
-		System.out.println("Could not find student with name: " + name);
+		System.err.println("Could not find student with name: " + name);
+		return null;
+
+	}
+	
+	public Student searchStudent(int id) {
+		Iterator<Student> itr = studentList.iterator();
+		while (itr.hasNext()) {
+			Student check = itr.next();
+			if (check.getStudentId() == id) {
+				return check;
+			}
+		}
+		System.err.println("Could not find student with id: " + id);
 		return null;
 
 	}

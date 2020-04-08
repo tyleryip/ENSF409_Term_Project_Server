@@ -37,6 +37,8 @@ public class Session implements Runnable {
 	private CourseController courseController;
 	private StudentController studentController;
 
+	private Student studentUser;
+
 	/**
 	 * Constructor for session connects I/O
 	 * 
@@ -63,6 +65,8 @@ public class Session implements Runnable {
 
 		this.studentController = studentController;
 		this.courseController = courseController;
+
+		this.studentUser = null;
 	}
 
 	@Override
@@ -75,11 +79,22 @@ public class Session implements Runnable {
 			try {
 				command = stringIn.readLine();
 			} catch (IOException e) {
-				System.err.println("Error: problem recieving instruciton from client");
+				System.err.println("Error: problem recieving instruction from client");
 				e.printStackTrace();
 			}
 			executeCommand(command);
 
+		}
+
+		// Close all communication channels in the event that the user quits
+		try {
+			stringOut.close();
+			stringIn.close();
+			objectOut.close();
+			objectIn.close();
+		} catch (IOException e) {
+			System.err.println("Error: unable to close communication sockets");
+			e.printStackTrace();
 		}
 
 	}
@@ -88,11 +103,14 @@ public class Session implements Runnable {
 	 * Takes the user's input command and figures out which set of instructions to
 	 * execute
 	 * 
-	 * @param command
-	 * @return
+	 * @param command a string telling the server which command they want to execute
 	 */
-	public void executeCommand(String command) {
+	private void executeCommand(String command) {
 		switch (command) {
+		case "student login":
+			studentLogin();
+			return;
+
 		case "add course":
 			addCourse();
 			return;
@@ -102,11 +120,11 @@ public class Session implements Runnable {
 			return;
 
 		case "browse courses":
-			
+			browseCourses();
 			return;
 
 		case "search for course":
-			
+			searchForCourse();
 			return;
 
 		default:
@@ -117,45 +135,121 @@ public class Session implements Runnable {
 	}
 
 	/**
+	 * This method allows student users to log into the system and the server to
+	 * select a student to manipulate
+	 */
+	private void studentLogin() {
+		int checkID = -1;
+		try {
+			checkID = Integer.parseInt(stringIn.readLine());
+		} catch (IOException e) {
+			System.err.println("Error: invalid ID format");
+			e.printStackTrace();
+		}
+		studentUser = studentController.searchStudent(checkID);
+		if (studentUser != null) {
+			stringOut.println("login successful");
+			return;
+		}
+		stringOut.println("login failed");
+		return;
+	}
+
+	/**
+	 * Checks to see if the student user is logged in or not
+	 * 
+	 * @return true if the student is logged in to a valid student, false otherwise
+	 */
+	private boolean studentLoggedIn() {
+		if (studentUser != null) {
+			return true;
+		}
+		return false;
+	}
+
+	private void searchForCourse() {
+		if (!studentLoggedIn()) {
+			return;
+		}
+		Course clientCourse = readCourseFromClient();
+		clientCourse = courseController.searchCat(clientCourse.getCourseName(), clientCourse.getCourseNum());
+		if (clientCourse != null) {
+			try {
+				objectOut.writeObject(clientCourse);
+				return;
+			} catch (IOException e) {
+				System.err.println("Error: unable to write course to output stream");
+				e.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 * Sends each course in the catalogue back to the user
+	 */
+	private void browseCourses() {
+		if (!studentLoggedIn()) {
+			return;
+		}
+		for (Course c : courseController.getCourseList()) {
+			try {
+				objectOut.writeObject(c);
+				return;
+			} catch (IOException e) {
+				System.err.println("Error: unable to write course to output stream");
+				e.printStackTrace();
+			}
+		}
+	}
+
+	/**
 	 * This method takes a student and course from the client, looks for the course,
 	 * and if successful, adds it to the student and returns the student object to
 	 * client
 	 */
-	public void addCourse() {
-		Student clientStudent = readStudentFromClient();
-		Course clientCourse = readCourseFromClient();
-		
-		clientStudent = studentController.searchStudent(clientStudent.getStudentName());
-		clientCourse = courseController.searchCat(clientCourse.getCourseName(), clientCourse.getCourseNum());
-		if(clientStudent != null && clientCourse != null) {
-			Registration newReg = new Registration();
-			newReg.completeRegistration(clientStudent, clientCourse.getCourseOfferingAt(0));
-			stringOut.write("Sucessfullyy added this course to your courses.");
+	private void addCourse() {
+		if (!studentLoggedIn()) {
 			return;
 		}
-		stringOut.write("Unable to add this course to your courses.");
-	}
-	
-	public void removeCourse() {
-		Student clientStudent = readStudentFromClient();
 		Course clientCourse = readCourseFromClient();
-		
-		clientStudent = studentController.searchStudent(clientStudent.getStudentName());
-		if(clientStudent != null) {
-			Registration removeReg = clientStudent.searchStudentReg(clientCourse);
-				if(removeReg != null) {
-					clientStudent.getStudentRegList().remove(removeReg);
-					stringOut.write("Successfully removed this course from your courses.");
-				}
-			stringOut.write("Unable to add this course to your courses: could not find this course in your courses.");
+
+		clientCourse = courseController.searchCat(clientCourse.getCourseName(), clientCourse.getCourseNum());
+		if (clientCourse != null) {
+			Registration newReg = new Registration();
+			newReg.completeRegistration(studentUser, clientCourse.getCourseOfferingAt(0));
+			stringOut.println("Sucessfullyy added this course to your courses.");
+			return;
 		}
-		stringOut.write("Unable to remove this course from your courses.");
+		stringOut.println("Unable to add this course to your courses.");
 	}
-	
-	public Course readCourseFromClient(){
+
+	/**
+	 * Removes a course from the user's registration list
+	 */
+	private void removeCourse() {
+		if (!studentLoggedIn()) {
+			return;
+		}
+		Course clientCourse = readCourseFromClient();
+
+		Registration removeReg = studentUser.searchStudentReg(clientCourse);
+		if (removeReg != null) {
+			studentUser.getStudentRegList().remove(removeReg);
+			stringOut.write("Successfully removed this course from your courses.");
+		}
+		stringOut.println("Unable to add this course to your courses: could not find this course in your courses.");
+
+	}
+
+	/**
+	 * A helper function to check read course objects from the client socket
+	 * 
+	 * @return a Course if the course exists, null otherwise
+	 */
+	private Course readCourseFromClient() {
 		Course clientCourse = null;
 		try {
-			clientCourse = (Course)objectIn.readObject();
+			clientCourse = (Course) objectIn.readObject();
 		} catch (ClassNotFoundException e) {
 			System.err.println("Error: the class of this object was not found");
 			e.printStackTrace();
@@ -165,21 +259,5 @@ public class Session implements Runnable {
 		}
 		return clientCourse;
 	}
-	
-	public Student readStudentFromClient() {
-		Student clientStudent = null;
-			try {
-				clientStudent = (Student) objectIn.readObject();
-			} catch (ClassNotFoundException e) {
-				System.err.println("Error: the class of this object was not found");
-				e.printStackTrace();
-			} catch (IOException e) {
-				System.err.println("Error: I/O error");
-				e.printStackTrace();
-			}
-		return clientStudent;
-	}
-	
-
 
 }
