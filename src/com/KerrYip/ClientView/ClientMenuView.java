@@ -5,12 +5,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LoginSelectView{
+public class ClientMenuView {
 
     private JButton studentButton, adminButton, quitButton;
     private JLabel loginLabel;
 
-    public LoginSelectView(JFrame frame) {
+    public ClientMenuView(JFrame frame) {
         frame.removeAll();
 
         //Buttons for the main window
@@ -55,7 +55,7 @@ public class LoginSelectView{
         studentButton.addActionListener(listenForStudentButton);
     }
 
-
+    public void addQuitListener (ActionListener listenForQuitButton){
+        quitButton.addActionListener(listenForQuitButton);
+    }
 }
-
-
