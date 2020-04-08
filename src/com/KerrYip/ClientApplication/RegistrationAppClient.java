@@ -88,7 +88,7 @@ public class RegistrationAppClient {
 	*/
 
 	public static void main(String[] args){
-		ClientGUIController cgc = new ClientGUIController();
+		ClientGUIController cgc = new ClientGUIController(600,400);
 	}
 
 	public static void menu(CourseController cat, StudentController SM ){

@@ -16,7 +16,6 @@ import java.net.UnknownHostException;
 public class ClientCommunicationController {
 
 	private Socket aSocket;
-	private BufferedReader stdIn;
 	private BufferedReader socketIn;
 	private PrintWriter socketOut;
 	private ObjectInputStream objectIn;
@@ -31,9 +30,6 @@ public class ClientCommunicationController {
 		try {
 			//create socket
 			aSocket = new Socket(serverName, port);
-
-			//keyboard input stream
-			stdIn = new BufferedReader(new InputStreamReader(System.in));
 
 			//Socket streams
 			socketIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
@@ -74,6 +70,27 @@ public class ClientCommunicationController {
 	/**
 	 * Sends an instruction to the Server and receives the message back
 	 * @param instruction The instruction the server will execute
+	 * @return The message the server sends back
+	 */
+	public String communicationStudentLogin(String instruction, String id){
+		String message = null;
+		try{
+			socketOut.println(instruction);
+			socketOut.flush();
+
+			socketOut.println(id);
+			socketOut.flush();
+
+			message = socketIn.readLine();
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+		return message;
+	}
+
+	/**
+	 * Sends an instruction to the Server and receives the message back
+	 * @param instruction The instruction the server will execute
 	 * @param course The course the server needs for the instruction
 	 * @return The message the server sends back
 	 */
@@ -99,17 +116,13 @@ public class ClientCommunicationController {
 	 * Sends an instruction to the Server and receives the message back
 	 * @param instruction The instruction the server will execute
 	 * @param course The course the server needs for the instruction
-	 * @param student The student the server needs for the instruction
 	 * @return The message the server sends back
 	 */
-	public String communicationSendStudentAndCourse(String instruction, Student student, Course course){
+	public String communicationSendStudentAndCourse(String instruction, Course course){
 		String message = "";
 		try{
 				socketOut.println(instruction);
 				socketOut.flush();
-
-				objectOut.writeObject(student);
-				objectOut.flush();
 
 				objectOut.writeObject(course);
 				objectOut.flush();
@@ -122,13 +135,23 @@ public class ClientCommunicationController {
 	}
 
 	/**
+	 * Sends an instruction to the Server to quit and closes sockets
+	 */
+	public void communicationQuit(){
+		socketOut.println("QUIT");
+		socketOut.flush();
+		closeConnection();
+	}
+
+	/**
 	 * closes all the socket connections
 	 */
-	public void closeConnection(){
+	private void closeConnection(){
 		try{
-			stdIn.close();
 			socketIn.close();
 			socketOut.close();
+			objectIn.close();
+			objectOut.close();
 		}catch(IOException e){
 			e.getStackTrace();
 		}
