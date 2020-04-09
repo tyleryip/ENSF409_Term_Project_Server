@@ -82,7 +82,6 @@ public class Session implements Runnable {
 				System.err.println("Error: problem recieving instruction from client");
 				e.printStackTrace();
 			}
-			System.out.println("about to execute command");
 			executeCommand(command);
 		}
 
@@ -150,12 +149,9 @@ public class Session implements Runnable {
 		System.out.println(checkID);
 		studentUser = studentController.searchStudent(checkID);
 		if (studentUser != null) {
-			System.out.println("before da send");
 			stringOut.println("login successful");
-			System.out.println("after da send");
 			return;
 		}
-		System.out.println("failed login");
 		stringOut.println("login failed");
 	}
 
