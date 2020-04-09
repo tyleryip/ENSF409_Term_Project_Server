@@ -59,7 +59,7 @@ public class Session implements Runnable {
 			// a println() is used.
 
 		} catch (IOException e) {
-			System.err.println("Error: problem with setting up input output streams");
+			System.err.println("Error: problem with setting up the string input output streams");
 			e.printStackTrace();
 		}
 
@@ -68,7 +68,7 @@ public class Session implements Runnable {
 			objectIn = new ObjectInputStream(aSocket.getInputStream());
 			objectOut = new ObjectOutputStream(aSocket.getOutputStream());
 		} catch (IOException e) {
-			System.err.println("Error: problem with setting up input output streams");
+			System.err.println("Error: problem with setting up the object input output streams");
 			e.printStackTrace();
 		}
 
