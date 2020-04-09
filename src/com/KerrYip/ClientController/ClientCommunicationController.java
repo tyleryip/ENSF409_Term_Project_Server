@@ -7,9 +7,11 @@ import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
+
 /**
  * This class is primarily used to communicate with the server via sockets
  * @author tyleryip
+ * @author kerrmwill
  * @version 1.0
  * @since 04/07/20
  *
@@ -30,16 +32,9 @@ public class ClientCommunicationController {
 			//create socket
 			aSocket = new Socket(serverName, port);
 
-			//Socket streams
-//			socketIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
-//			socketOut = new PrintWriter((aSocket.getOutputStream()), true);
-
-			
 			//Socket object streams
 			toServer = new ObjectOutputStream(aSocket.getOutputStream());
 			fromServer = new ObjectInputStream(aSocket.getInputStream());
-
-
 
 		} catch (UnknownHostException e) {
 			System.err.println("Error: could not find a host with the name: " + serverName);
@@ -49,7 +44,11 @@ public class ClientCommunicationController {
 			e.printStackTrace();
 		}
 	}
-	
+
+	/**
+	 * Converts the read Object into a String
+	 * @return the converted String
+	 */
 	private String readString() {
 		String input = "";
 		try {
@@ -62,7 +61,11 @@ public class ClientCommunicationController {
 		}
 		return input;
 	}
-	
+
+	/**
+	 * Converts the String to an Object and prints it over the socket connection
+	 * @param toSend String to be converted
+	 */
 	private void writeString(String toSend) {
 		try {
 			toServer.writeObject(toSend);
@@ -151,7 +154,7 @@ public class ClientCommunicationController {
 	}
 
 	/**
-	 * Sends an instruction to the Server to quit and closes sockets
+	 * Sends an instruction to the Server to quit and closes all socket connections
 	 */
 	public void communicateQuit(){
 		writeString("QUIT");

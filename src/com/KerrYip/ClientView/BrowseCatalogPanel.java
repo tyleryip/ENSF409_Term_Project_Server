@@ -2,9 +2,11 @@ package com.KerrYip.ClientView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * The Panel for viewing all of the course catalog which will display all courses in the catalog
+ */
 public class BrowseCatalogPanel extends JPanel{
 
     private JButton backButton;
@@ -16,11 +18,11 @@ public class BrowseCatalogPanel extends JPanel{
         //Buttons for the main window
         backButton = new JButton("Back");
 
-        //This is the login select label
+        //browse catalog title
         browseCatalogLabel = new JLabel();
         browseCatalogLabel.setText("Course Catalog");
 
-        //This is the login select panel
+        //browse catalog panels for formatting
         JPanel titlePanel = new JPanel();
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.PAGE_AXIS));
@@ -31,7 +33,6 @@ public class BrowseCatalogPanel extends JPanel{
         //Add all the buttons into the panel
         titlePanel.add(browseCatalogLabel);
         buttonPanel.add(backButton);
-
 
         //This is the data field that displays
         dataText = new JTextArea(20, 20);
@@ -44,12 +45,17 @@ public class BrowseCatalogPanel extends JPanel{
         JScrollPane dataTextScrollPane = new JScrollPane(dataText);
         dataTextScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
+        //adding panels to appropriate quadrants
         add("North", titlePanel);
         add("South", buttonPanel);
         add("Center", dataTextScrollPane);
 
     }
 
+    /**
+     * Adds listener for the backButton
+     * @param listenForBackStudentMenuButton listener for the button
+     */
     public void addBackStudentMenuListener (ActionListener listenForBackStudentMenuButton){
         backButton.addActionListener(listenForBackStudentMenuButton);
     }

@@ -12,8 +12,7 @@ import com.KerrYip.ClientController.ClientGUIController;
  *
  */
 public class RegistrationAppClient {
-
 	public static void main(String[] args) {
-		ClientGUIController cgc = new ClientGUIController(600, 400);
+		ClientGUIController cgc = new ClientGUIController(600, 400, 9898);
 	}
 }
