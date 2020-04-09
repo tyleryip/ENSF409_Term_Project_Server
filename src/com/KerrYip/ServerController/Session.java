@@ -49,6 +49,7 @@ public class Session implements Runnable {
 		try {
 			stringIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
 			stringOut = new PrintWriter(aSocket.getOutputStream());
+
 		} catch (IOException e) {
 			System.err.println("Error: problem with setting up input output streams");
 			e.printStackTrace();
@@ -56,14 +57,11 @@ public class Session implements Runnable {
 
 		// Set up object I/O
 		/*
-		try {
-			objectIn = new ObjectInputStream(aSocket.getInputStream());
-			objectOut = new ObjectOutputStream(aSocket.getOutputStream());
-		} catch (IOException e) {
-			System.err.println("Error: problem with setting up input output streams");
-			e.printStackTrace();
-		}
-		*/
+		 * try { objectIn = new ObjectInputStream(aSocket.getInputStream()); objectOut =
+		 * new ObjectOutputStream(aSocket.getOutputStream()); } catch (IOException e) {
+		 * System.err.println("Error: problem with setting up input output streams");
+		 * e.printStackTrace(); }
+		 */
 
 		this.studentController = studentController;
 		this.courseController = courseController;
@@ -86,7 +84,6 @@ public class Session implements Runnable {
 			}
 			System.out.println("about to execute command");
 			executeCommand(command);
-
 		}
 
 		// Close all communication channels in the event that the user quits
@@ -158,8 +155,9 @@ public class Session implements Runnable {
 			System.out.println("after da send");
 			return;
 		}
-		stringOut.println("login failed");
-		return;
+		System.out.println("lol fail");
+		stringOut.println("go fuck yourself");
+
 	}
 
 	/**

@@ -18,7 +18,7 @@ public class ClientGUIController {
 
     public ClientGUIController(int width, int height){
         frame = new MainView(width, height);
-        clientController = new ClientCommunicationController("localhost",9090);
+        clientController = new ClientCommunicationController("localhost",8989);
 
         //set frame to login selection
         loginSelect = new LoginSelectPane();

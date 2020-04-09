@@ -14,7 +14,7 @@ public class RegistrationAppServer {
 
 	public static void main(String[] args) {
 
-		ServerCommunicationController sCommController = new ServerCommunicationController(9090);
+		ServerCommunicationController sCommController = new ServerCommunicationController(8989);
 		sCommController.listen();
 	}
 }

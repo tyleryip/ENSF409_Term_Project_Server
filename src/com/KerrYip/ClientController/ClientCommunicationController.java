@@ -6,6 +6,7 @@ import com.KerrYip.ClientModel.Student;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.concurrent.TimeUnit;
 /**
  * This class is primarily used to communicate with the server via sockets
  * @author tyleryip
@@ -77,19 +78,21 @@ public class ClientCommunicationController {
 	public String communicationStudentLogin(String instruction, String id){
 		String message = null;
 		try{
+			
 			socketOut.println(instruction);
 			socketOut.flush();
 
 			socketOut.println(id);
 			socketOut.flush();
-
+			
 			System.out.println("ye");
-			message = socketIn.readLine();
-			System.out.println("message is: " + message);
+			System.out.println(socketIn.readLine());
+
+			//System.out.println("message is: " + message);
 
 		}catch(IOException e) {
 			e.printStackTrace();
-		}
+		} 
 		return message;
 	}
 	/**
