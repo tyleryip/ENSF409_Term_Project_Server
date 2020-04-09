@@ -2,13 +2,13 @@ package com.KerrYip.ServerController;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import com.KerrYip.ServerModel.Administrator;
 import com.KerrYip.ServerModel.Course;
 import com.KerrYip.ServerModel.Registration;
 import com.KerrYip.ServerModel.Student;
@@ -38,6 +38,7 @@ public class Session implements Runnable {
 	private StudentController studentController;
 
 	private Student studentUser;
+	private Administrator adminUser;
 
 	/**
 	 * Constructor for session connects I/O
@@ -64,7 +65,6 @@ public class Session implements Runnable {
 		}
 
 		// Set up object I/O
-		/*
 		try {
 			objectIn = new ObjectInputStream(aSocket.getInputStream());
 			objectOut = new ObjectOutputStream(aSocket.getOutputStream());
@@ -72,7 +72,7 @@ public class Session implements Runnable {
 			System.err.println("Error: problem with setting up the object input output streams");
 			e.printStackTrace();
 		}
-*/
+
 		this.studentController = studentController;
 		this.courseController = courseController;
 
@@ -88,23 +88,21 @@ public class Session implements Runnable {
 		while (!command.contentEquals("QUIT")) {
 			try {
 				command = stringIn.readLine();
+				System.out.println("Command is: " + command);
+				executeCommand(command);
 			} catch (IOException e) {
 				System.err.println("Error: problem recieving instruction from client");
 				e.printStackTrace();
 			}
-			executeCommand(command);
 		}
 
 		// Close all communication channels in the event that the user quits
-		try {
-			stringOut.close();
-			stringIn.close();
-			//objectOut.close();
-			//objectIn.close();
-		} catch (IOException e) {
-			System.err.println("Error: unable to close communication sockets");
-			e.printStackTrace();
-		}
+		/*
+		 * try { stringOut.close(); stringIn.close(); //objectOut.close();
+		 * //objectIn.close(); } catch (IOException e) {
+		 * System.err.println("Error: unable to close communication sockets");
+		 * e.printStackTrace(); }
+		 */
 
 	}
 

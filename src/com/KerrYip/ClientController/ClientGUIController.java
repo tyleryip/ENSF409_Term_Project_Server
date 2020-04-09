@@ -6,7 +6,11 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
 import com.KerrYip.ClientModel.Course;
-import com.KerrYip.ClientView.*;
+import com.KerrYip.ClientView.AdminMenuPanel;
+import com.KerrYip.ClientView.BrowseCatalogPanel;
+import com.KerrYip.ClientView.LoginSelectPanel;
+import com.KerrYip.ClientView.MainView;
+import com.KerrYip.ClientView.StudentMenuPanel;
 
 public class ClientGUIController {
 
