@@ -5,13 +5,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ClientMenuView {
+public class LoginSelectPanel extends JPanel{
 
     private JButton studentButton, adminButton, quitButton;
     private JLabel loginLabel;
 
-    public ClientMenuView(JFrame frame){
-        frame.removeAll();
+    public LoginSelectPanel() {
 
         //Buttons for the main window
         studentButton = new JButton("Student Login");
@@ -26,21 +25,17 @@ public class ClientMenuView {
         JPanel titlePanel = new JPanel();
         JPanel buttonPanel = new JPanel();
 
+        //Set up the layout of the main window
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+
         //Add all the buttons into the panel
         titlePanel.add(loginLabel);
         buttonPanel.add(studentButton);
         buttonPanel.add(adminButton);
         buttonPanel.add(quitButton);
 
-        //Set up the layout of the main window
-        frame.setLayout(new BorderLayout());
-
-        frame.add(titlePanel,"north");
-        frame.add(buttonPanel, "center");
-
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-
+        add(titlePanel);
+        add(buttonPanel);
 
         adminButton.addActionListener((ActionEvent e) -> {
             System.out.println("admin");
@@ -51,11 +46,10 @@ public class ClientMenuView {
         });
     }
 
-    public void addStudentListener (ActionListener listenForStudentButton){
+    public void addStudentLoginListener (ActionListener listenForStudentButton){
         studentButton.addActionListener(listenForStudentButton);
     }
-
-    public void addQuitListener (ActionListener listenForQuitButton){
-        quitButton.addActionListener(listenForQuitButton);
-    }
 }
+
+
+

@@ -83,7 +83,7 @@ public class ClientCommunicationController {
 			socketOut.println(id);
 			socketOut.flush();
 
-			System.out.println("ye");
+			System.out.println("before read");
 			message = socketIn.readLine();
 			System.out.println("message is: " + message);
 

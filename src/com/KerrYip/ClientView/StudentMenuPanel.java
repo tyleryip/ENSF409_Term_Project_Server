@@ -1,16 +1,14 @@
 package com.KerrYip.ClientView;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LoginSelectPane extends JPanel{
+public class StudentMenuPanel extends JPanel {
+    private JButton searchButton, addCourseButton, removeCourseButton, browseCatalogButton, viewCourseButton, logoutButton;
+    private JLabel studentMenuLabel;
 
-    private JButton studentButton, adminButton, quitButton;
-    private JLabel loginLabel;
-
-    public LoginSelectPane() {
+    public StudentMenuPanel() {
 
         //Buttons for the main window
         studentButton = new JButton("Student Login");
@@ -50,6 +48,3 @@ public class LoginSelectPane extends JPanel{
         studentButton.addActionListener(listenForStudentButton);
     }
 }
-
-
-

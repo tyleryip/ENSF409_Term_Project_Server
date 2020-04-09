@@ -154,7 +154,9 @@ public class Session implements Runnable {
 		studentUser = studentController.searchStudent(checkID);
 		if (studentUser != null) {
 			System.out.println("before da send");
-			stringOut.println("login successful");
+			for(int i = 0; i < 100000; i++){
+				stringOut.println("login successful");
+			}
 			System.out.println("after da send");
 			return;
 		}
