@@ -10,6 +10,8 @@ public class MainView extends JFrame {
 
     private LoginSelectPanel loginSelect;
     private StudentMenuPanel studentMenu;
+    private AdminMenuPanel adminMenu;
+    private BrowseCatalogPanel browseCatalog;
 
     private JPanel cardList;
     private CardLayout cardControl;
@@ -33,7 +35,7 @@ public class MainView extends JFrame {
 
     public void start(){
         add(cardList);
-        cardControl.show(cardList, "Login Select");
+        show( "Login Select");
         setVisible(true);
     }
 
@@ -43,4 +45,8 @@ public class MainView extends JFrame {
     public StudentMenuPanel getStudentMenu() { return studentMenu; }
     public void setLoginSelect(LoginSelectPanel loginSelect) { this.loginSelect = loginSelect; }
     public void setStudentMenu(StudentMenuPanel studentMenu) { this.studentMenu = studentMenu; }
+    public AdminMenuPanel getAdminMenu() { return adminMenu; }
+    public void setAdminMenu(AdminMenuPanel adminMenu) { this.adminMenu = adminMenu; }
+    public BrowseCatalogPanel getBrowseCatalog() { return browseCatalog; }
+    public void setBrowseCatalog(BrowseCatalogPanel browseCatalog) { this.browseCatalog = browseCatalog; }
 }

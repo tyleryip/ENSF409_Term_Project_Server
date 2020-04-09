@@ -5,41 +5,42 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class StudentMenuPanel extends JPanel {
-    private JButton searchCatalogButton, enrollCourseButton, dropCourseButton, browseCatalogButton, viewEnrolledCoursesButton, logoutButton;
-    private JLabel studentMenuLabel;
+public class AdminMenuPanel extends JPanel {
+    private JButton searchCatalogButton, addCourseButton, removeCourseButton, browseCatalogButton, viewStudentCoursesButton, runButton, logoutButton;
+    private JLabel adminMenuLabel;
     private JTextArea dataText;
 
-    public StudentMenuPanel() {
+    public AdminMenuPanel() {
 
         //Buttons for the main window
         searchCatalogButton = new JButton("Search for Course in Catalog");
-        enrollCourseButton = new JButton("Enroll in a Course");
-        dropCourseButton = new JButton("Drop a Course");
+        addCourseButton = new JButton("Add new course to the Catalog");
+        removeCourseButton = new JButton("Remove course from the Catalog");
         browseCatalogButton = new JButton("View all Courses in Catalog");
-        viewEnrolledCoursesButton = new JButton("View Enrolled Courses");
+        viewStudentCoursesButton = new JButton("View Enrolled Courses from a student");
+        runButton = new JButton("Run Courses");
         logoutButton = new JButton("Logout");
 
         //This is the login select label
-        studentMenuLabel = new JLabel();
-        studentMenuLabel.setText("Student Menu");
+        adminMenuLabel = new JLabel();
+        adminMenuLabel.setText("Admin Menu");
 
         //This is the login select panel
         JPanel titlePanel = new JPanel();
         JPanel buttonPanel = new JPanel();
-        JPanel coursePanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.PAGE_AXIS));
 
         //Set up the layout of the main window
         setLayout(new BorderLayout());
 
         //Add all the buttons into the panel
-        titlePanel.add(studentMenuLabel);
-        buttonPanel.add(enrollCourseButton);
-        buttonPanel.add(dropCourseButton);
+        titlePanel.add(adminMenuLabel);
+        buttonPanel.add(addCourseButton);
+        buttonPanel.add(removeCourseButton);
         buttonPanel.add(browseCatalogButton);
         buttonPanel.add(searchCatalogButton);
-        buttonPanel.add(viewEnrolledCoursesButton);
+        buttonPanel.add(viewStudentCoursesButton);
+        buttonPanel.add(runButton);
 
         //This is the data field that displays
         dataText = new JTextArea(20, 20);
@@ -59,12 +60,12 @@ public class StudentMenuPanel extends JPanel {
 
     }
 
-    public void addEnrollCourseListener (ActionListener listenForSearchCatalogButton){
-        enrollCourseButton.addActionListener(listenForSearchCatalogButton);
+    public void addAddCourseToCatalogListener (ActionListener listenAddCourseToCatalogButton){
+        addCourseButton.addActionListener(listenAddCourseToCatalogButton);
     }
 
-    public void addDropCourseListener (ActionListener listenForSearchCatalogButton){
-        dropCourseButton.addActionListener(listenForSearchCatalogButton);
+    public void addRemoveCourseFromCatalogListener (ActionListener listenForRemoveCourseFromCatalogButton){
+        removeCourseButton.addActionListener(listenForRemoveCourseFromCatalogButton);
     }
 
     public void addBrowseCatalogListener (ActionListener listenForSearchCatalogButton){
@@ -75,8 +76,12 @@ public class StudentMenuPanel extends JPanel {
         searchCatalogButton.addActionListener(listenForSearchCatalogButton);
     }
 
-    public void addViewEnrolledCoursesListener (ActionListener listenForSearchCatalogButton){
-        viewEnrolledCoursesButton.addActionListener(listenForSearchCatalogButton);
+    public void addViewStudentEnrolledCoursesListener (ActionListener listenForStudentEnrolledCoursesButton){
+        viewStudentCoursesButton.addActionListener(listenForStudentEnrolledCoursesButton);
+    }
+
+    public void addRunCoursesListener (ActionListener listenForRunCoursesButton){
+        runButton.addActionListener(listenForRunCoursesButton);
     }
 
     public void addLogoutListener (ActionListener listenForSearchCatalogButton){

@@ -152,8 +152,8 @@ public class ClientCommunicationController {
 		try{
 			socketIn.close();
 			socketOut.close();
-			objectIn.close();
-			objectOut.close();
+			//objectIn.close();
+			//objectOut.close();
 		}catch(IOException e){
 			e.getStackTrace();
 		}

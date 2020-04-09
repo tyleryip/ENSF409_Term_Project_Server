@@ -64,6 +64,7 @@ public class Session implements Runnable {
 		}
 
 		// Set up object I/O
+		/*
 		try {
 			objectIn = new ObjectInputStream(aSocket.getInputStream());
 			objectOut = new ObjectOutputStream(aSocket.getOutputStream());
@@ -71,7 +72,7 @@ public class Session implements Runnable {
 			System.err.println("Error: problem with setting up the object input output streams");
 			e.printStackTrace();
 		}
-
+*/
 		this.studentController = studentController;
 		this.courseController = courseController;
 
@@ -98,8 +99,8 @@ public class Session implements Runnable {
 		try {
 			stringOut.close();
 			stringIn.close();
-			objectOut.close();
-			objectIn.close();
+			//objectOut.close();
+			//objectIn.close();
 		} catch (IOException e) {
 			System.err.println("Error: unable to close communication sockets");
 			e.printStackTrace();
