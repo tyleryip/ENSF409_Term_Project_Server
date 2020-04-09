@@ -27,6 +27,7 @@ public class DatabaseController {
 		courseList = new ArrayList<Course>();
 		studentList = new ArrayList<Student>();
 
+		//Load the simulated data in
 		readCoursesFromDatabase();
 		readStudentsFromDatabase();
 	}
