@@ -34,13 +34,12 @@ public class ClientCommunicationController {
 //			socketIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
 //			socketOut = new PrintWriter((aSocket.getOutputStream()), true);
 
-			System.out.println("We are here");
 			
 			//Socket object streams
-			fromServer = new ObjectInputStream(aSocket.getInputStream());
 			toServer = new ObjectOutputStream(aSocket.getOutputStream());
+			fromServer = new ObjectInputStream(aSocket.getInputStream());
 
-			System.out.println("We made it past here");
+
 
 		} catch (UnknownHostException e) {
 			System.err.println("Error: could not find a host with the name: " + serverName);
