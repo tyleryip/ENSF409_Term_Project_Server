@@ -29,8 +29,8 @@ public class Session implements Runnable {
 
 	// These I/O streams deal with sending Student objects back and forth between
 	// the client
-	private ObjectInputStream objectIn;
-	private ObjectOutputStream objectOut;
+	private ObjectInputStream fromClient;
+	private ObjectOutputStream toClient;
 
 	// These controllers will be assigned to each session, so all sessions use the
 	// same controllers
@@ -66,8 +66,8 @@ public class Session implements Runnable {
 
 		// Set up object I/O
 		try {
-			objectIn = new ObjectInputStream(aSocket.getInputStream());
-			objectOut = new ObjectOutputStream(aSocket.getOutputStream());
+			fromClient = new ObjectInputStream(aSocket.getInputStream());
+			toClient = new ObjectOutputStream(aSocket.getOutputStream());
 		} catch (IOException e) {
 			System.err.println("Error: problem with setting up the object input output streams");
 			e.printStackTrace();
@@ -77,6 +77,32 @@ public class Session implements Runnable {
 		this.courseController = courseController;
 
 		this.studentUser = null;
+	}
+	
+	/**
+	 * The following method is a helper to read the next object in the input stream as a string, used for commands
+	 * @return a string from the input stream
+	 */
+	private String readString() {
+		String input = "";
+		try {
+			input = (String)fromClient.readObject();
+		} catch (ClassNotFoundException e) {
+			System.err.println("Error: could not convert the object to a string");
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return input;
+	}
+	
+	private void writeString(String toSend) {
+		try {
+			toClient.writeObject(toSend);
+		} catch (IOException e) {
+			System.err.println("Error: unable to write string to an object");
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -88,8 +114,13 @@ public class Session implements Runnable {
 		while (!command.contentEquals("QUIT")) {
 			try {
 				command = stringIn.readLine();
-				System.out.println("Command is: " + command);
-				executeCommand(command);
+				boolean successful = executeCommand(command);
+			
+				if(successful)
+					System.out.println("[Server] Command: " + command + ", executed successfully");
+				else 
+					System.out.println("[Server] Command: " + command + ", failed to execute");
+				
 			} catch (IOException e) {
 				System.err.println("Error: problem recieving instruction from client");
 				e.printStackTrace();
@@ -112,32 +143,27 @@ public class Session implements Runnable {
 	 * 
 	 * @param command a string telling the server which command they want to execute
 	 */
-	private void executeCommand(String command) {
+	private boolean executeCommand(String command) {
 		switch (command) {
 		case "student login":
 			System.out.println("doing student login");
-			studentLogin();
-			return;
+			return studentLogin();
 
 		case "add course":
-			addCourse();
-			return;
+			return addCourse();
 
 		case "remove course":
-			removeCourse();
-			return;
+			return removeCourse();
 
 		case "browse courses":
-			browseCourses();
-			return;
+			return browseCourses();
 
 		case "search for course":
-			searchForCourse();
-			return;
+			return searchForCourse();
 
 		default:
 			System.err.println("No option available that matched: " + command);
-			return;
+			return false;
 		}
 
 	}
@@ -146,7 +172,7 @@ public class Session implements Runnable {
 	 * This method allows student users to log into the system and the server to
 	 * select a student to manipulate
 	 */
-	private void studentLogin() {
+	private boolean studentLogin() {
 		int checkID = -1;
 		try {
 			checkID = Integer.parseInt(stringIn.readLine());
@@ -158,9 +184,10 @@ public class Session implements Runnable {
 		studentUser = studentController.searchStudent(checkID);
 		if (studentUser != null) {
 			stringOut.println("login successful");
-			return;
+			return true;
 		}
 		stringOut.println("login failed");
+		return false;
 	}
 
 	/**
@@ -175,41 +202,43 @@ public class Session implements Runnable {
 		return false;
 	}
 
-	private void searchForCourse() {
+	private boolean searchForCourse() {
 		if (!studentLoggedIn()) {
-			return;
+			return false;
 		}
 		Course clientCourse = readCourseFromClient();
 		clientCourse = courseController.searchCat(clientCourse.getCourseName(), clientCourse.getCourseNum());
 		if (clientCourse != null) {
 			try {
-				objectOut.writeObject(clientCourse);
-				return;
+				toClient.writeObject(clientCourse);
+				return true;
 			} catch (IOException e) {
 				System.err.println("Error: unable to write course to output stream");
 				e.printStackTrace();
 			}
 		}
 		stringOut.println("Search completed.");
+		return false;
 	}
 
 	/**
 	 * Sends each course in the catalog back to the user
 	 */
-	private void browseCourses() {
+	private boolean browseCourses() {
 		if (!studentLoggedIn()) {
-			return;
+			return false;
 		}
 		for (Course c : courseController.getCourseList()) {
 			try {
-				objectOut.writeObject(c);
-				return;
+				toClient.writeObject(c);
+				return true;
 			} catch (IOException e) {
 				System.err.println("Error: unable to write course to output stream");
 				e.printStackTrace();
 			}
 		}
 		stringOut.println("Browse completed.");
+		return false;
 	}
 
 	/**
@@ -217,9 +246,9 @@ public class Session implements Runnable {
 	 * and if successful, adds it to the student and returns the student object to
 	 * client
 	 */
-	private void addCourse() {
+	private boolean addCourse() {
 		if (!studentLoggedIn()) {
-			return;
+			return false;
 		}
 		Course clientCourse = readCourseFromClient();
 
@@ -228,17 +257,18 @@ public class Session implements Runnable {
 			Registration newReg = new Registration();
 			newReg.completeRegistration(studentUser, clientCourse.getCourseOfferingAt(0));
 			stringOut.println("Sucessfullyy added this course to your courses.");
-			return;
+			return true;
 		}
 		stringOut.println("Unable to add this course to your courses.");
+		return false;
 	}
 
 	/**
 	 * Removes a course from the user's registration list
 	 */
-	private void removeCourse() {
+	private boolean removeCourse() {
 		if (!studentLoggedIn()) {
-			return;
+			return false;
 		}
 		Course clientCourse = readCourseFromClient();
 
@@ -246,8 +276,10 @@ public class Session implements Runnable {
 		if (removeReg != null) {
 			studentUser.getStudentRegList().remove(removeReg);
 			stringOut.write("Successfully removed this course from your courses.");
+			return true;
 		}
 		stringOut.println("Unable to add this course to your courses: could not find this course in your courses.");
+		return false;
 
 	}
 
@@ -259,7 +291,7 @@ public class Session implements Runnable {
 	private Course readCourseFromClient() {
 		Course clientCourse = null;
 		try {
-			clientCourse = (Course) objectIn.readObject();
+			clientCourse = (Course) fromClient.readObject();
 		} catch (ClassNotFoundException e) {
 			System.err.println("Error: the class of this object was not found");
 			e.printStackTrace();
