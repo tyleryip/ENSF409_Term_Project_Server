@@ -24,6 +24,16 @@ public class ServerExample {
 
     //Logic of the application
     public void capitalize() {
+        try {
+            aSocket = serverSocket.accept();
+            System.out.println("Connection accepted by server!");
+            socketIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
+            socketOut = new PrintWriter((aSocket.getOutputStream()), true);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
+
         String line = null;
         String line2 = null;
 
@@ -48,10 +58,6 @@ public class ServerExample {
     public static void main (String [] args) throws IOException {
         try {
             ServerExample myServer = new ServerExample(9898);
-            myServer.aSocket = myServer.serverSocket.accept();
-            System.out.println("Connection accepted by server!");
-            myServer.socketIn = new BufferedReader(new InputStreamReader(myServer.aSocket.getInputStream()));
-            myServer.socketOut = new PrintWriter((myServer.aSocket.getOutputStream()), true);
             myServer.capitalize();
 
             myServer.socketIn.close();

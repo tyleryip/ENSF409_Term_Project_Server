@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.KerrYip.ClientController.ClientCommunicationController;
+import com.KerrYip.ClientController.NewClientCommunicationController;
 import com.KerrYip.ClientModel.Course;
 
 public class MainView extends JFrame {
@@ -19,9 +20,9 @@ public class MainView extends JFrame {
     private CardLayout cardControl;
 
     //temporary solution
-    private ClientCommunicationController communicate;
+    private NewClientCommunicationController communicate;
 
-    public MainView(int height, int width, ClientCommunicationController communicate){
+    public MainView(int height, int width, NewClientCommunicationController communicate){
         this.setSize(height,width);
         this.communicate = communicate;
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -42,16 +43,18 @@ public class MainView extends JFrame {
         loginSelect = new LoginSelectPanel();
         loginSelect.addStudentLoginListener(new StudentLoginListener());
         loginSelect.addAdminLoginListener(new AdminLoginListener());
-        loginSelect.addQuitLoginListener(new QuitLoginListener());
+        //loginSelect.addQuitLoginListener(new QuitLoginListener());
         pane.add(loginSelect, "Login Select");
     }
 
     public void studentMenuSetup(JPanel pane){
         studentMenu = new StudentMenuPanel();
+        /*
         studentMenu.addEnrollCourseListener(new StudentEnrollCourseListener());
         studentMenu.addDropCourseListener(new StudentDropCourseListener());
         studentMenu.addBrowseCatalogListener(new BrowseCatalogListener());
         studentMenu.addSearchCatalogListener(new SearchCatalogListener());
+        */
         studentMenu.addViewEnrolledCoursesListener(new StudentViewEnrolledCoursesListener());
         studentMenu.addLogoutListener(new LogoutListener());
         pane.add(studentMenu, "Student Menu");
@@ -62,7 +65,7 @@ public class MainView extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e){
             String studentID = JOptionPane.showInputDialog("Please enter the student's id");
-            String message = communicate.communicationStudentLogin("student login", studentID);
+            String message = communicate.communicateStudentLogin("student login", studentID);
             System.out.println(message);
             if(message.equals("login successful")){
                 cardControl.show(cardList, "Student Menu");
@@ -80,7 +83,7 @@ public class MainView extends JFrame {
             System.out.println("Admin login");
         }
     }
-
+/*
     class QuitLoginListener implements ActionListener {
 
         @Override
@@ -136,7 +139,7 @@ public class MainView extends JFrame {
             JOptionPane.showMessageDialog(null,message);
         }
     }
-
+*/
     class StudentViewEnrolledCoursesListener implements ActionListener {
 
         @Override

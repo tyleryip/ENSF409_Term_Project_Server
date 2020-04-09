@@ -81,7 +81,13 @@ public class ClientCommunicationController {
 		socketOut.flush();
 
 		socketOut.println(id);
-		socketOut.flush(); 
+		socketOut.flush();
+		try {
+			message = socketIn.readLine();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+
 		return message;
 	}
 	/**
@@ -115,7 +121,7 @@ public class ClientCommunicationController {
 	 * @return The message the server sends back
 	 */
 	public String communicationSendCourse(String instruction, Course course){
-		String message = "";
+		String message = null;
 		try{
 				socketOut.println(instruction);
 				socketOut.flush();
