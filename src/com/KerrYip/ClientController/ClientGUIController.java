@@ -12,12 +12,13 @@ public class ClientGUIController {
 
 
     // the other controllers on the client side
-    private ClientCommunicationController clientController;
+    private NewClientCommunicationController clientController;
     private MainView frame;
 
 
     public ClientGUIController(int width, int height){
-        clientController = new ClientCommunicationController("localhost",8989);
+        //clientController = new ClientCommunicationController("localhost",9898);
+        clientController = new NewClientCommunicationController("localhost", 9898);
         frame = new MainView(width, height, clientController);
 
     }
