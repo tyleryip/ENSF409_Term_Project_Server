@@ -55,7 +55,7 @@ public class ClientCommunicationController {
 	 * @param instruction The instruction the server will execute
 	 * @return The message the server sends back
 	 */
-	public Course communicationBrowseCatalog(String instruction){
+	public Course communicateBrowseCatalog(String instruction){
 		Course course = null;
 		try{
 			socketOut.println(instruction);
@@ -75,7 +75,7 @@ public class ClientCommunicationController {
 	 * @param instruction The instruction the server will execute
 	 * @return The message the server sends back
 	 */
-	public String communicationStudentLogin(String instruction, String id){
+	public String communicateStudentLogin(String instruction, String id){
 		String message = null;
 		socketOut.println(instruction);
 		socketOut.flush();
@@ -96,7 +96,7 @@ public class ClientCommunicationController {
 	 * @param course The course the server needs for the instruction
 	 * @return The message the server sends back
 	 */
-	public Course communicationSearchCourse(String instruction, Course course){
+	public Course communicateSearchCourse(String instruction, Course course){
 		Course courseResult = null;
 		try{
 			socketOut.println(instruction);
@@ -120,7 +120,7 @@ public class ClientCommunicationController {
 	 * @param course The course the server needs for the instruction
 	 * @return The message the server sends back
 	 */
-	public String communicationSendCourse(String instruction, Course course){
+	public String communicateSendCourse(String instruction, Course course){
 		String message = null;
 		try{
 				socketOut.println(instruction);
@@ -139,7 +139,7 @@ public class ClientCommunicationController {
 	/**
 	 * Sends an instruction to the Server to quit and closes sockets
 	 */
-	public void communicationQuit(){
+	public void communicateQuit(){
 		socketOut.println("QUIT");
 		socketOut.flush();
 		closeConnection();
@@ -152,8 +152,8 @@ public class ClientCommunicationController {
 		try{
 			socketIn.close();
 			socketOut.close();
-			//objectIn.close();
-			//objectOut.close();
+			objectIn.close();
+			objectOut.close();
 		}catch(IOException e){
 			e.getStackTrace();
 		}

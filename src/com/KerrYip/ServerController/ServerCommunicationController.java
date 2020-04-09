@@ -64,10 +64,10 @@ public class ServerCommunicationController {
 				System.out.println("[Server] Connection accepted by server!");
 
 				// Create a new session for the new client that joined
-				Session newSession = new Session(aSocket, courseController, studentController);
+				Session Session = new Session(aSocket, courseController, studentController);
 
 				// Add client to the thread pool and execute
-				pool.execute(newSession);
+				pool.execute(Session);
 			} catch (IOException e) {
 				System.err.println("Error: problems accepting client socket");
 				e.printStackTrace();
