@@ -10,7 +10,7 @@ public class ClientMenuView {
     private JButton studentButton, adminButton, quitButton;
     private JLabel loginLabel;
 
-    public ClientMenuView(JFrame frame) {
+    public ClientMenuView(JFrame frame){
         frame.removeAll();
 
         //Buttons for the main window
@@ -26,17 +26,17 @@ public class ClientMenuView {
         JPanel titlePanel = new JPanel();
         JPanel buttonPanel = new JPanel();
 
-        //Set up the layout of the main window
-        frame.setLayout(new FlowLayout());
-
         //Add all the buttons into the panel
         titlePanel.add(loginLabel);
         buttonPanel.add(studentButton);
         buttonPanel.add(adminButton);
         buttonPanel.add(quitButton);
 
-        frame.add(titlePanel);
-        frame.add(buttonPanel);
+        //Set up the layout of the main window
+        frame.setLayout(new BorderLayout());
+
+        frame.add(titlePanel,"north");
+        frame.add(buttonPanel, "center");
 
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);

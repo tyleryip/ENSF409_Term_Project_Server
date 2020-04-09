@@ -5,13 +5,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LoginSelectView{
+public class LoginSelectPane extends JPanel{
 
     private JButton studentButton, adminButton, quitButton;
     private JLabel loginLabel;
 
-    public LoginSelectView(JFrame frame) {
-        frame.removeAll();
+    public LoginSelectPane() {
 
         //Buttons for the main window
         studentButton = new JButton("Student Login");
@@ -27,7 +26,7 @@ public class LoginSelectView{
         JPanel buttonPanel = new JPanel();
 
         //Set up the layout of the main window
-        frame.setLayout(new FlowLayout());
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
         //Add all the buttons into the panel
         titlePanel.add(loginLabel);
@@ -35,12 +34,8 @@ public class LoginSelectView{
         buttonPanel.add(adminButton);
         buttonPanel.add(quitButton);
 
-        frame.add(titlePanel);
-        frame.add(buttonPanel);
-
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-
+        add(titlePanel);
+        add(buttonPanel);
 
         adminButton.addActionListener((ActionEvent e) -> {
             System.out.println("admin");
@@ -54,8 +49,7 @@ public class LoginSelectView{
     public void addStudentListener (ActionListener listenForStudentButton){
         studentButton.addActionListener(listenForStudentButton);
     }
-
-
 }
+
 
 

@@ -55,6 +55,7 @@ public class Session implements Runnable {
 		}
 
 		// Set up object I/O
+		/*
 		try {
 			objectIn = new ObjectInputStream(aSocket.getInputStream());
 			objectOut = new ObjectOutputStream(aSocket.getOutputStream());
@@ -62,6 +63,7 @@ public class Session implements Runnable {
 			System.err.println("Error: problem with setting up input output streams");
 			e.printStackTrace();
 		}
+		*/
 
 		this.studentController = studentController;
 		this.courseController = courseController;
@@ -82,6 +84,7 @@ public class Session implements Runnable {
 				System.err.println("Error: problem recieving instruction from client");
 				e.printStackTrace();
 			}
+			System.out.println("about to execute command");
 			executeCommand(command);
 
 		}
@@ -108,6 +111,7 @@ public class Session implements Runnable {
 	private void executeCommand(String command) {
 		switch (command) {
 		case "student login":
+			System.out.println("doing student login");
 			studentLogin();
 			return;
 
@@ -146,9 +150,12 @@ public class Session implements Runnable {
 			System.err.println("Error: invalid ID format");
 			e.printStackTrace();
 		}
+		System.out.println(checkID);
 		studentUser = studentController.searchStudent(checkID);
 		if (studentUser != null) {
+			System.out.println("before da send");
 			stringOut.println("login successful");
+			System.out.println("after da send");
 			return;
 		}
 		stringOut.println("login failed");

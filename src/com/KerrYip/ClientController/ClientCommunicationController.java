@@ -26,7 +26,7 @@ public class ClientCommunicationController {
 	 * @param serverName the name of the server
 	 * @param port the port of the server
 	 */
-	public ClientCommunicationController(String serverName,int port) {
+	public ClientCommunicationController(String serverName, int port) {
 		try {
 			//create socket
 			aSocket = new Socket(serverName, port);
@@ -36,8 +36,10 @@ public class ClientCommunicationController {
 			socketOut = new PrintWriter((aSocket.getOutputStream()), true);
 
 			//Socket object streams
-			objectIn = new ObjectInputStream(aSocket.getInputStream());
-			objectOut = new ObjectOutputStream(aSocket.getOutputStream());
+			//objectIn = new ObjectInputStream(aSocket.getInputStream());
+			//objectOut = new ObjectOutputStream(aSocket.getOutputStream());
+
+
 		} catch (UnknownHostException e) {
 			System.err.println("Error: could not find a host with the name: " + serverName);
 			e.printStackTrace();
@@ -81,7 +83,10 @@ public class ClientCommunicationController {
 			socketOut.println(id);
 			socketOut.flush();
 
+			System.out.println("ye");
 			message = socketIn.readLine();
+			System.out.println("message is: " + message);
+
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
