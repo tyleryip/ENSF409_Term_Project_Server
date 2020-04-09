@@ -122,7 +122,7 @@ public class ClientCommunicationController {
 	 * @param course The course the server needs for the instruction
 	 * @return The message the server sends back
 	 */
-	public String communicationSendStudentAndCourse(String instruction, Course course){
+	public String communicationSendCourse(String instruction, Course course){
 		String message = "";
 		try{
 				socketOut.println(instruction);
@@ -154,8 +154,8 @@ public class ClientCommunicationController {
 		try{
 			socketIn.close();
 			socketOut.close();
-			objectIn.close();
-			objectOut.close();
+			//objectIn.close();
+			//objectOut.close();
 		}catch(IOException e){
 			e.getStackTrace();
 		}

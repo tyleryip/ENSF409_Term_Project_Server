@@ -37,17 +37,18 @@ public class LoginSelectPanel extends JPanel{
         add(titlePanel);
         add(buttonPanel);
 
-        adminButton.addActionListener((ActionEvent e) -> {
-            System.out.println("admin");
-        });
-
-        quitButton.addActionListener((ActionEvent e) -> {
-            System.out.println("quit");
-        });
     }
 
     public void addStudentLoginListener (ActionListener listenForStudentButton){
         studentButton.addActionListener(listenForStudentButton);
+    }
+
+    public void addAdminLoginListener (ActionListener listenForAdminButton){
+        adminButton.addActionListener(listenForAdminButton);
+    }
+
+    public void addQuitLoginListener (ActionListener listenForQuitButton){
+        quitButton.addActionListener(listenForQuitButton);
     }
 }
 

@@ -9,6 +9,11 @@ import java.util.ArrayList;
  * @since 04/08/20
  */
 public class Course implements Serializable{
+
+	public Course(String courseName, int courseNum){
+		this.courseName = courseName;
+		this.courseNum = courseNum;
+	}
 	
 	/**
 	 * 
