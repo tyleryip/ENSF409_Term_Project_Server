@@ -46,15 +46,9 @@ public class ClientCommunicationController {
 	}
 
 	/**
-<<<<<<< HEAD
-	 * Converts the read Object into a String
-	 * @return the converted String
-=======
 	 * This method is a helper method to make allow strings to be read from the
-	 * output stream of the server more easily, used for receiving messages
-	 * 
+	 * output stream of the server more easily, used for receiving message
 	 * @return the string sent by the server
->>>>>>> 23a7f7e4c411c070f0a8d11f4666f6ddebd1a46a
 	 */
 	private String readString() {
 		String input = "";
@@ -70,15 +64,9 @@ public class ClientCommunicationController {
 	}
 
 	/**
-<<<<<<< HEAD
-	 * Converts the String to an Object and prints it over the socket connection
-	 * @param toSend String to be converted
-=======
 	 * This method is a helper method to allow sending strings to the input stream
 	 * of the server to be made more easily, used for sending commands to the server
-	 * 
 	 * @param toSend the string to send to server
->>>>>>> 23a7f7e4c411c070f0a8d11f4666f6ddebd1a46a
 	 */
 	private void writeString(String toSend) {
 		try {
