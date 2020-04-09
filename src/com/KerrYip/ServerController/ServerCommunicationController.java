@@ -61,6 +61,7 @@ public class ServerCommunicationController {
 		while (true) {
 			try {
 				aSocket = serverSocket.accept();
+				System.out.println("Connection accepted by server!");
 
 				// Create a new session for the new client that joined
 				Session newSession = new Session(aSocket, courseController, studentController);
