@@ -48,7 +48,14 @@ public class Session implements Runnable {
 		// Set up instruction I/O
 		try {
 			stringIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
-			stringOut = new PrintWriter(aSocket.getOutputStream(), true);
+			stringOut = new PrintWriter(aSocket.getOutputStream(), true); // The boolean argument for this line was
+																			// added around 11:00am on 04/09/20, after a
+																			// massive 4 hour debugging session; when
+																			// setting up communication sockets for the
+																			// server and client, it is imperative that
+																			// this boolean be included or the
+																			// client/server will hang waiting, even if
+																			// a println() is used.
 
 		} catch (IOException e) {
 			System.err.println("Error: problem with setting up input output streams");
@@ -186,7 +193,7 @@ public class Session implements Runnable {
 	}
 
 	/**
-	 * Sends each course in the catalogue back to the user
+	 * Sends each course in the catalog back to the user
 	 */
 	private void browseCourses() {
 		if (!studentLoggedIn()) {

@@ -16,20 +16,13 @@ import com.KerrYip.ServerModel.Student;
 public class StudentController {
 
 	private DatabaseController databaseController;
-	private ArrayList<Student> studentList;
 
 	public StudentController(DatabaseController db) {
 		this.databaseController = db;
-		studentList = new ArrayList<Student>();
-		loadFromDatabase();
 	}
-
-	private void loadFromDatabase() {
-		setStudentList(databaseController.loadStudents());
-	}
-
+	
 	public Student searchStudent(String name) {
-		Iterator<Student> itr = studentList.iterator();
+		Iterator<Student> itr = databaseController.getStudentList().iterator();
 		while (itr.hasNext()) {
 			Student check = itr.next();
 			if (check.getStudentName().equalsIgnoreCase(name)) {
@@ -42,7 +35,7 @@ public class StudentController {
 	}
 
 	public Student searchStudent(int id) {
-		Iterator<Student> itr = studentList.iterator();
+		Iterator<Student> itr = databaseController.getStudentList().iterator();
 		while (itr.hasNext()) {
 			Student check = itr.next();
 			if (check.getStudentId() == id) {
@@ -55,9 +48,9 @@ public class StudentController {
 	}
 
 	public void addStudent(String name) {
-		int id = studentList.size();
+		int id = databaseController.getStudentList().size();
 		Student newStudent = new Student(name, id + 1);
-		studentList.add(newStudent);
+		databaseController.getStudentList().add(newStudent);
 		System.out.println("New student " + name + " created successfully with an id of: " + id);
 	}
 
@@ -69,11 +62,4 @@ public class StudentController {
 		this.databaseController = databaseController;
 	}
 
-	public ArrayList<Student> getStudentList() {
-		return studentList;
-	}
-
-	public void setStudentList(ArrayList<Student> studentList) {
-		this.studentList = studentList;
-	}
 }

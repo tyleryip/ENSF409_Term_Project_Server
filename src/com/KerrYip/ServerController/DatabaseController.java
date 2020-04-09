@@ -15,8 +15,8 @@ import com.KerrYip.ServerModel.*;
  */
 public class DatabaseController {
 
-	ArrayList<Student> studentList;
-	ArrayList<Course> courseList;
+	private ArrayList<Student> studentList;
+	private ArrayList<Course> courseList;
 
 	/**
 	 * Constructor for class DatabaseController creates ArrayLists and populates
@@ -31,6 +31,22 @@ public class DatabaseController {
 		readStudentsFromDatabase();
 	}
 
+	public ArrayList<Student> getStudentList() {
+		return studentList;
+	}
+
+	public void setStudentList(ArrayList<Student> studentList) {
+		this.studentList = studentList;
+	}
+
+	public ArrayList<Course> getCourseList() {
+		return courseList;
+	}
+
+	public void setCourseList(ArrayList<Course> courseList) {
+		this.courseList = courseList;
+	}
+
 	public ArrayList<Student> loadStudents() {
 		return studentList;
 	}
@@ -39,6 +55,7 @@ public class DatabaseController {
 		return courseList;
 	}
 
+	//The following methods create and add the simulated data, in the future we will have to put the SQL data here
 	private void readStudentsFromDatabase() {
 		studentList.add(new Student("Sara", 1));
 		studentList.add(new Student("Sam", 2));

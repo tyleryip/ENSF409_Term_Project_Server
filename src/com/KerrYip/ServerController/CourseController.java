@@ -17,16 +17,8 @@ public class CourseController {
 
 	private DatabaseController databaseController;
 
-	private ArrayList<Course> courseList;
-
 	public CourseController(DatabaseController db) {
 		this.databaseController = db;
-		loadFromDataBase();
-	}
-
-	private void loadFromDataBase() {
-		setCourseList(databaseController.loadCourses());
-
 	}
 
 	public void createCourseOffering(Course c, int secNum, int secCap) {
@@ -34,11 +26,10 @@ public class CourseController {
 			CourseOffering theOffering = new CourseOffering(secNum, secCap);
 			c.addOffering(theOffering);
 		}
-
 	}
 
 	public Course searchCat(String courseName, int courseNum) {
-		for (Course c : courseList) {
+		for (Course c : databaseController.getCourseList()) {
 			if (courseName.equals(c.getCourseName()) && courseNum == c.getCourseNum()) {
 				return c;
 			}
@@ -66,7 +57,7 @@ public class CourseController {
 	@Override
 	public String toString() {
 		String st = "All courses in the catalogue: \n";
-		for (Course c : courseList) {
+		for (Course c : databaseController.getCourseList()) {
 			st += c; // This line invokes the toString() method of Course
 			st += "\n";
 		}
@@ -81,7 +72,7 @@ public class CourseController {
 		String[] split = nameNum.split(" ");
 		if (searchCat(split[0], Integer.parseInt(split[1])) == null) {
 			Course newCourse = new Course(split[0], Integer.parseInt(split[1]));
-			courseList.add(newCourse);
+			databaseController.getCourseList().add(newCourse);
 			return newCourse;
 		}
 		System.out.println("Error: Course already exists in the catalogue!");
@@ -94,7 +85,7 @@ public class CourseController {
 			return;
 		}
 		String[] split = nameNum.split(" ");
-		courseList.remove(searchCat(split[0], Integer.parseInt(split[1])));
+		databaseController.getCourseList().remove(searchCat(split[0], Integer.parseInt(split[1])));
 	}
 
 	public void addPreRequisite(String advancedCourse, String preReqCourse) {
@@ -130,11 +121,7 @@ public class CourseController {
 	}
 
 	public ArrayList<Course> getCourseList() {
-		return courseList;
-	}
-
-	public void setCourseList(ArrayList<Course> courseList) {
-		this.courseList = courseList;
+		return databaseController.getCourseList();
 	}
 
 }
