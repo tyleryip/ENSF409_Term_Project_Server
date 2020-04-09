@@ -5,12 +5,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LoginSelectPane extends JPanel{
+public class LoginSelectPanel extends JPanel{
 
     private JButton studentButton, adminButton, quitButton;
     private JLabel loginLabel;
 
-    public LoginSelectPane() {
+    public LoginSelectPanel() {
 
         //Buttons for the main window
         studentButton = new JButton("Student Login");
@@ -37,17 +37,18 @@ public class LoginSelectPane extends JPanel{
         add(titlePanel);
         add(buttonPanel);
 
-        adminButton.addActionListener((ActionEvent e) -> {
-            System.out.println("admin");
-        });
-
-        quitButton.addActionListener((ActionEvent e) -> {
-            System.out.println("quit");
-        });
     }
 
-    public void addStudentListener (ActionListener listenForStudentButton){
+    public void addStudentLoginListener (ActionListener listenForStudentButton){
         studentButton.addActionListener(listenForStudentButton);
+    }
+
+    public void addAdminLoginListener (ActionListener listenForAdminButton){
+        adminButton.addActionListener(listenForAdminButton);
+    }
+
+    public void addQuitLoginListener (ActionListener listenForQuitButton){
+        quitButton.addActionListener(listenForQuitButton);
     }
 }
 

@@ -2,17 +2,17 @@ package com.KerrYip.ClientController;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import com.KerrYip.ClientView.LoginSelectPane;
-import com.KerrYip.ClientView.MainView;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
+
+import com.KerrYip.ClientView.LoginSelectPanel;
+import com.KerrYip.ClientView.MainView;
 
 public class ClientGUIController {
 
+
     // the other controllers on the client side
     private ClientCommunicationController clientController;
-    private LoginSelectPane loginSelect;
-
     private MainView frame;
 
 
@@ -21,7 +21,7 @@ public class ClientGUIController {
         clientController = new ClientCommunicationController("localhost",8989);
 
         //set frame to login selection
-        loginSelect = new LoginSelectPane();
+        loginSelect = new LoginSelectPanel();
         loginSelect.addStudentListener(new StudentLoginListener());
         frame.addPanel(loginSelect);
 
@@ -44,13 +44,9 @@ public class ClientGUIController {
                 frame.add(loginSelect);
             }
         }
+        clientController = new ClientCommunicationController("localhost",9090);
+        frame = new MainView(width, height, clientController);
     }
 
-    class QuitListener implements ActionListener {
 
-        @Override
-        public void actionPerformed(ActionEvent e){
-            clientController.communicationQuit();
-        }
-    }
 }

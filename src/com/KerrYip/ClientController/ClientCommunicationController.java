@@ -77,22 +77,11 @@ public class ClientCommunicationController {
 	 */
 	public String communicationStudentLogin(String instruction, String id){
 		String message = null;
-		try{
-			
-			socketOut.println(instruction);
-			socketOut.flush();
+		socketOut.println(instruction);
+		socketOut.flush();
 
-			socketOut.println(id);
-			socketOut.flush();
-			
-			System.out.println("ye");
-			System.out.println(socketIn.readLine());
-
-			//System.out.println("message is: " + message);
-
-		}catch(IOException e) {
-			e.printStackTrace();
-		} 
+		socketOut.println(id);
+		socketOut.flush(); 
 		return message;
 	}
 	/**
@@ -125,7 +114,7 @@ public class ClientCommunicationController {
 	 * @param course The course the server needs for the instruction
 	 * @return The message the server sends back
 	 */
-	public String communicationSendStudentAndCourse(String instruction, Course course){
+	public String communicationSendCourse(String instruction, Course course){
 		String message = "";
 		try{
 				socketOut.println(instruction);
@@ -157,8 +146,8 @@ public class ClientCommunicationController {
 		try{
 			socketIn.close();
 			socketOut.close();
-			objectIn.close();
-			objectOut.close();
+			//objectIn.close();
+			//objectOut.close();
 		}catch(IOException e){
 			e.getStackTrace();
 		}
