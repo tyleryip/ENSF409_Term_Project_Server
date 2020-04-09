@@ -20,7 +20,7 @@ public class ClientGUIController {
 
     public ClientGUIController(int width, int height) {
         communicate = new ClientCommunicationController("localhost", 9898);
-
+        
         //generating MainView with frame with all panels to change between
         frame = new MainView(width, height);
         loginSelectSetup();

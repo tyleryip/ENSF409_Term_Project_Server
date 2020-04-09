@@ -17,10 +17,8 @@ import java.util.concurrent.TimeUnit;
 public class ClientCommunicationController {
 
 	private Socket aSocket;
-	private BufferedReader socketIn;
-	private PrintWriter socketOut;
-	private ObjectInputStream objectIn;
-	private ObjectOutputStream objectOut;
+	private ObjectInputStream fromServer;
+	private ObjectOutputStream toServer;
 	
 	/**
 	 * Constructor for the class ClientCommunicationController opens a connection on 
@@ -33,19 +31,44 @@ public class ClientCommunicationController {
 			aSocket = new Socket(serverName, port);
 
 			//Socket streams
-			socketIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
-			socketOut = new PrintWriter((aSocket.getOutputStream()), true);
+//			socketIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
+//			socketOut = new PrintWriter((aSocket.getOutputStream()), true);
 
+			System.out.println("We are here");
+			
 			//Socket object streams
-			//objectIn = new ObjectInputStream(aSocket.getInputStream());
-			//objectOut = new ObjectOutputStream(aSocket.getOutputStream());
+			fromServer = new ObjectInputStream(aSocket.getInputStream());
+			toServer = new ObjectOutputStream(aSocket.getOutputStream());
 
+			System.out.println("We made it past here");
 
 		} catch (UnknownHostException e) {
 			System.err.println("Error: could not find a host with the name: " + serverName);
 			e.printStackTrace();
 		} catch (IOException e) {
 			System.err.println("Error: I/O socket error");
+			e.printStackTrace();
+		}
+	}
+	
+	private String readString() {
+		String input = "";
+		try {
+			input = (String)fromServer.readObject();
+		} catch (ClassNotFoundException e) {
+			System.err.println("Error: could not convert the object to a string");
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return input;
+	}
+	
+	private void writeString(String toSend) {
+		try {
+			toServer.writeObject(toSend);
+		} catch (IOException e) {
+			System.err.println("Error: unable to write string to an object");
 			e.printStackTrace();
 		}
 	}
@@ -58,10 +81,9 @@ public class ClientCommunicationController {
 	public Course communicateBrowseCatalog(String instruction){
 		Course course = null;
 		try{
-			socketOut.println(instruction);
-			socketOut.flush();
+			writeString(instruction);
 
-			course = (Course)objectIn.readObject();
+			course = (Course)fromServer.readObject();
 		}catch(IOException e){
 			e.printStackTrace();
 		}catch(ClassNotFoundException e){
@@ -77,16 +99,11 @@ public class ClientCommunicationController {
 	 */
 	public String communicateStudentLogin(String instruction, String id){
 		String message = null;
-		socketOut.println(instruction);
-		socketOut.flush();
+		writeString(instruction);
 
-		socketOut.println(id);
-		socketOut.flush();
-		try {
-			message = socketIn.readLine();
-		}catch(IOException e){
-			e.printStackTrace();
-		}
+		writeString(id);
+		
+			message = readString();
 
 		return message;
 	}
@@ -99,13 +116,12 @@ public class ClientCommunicationController {
 	public Course communicateSearchCourse(String instruction, Course course){
 		Course courseResult = null;
 		try{
-			socketOut.println(instruction);
-			socketOut.flush();
+			writeString(instruction);
 
-			objectOut.writeObject(course);
-			objectOut.flush();
+			toServer.writeObject(course);
+			toServer.flush();
 
-			courseResult = (Course)objectIn.readObject();
+			courseResult = (Course)fromServer.readObject();
 		}catch(IOException e){
 			e.printStackTrace();
 		}catch(ClassNotFoundException e){
@@ -123,13 +139,12 @@ public class ClientCommunicationController {
 	public String communicateSendCourse(String instruction, Course course){
 		String message = null;
 		try{
-				socketOut.println(instruction);
-				socketOut.flush();
+				writeString(instruction);
 
-				objectOut.writeObject(course);
-				objectOut.flush();
+				toServer.writeObject(course);
+				toServer.flush();
 
-				message = socketIn.readLine();
+				message = readString();
 		}catch(IOException e){
 			e.printStackTrace();
 		}
@@ -140,8 +155,7 @@ public class ClientCommunicationController {
 	 * Sends an instruction to the Server to quit and closes sockets
 	 */
 	public void communicateQuit(){
-		socketOut.println("QUIT");
-		socketOut.flush();
+		writeString("QUIT");
 		closeConnection();
 	}
 
@@ -150,10 +164,8 @@ public class ClientCommunicationController {
 	 */
 	private void closeConnection(){
 		try{
-			socketIn.close();
-			socketOut.close();
-			//objectIn.close();
-			//objectOut.close();
+			fromServer.close();
+			toServer.close();
 		}catch(IOException e){
 			e.getStackTrace();
 		}

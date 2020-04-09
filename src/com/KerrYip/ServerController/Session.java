@@ -22,11 +22,6 @@ import com.KerrYip.ServerModel.Student;
  */
 public class Session implements Runnable {
 
-	// These deal with sending and receiving data and instructions to and from the
-	// client
-	private PrintWriter stringOut;
-	private BufferedReader stringIn;
-
 	// These I/O streams deal with sending Student objects back and forth between
 	// the client
 	private ObjectInputStream fromClient;
@@ -47,9 +42,8 @@ public class Session implements Runnable {
 	 */
 	public Session(Socket aSocket, CourseController courseController, StudentController studentController) {
 		// Set up instruction I/O
-		try {
-			stringIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
-			stringOut = new PrintWriter(aSocket.getOutputStream(), true);
+//			stringIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
+//			stringOut = new PrintWriter(aSocket.getOutputStream(), true);
 			// The boolean argument for this line was
 			// added around 11:00am on 04/09/20, after a
 			// massive 4 hour debugging session; when
@@ -58,12 +52,7 @@ public class Session implements Runnable {
 			// this boolean be included or the
 			// client/server will hang waiting, even if
 			// a println() is used.
-
-		} catch (IOException e) {
-			System.err.println("Error: problem with setting up the string input output streams");
-			e.printStackTrace();
-		}
-
+		
 		// Set up object I/O
 		try {
 			fromClient = new ObjectInputStream(aSocket.getInputStream());
@@ -112,19 +101,13 @@ public class Session implements Runnable {
 		String command = "";
 
 		while (!command.contentEquals("QUIT")) {
-			try {
-				command = stringIn.readLine();
+				command = readString();
 				boolean successful = executeCommand(command);
 			
 				if(successful)
 					System.out.println("[Server] Command: " + command + ", executed successfully");
 				else 
 					System.out.println("[Server] Command: " + command + ", failed to execute");
-				
-			} catch (IOException e) {
-				System.err.println("Error: problem recieving instruction from client");
-				e.printStackTrace();
-			}
 		}
 
 		// Close all communication channels in the event that the user quits
@@ -174,19 +157,14 @@ public class Session implements Runnable {
 	 */
 	private boolean studentLogin() {
 		int checkID = -1;
-		try {
-			checkID = Integer.parseInt(stringIn.readLine());
-		} catch (IOException e) {
-			System.err.println("Error: invalid ID format");
-			e.printStackTrace();
-		}
+		checkID = Integer.parseInt(readString());
 		System.out.println(checkID);
 		studentUser = studentController.searchStudent(checkID);
 		if (studentUser != null) {
-			stringOut.println("login successful");
+			writeString("login successful");
 			return true;
 		}
-		stringOut.println("login failed");
+		writeString("login failed");
 		return false;
 	}
 
@@ -217,7 +195,7 @@ public class Session implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		stringOut.println("Search completed.");
+		writeString("Search completed.");
 		return false;
 	}
 
@@ -237,7 +215,7 @@ public class Session implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		stringOut.println("Browse completed.");
+		writeString("Browse completed.");
 		return false;
 	}
 
@@ -256,10 +234,10 @@ public class Session implements Runnable {
 		if (clientCourse != null) {
 			Registration newReg = new Registration();
 			newReg.completeRegistration(studentUser, clientCourse.getCourseOfferingAt(0));
-			stringOut.println("Sucessfullyy added this course to your courses.");
+			writeString("Sucessfullyy added this course to your courses.");
 			return true;
 		}
-		stringOut.println("Unable to add this course to your courses.");
+		writeString("Unable to add this course to your courses.");
 		return false;
 	}
 
@@ -275,10 +253,10 @@ public class Session implements Runnable {
 		Registration removeReg = studentUser.searchStudentReg(clientCourse);
 		if (removeReg != null) {
 			studentUser.getStudentRegList().remove(removeReg);
-			stringOut.write("Successfully removed this course from your courses.");
+			writeString("Successfully removed this course from your courses.");
 			return true;
 		}
-		stringOut.println("Unable to add this course to your courses: could not find this course in your courses.");
+		writeString("Unable to add this course to your courses: could not find this course in your courses.");
 		return false;
 
 	}
