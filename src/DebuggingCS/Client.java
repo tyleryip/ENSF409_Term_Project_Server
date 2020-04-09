@@ -19,7 +19,7 @@ public class Client {
 			aSocket = new Socket("localhost", port);
 			
 			br = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
-			pw = new PrintWriter(aSocket.getOutputStream());
+			pw = new PrintWriter(aSocket.getOutputStream(), true);
 			stdIn = new BufferedReader(new InputStreamReader(System.in));
 			
 		} catch (UnknownHostException e) {
@@ -34,14 +34,17 @@ public class Client {
 	
 	public void communicate() {
 		String fromServer = "";
+		String toServer = null;
 		
 		while(!fromServer.contentEquals("QUIT")) {
 			try {
 				System.out.println("Please enter a string to communicate with server");
-				String toServer = stdIn.readLine();
+				toServer = stdIn.readLine();
+				System.out.println("Sending: " + toServer);
 				pw.println(toServer);
+				
 				fromServer = br.readLine();
-				System.out.println(fromServer);
+				System.out.println("Response from server is: " + fromServer);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -51,7 +54,7 @@ public class Client {
 	}
 	
 	public static void main(String [] args) {
-		Client c = new Client(9090);
+		Client c = new Client(9898);
 		c.communicate();
 	}
 	
