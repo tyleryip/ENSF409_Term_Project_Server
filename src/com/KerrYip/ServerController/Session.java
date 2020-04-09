@@ -189,6 +189,7 @@ public class Session implements Runnable {
 				e.printStackTrace();
 			}
 		}
+		stringOut.println("Search completed.");
 	}
 
 	/**
@@ -207,6 +208,7 @@ public class Session implements Runnable {
 				e.printStackTrace();
 			}
 		}
+		stringOut.println("Browse completed.");
 	}
 
 	/**

@@ -12,12 +12,12 @@ import java.util.ArrayList;
  * @since 04/07/20
  *
  */
-public class Course implements Serializable{
+public class Course implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2108036660174376139L;
-	
+
 	private String courseName;
 	private int courseNum;
 	private ArrayList<Course> preReq;

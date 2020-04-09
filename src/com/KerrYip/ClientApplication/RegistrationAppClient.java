@@ -26,67 +26,6 @@ public class RegistrationAppClient {
 
 	public static Scanner scan = new Scanner(System.in);
 
-	/*
-	public static void main(String[] args) {
-
-		CourseController cat = new CourseController();
-		StudentController SM = new StudentController();
-
-		// Simulating adding students to courses to show functionalities of the menu
-		// below
-		// NOTE: THESE LINES OF CODE ARE PURELY FOR SIMULATION, THEY DONT ADD
-		// FUNCTIONALITY
-		System.out.println("[System] Loading in simulated student profiles...");
-
-		CourseOffering a = cat.searchCat("ENGG", 233).getCourseOfferingAt(0);
-		Registration r = new Registration();
-		r.completeRegistration(SM.searchStudent("Sara"), a);
-
-		a = cat.searchCat("ENGG", 233).getCourseOfferingAt(0);
-		r = new Registration();
-		r.completeRegistration(SM.searchStudent("Sam"), a);
-
-		a = cat.searchCat("PHYS", 259).getCourseOfferingAt(0);
-		r = new Registration();
-		r.completeRegistration(SM.searchStudent("Sam"), a);
-
-		a = cat.searchCat("PHYS", 259).getCourseOfferingAt(0);
-		r = new Registration();
-		r.completeRegistration(SM.searchStudent("David"), a);
-
-		a = cat.searchCat("PHYS", 259).getCourseOfferingAt(0);
-		r = new Registration();
-		r.completeRegistration(SM.searchStudent("Tom"), a);
-
-		a = cat.searchCat("PHYS", 259).getCourseOfferingAt(0);
-		r = new Registration();
-		r.completeRegistration(SM.searchStudent("Megan"), a);
-
-		a = cat.searchCat("PHYS", 259).getCourseOfferingAt(0);
-		r = new Registration();
-		r.completeRegistration(SM.searchStudent("Jenny"), a);
-
-		a = cat.searchCat("PHYS", 259).getCourseOfferingAt(0);
-		r = new Registration();
-		r.completeRegistration(SM.searchStudent("Alex"), a);
-
-		a = cat.searchCat("PHYS", 259).getCourseOfferingAt(0);
-		r = new Registration();
-		r.completeRegistration(SM.searchStudent("John"), a);
-
-		a = cat.searchCat("PHYS", 259).getCourseOfferingAt(0);
-		r = new Registration();
-		r.completeRegistration(SM.searchStudent("Sara"), a);
-
-		a = cat.searchCat("PHYS", 259).getCourseOfferingAt(0);
-		r = new Registration();
-		r.completeRegistration(SM.searchStudent("Mike"), a);
-
-		System.out.println("[System] Finished loading simulated student profiles...\n");
-
-	}
-	*/
-
 	public static void main(String[] args){
 		ClientGUIController cgc = new ClientGUIController(600,400);
 	}

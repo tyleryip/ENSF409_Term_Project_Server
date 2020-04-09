@@ -40,7 +40,7 @@ public class StudentController {
 		return null;
 
 	}
-	
+
 	public Student searchStudent(int id) {
 		Iterator<Student> itr = studentList.iterator();
 		while (itr.hasNext()) {
@@ -60,7 +60,7 @@ public class StudentController {
 		studentList.add(newStudent);
 		System.out.println("New student " + name + " created successfully with an id of: " + id);
 	}
-	
+
 	public DatabaseController getDatabaseController() {
 		return databaseController;
 	}

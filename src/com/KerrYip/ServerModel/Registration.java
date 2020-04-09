@@ -10,14 +10,13 @@ import java.io.Serializable;
  * @version 2.0
  * @since 04/07/20
  */
-public class Registration implements Serializable{
-	
-	
+public class Registration implements Serializable {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 9101593004016454800L;
-	
+
 	private Student theStudent;
 	private CourseOffering theOffering;
 	private char grade;

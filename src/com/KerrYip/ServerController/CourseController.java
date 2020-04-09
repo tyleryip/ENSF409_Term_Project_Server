@@ -16,7 +16,7 @@ import com.KerrYip.ServerModel.CourseOffering;
 public class CourseController {
 
 	private DatabaseController databaseController;
-	
+
 	private ArrayList<Course> courseList;
 
 	public CourseController(DatabaseController db) {
@@ -128,7 +128,7 @@ public class CourseController {
 		displayCourseNotFoundError();
 		return;
 	}
-	
+
 	public ArrayList<Course> getCourseList() {
 		return courseList;
 	}

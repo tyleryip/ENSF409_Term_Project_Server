@@ -11,13 +11,13 @@ import java.util.ArrayList;
  * @since 04/07/20
  *
  */
-public class Student implements Serializable{
+public class Student implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3885505324085384368L;
-	
+
 	private String studentName;
 	private int studentId;
 	// private ArrayList<CourseOffering> offeringList;

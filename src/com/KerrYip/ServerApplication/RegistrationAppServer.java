@@ -1,4 +1,5 @@
 package com.KerrYip.ServerApplication;
+
 import com.KerrYip.ServerController.ServerCommunicationController;
 
 /**
@@ -10,11 +11,10 @@ import com.KerrYip.ServerController.ServerCommunicationController;
  * @since 04/07/20
  */
 public class RegistrationAppServer {
-	
+
 	public static void main(String[] args) {
-		
+
 		ServerCommunicationController sCommController = new ServerCommunicationController(9090);
 		sCommController.listen();
-		
 	}
 }
