@@ -48,7 +48,7 @@ public class Session implements Runnable {
 		// Set up instruction I/O
 		try {
 			stringIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
-			stringOut = new PrintWriter(aSocket.getOutputStream());
+			stringOut = new PrintWriter(aSocket.getOutputStream(), true);
 
 		} catch (IOException e) {
 			System.err.println("Error: problem with setting up input output streams");

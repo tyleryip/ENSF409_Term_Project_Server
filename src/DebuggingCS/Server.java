@@ -3,7 +3,6 @@ package DebuggingCS;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -19,12 +18,10 @@ public class Server {
 		try {
 			serverSocket = new ServerSocket(port);
 			System.out.println("Server is active on port: " + port);
-			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
 	
@@ -38,7 +35,7 @@ public class Server {
 		System.out.println("Connection with client established!");
 		
 		try {
-			pw = new PrintWriter(aSocket.getOutputStream());
+			pw = new PrintWriter(aSocket.getOutputStream(), true);
 			br = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
