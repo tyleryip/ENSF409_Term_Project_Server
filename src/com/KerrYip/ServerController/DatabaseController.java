@@ -27,7 +27,7 @@ public class DatabaseController {
 		courseList = new ArrayList<Course>();
 		studentList = new ArrayList<Student>();
 
-		//Load the simulated data in
+		// Load the simulated data in
 		readCoursesFromDatabase();
 		readStudentsFromDatabase();
 	}
@@ -56,7 +56,8 @@ public class DatabaseController {
 		return courseList;
 	}
 
-	//The following methods create and add the simulated data, in the future we will have to put the SQL data here
+	// The following methods create and add the simulated data, in the future we
+	// will have to put the SQL data here
 	private void readStudentsFromDatabase() {
 		studentList.add(new Student("Sara", 1));
 		studentList.add(new Student("Sam", 2));

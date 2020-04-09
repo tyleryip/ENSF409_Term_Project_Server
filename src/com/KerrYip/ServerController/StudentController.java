@@ -20,7 +20,7 @@ public class StudentController {
 	public StudentController(DatabaseController db) {
 		this.databaseController = db;
 	}
-	
+
 	public Student searchStudent(String name) {
 		Iterator<Student> itr = databaseController.getStudentList().iterator();
 		while (itr.hasNext()) {
