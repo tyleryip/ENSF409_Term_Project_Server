@@ -57,11 +57,11 @@ public class ServerCommunicationController {
 	 * Accept connections from clients and start threads when they connect
 	 */
 	public void listen() {
-		System.out.println("Server is listening for clients...");
+		System.out.println("[Server] Server is listening for clients...");
 		while (true) {
 			try {
 				aSocket = serverSocket.accept();
-				System.out.println("Connection accepted by server!");
+				System.out.println("[Server] Connection accepted by server!");
 
 				// Create a new session for the new client that joined
 				Session newSession = new Session(aSocket, courseController, studentController);

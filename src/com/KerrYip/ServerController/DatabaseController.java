@@ -26,19 +26,18 @@ public class DatabaseController {
 	public DatabaseController() {
 		courseList = new ArrayList<Course>();
 		studentList = new ArrayList<Student>();
-		
+
 		readCoursesFromDatabase();
 		readStudentsFromDatabase();
 	}
-	
-	public ArrayList<Student> loadStudents(){
+
+	public ArrayList<Student> loadStudents() {
 		return studentList;
 	}
-	
-	public ArrayList<Course> loadCourses(){
+
+	public ArrayList<Course> loadCourses() {
 		return courseList;
 	}
-	
 
 	private void readStudentsFromDatabase() {
 		studentList.add(new Student("Sara", 1));
