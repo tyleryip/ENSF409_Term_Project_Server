@@ -92,7 +92,6 @@ public class ClientCommunicationController {
 		}
 		return message;
 	}
-
 	/**
 	 * Sends an instruction to the Server and receives the message back
 	 * @param instruction The instruction the server will execute
