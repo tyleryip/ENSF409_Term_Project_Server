@@ -6,6 +6,7 @@ import com.KerrYip.ClientModel.Student;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -88,26 +89,6 @@ public class ClientCommunicationController {
 	 * @param instruction The instruction the server will execute
 	 * @return The message the server sends back
 	 */
-	public Course communicateBrowseCatalog(String instruction) {
-		Course course = null;
-		try {
-			writeString(instruction);
-
-			course = (Course) fromServer.readObject();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		return course;
-	}
-
-	/**
-	 * Sends an instruction to the Server and receives the message back
-	 * 
-	 * @param instruction The instruction the server will execute
-	 * @return The message the server sends back
-	 */
 	public String communicateStudentLogin(String instruction, String id) {
 		String message = null;
 		writeString(instruction);
@@ -163,6 +144,28 @@ public class ClientCommunicationController {
 			e.printStackTrace();
 		}
 		return message;
+	}
+
+	/**
+	 * Sends an instruction to the Server and receives back an Course Array
+	 * @param instruction The instruction the server will execute
+	 * @return The Course Array requested
+	 */
+	public ArrayList<Course> communicateBrowseCatalog(String instruction) {
+		ArrayList<Course> catalog = new ArrayList<Course>();
+		Course course = null;
+		try {
+			writeString(instruction);
+			do{
+				course = (Course) fromServer.readObject();
+				catalog.add(course);
+			}while(course != null);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return catalog;
 	}
 
 	/**

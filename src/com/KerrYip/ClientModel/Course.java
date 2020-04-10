@@ -27,4 +27,15 @@ public class Course implements Serializable {
 	private int courseNum;
 	private ArrayList<Course> preReq;
 	private ArrayList<CourseOffering> offeringList;
+
+	@Override
+	public String toString () {
+		String st = "\n";
+		st += courseName + " " + courseNum;
+		st += "\nAll course sections:\n";
+		for (CourseOffering c : offeringList)
+			st += c;
+		st += "\n-------\n";
+		return st;
+	}
 }

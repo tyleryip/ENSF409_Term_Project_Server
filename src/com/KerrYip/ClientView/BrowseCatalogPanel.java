@@ -1,8 +1,11 @@
 package com.KerrYip.ClientView;
 
+import com.KerrYip.ClientModel.Course;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * The Panel for viewing all of the course catalog which will display all
@@ -59,13 +62,21 @@ public class BrowseCatalogPanel extends JPanel {
 
 	}
 
+	public void updateCatalog(ArrayList<Course> catalog){
+		String temp = "";
+		for(int i = 0; i < catalog.size(); i++){
+			temp += catalog.get(i);
+		}
+		dataText.setText(temp);
+	}
+
 	/**
 	 * Adds listener for the backButton
 	 * 
-	 * @param listenForBackStudentMenuButton listener for the button
+	 * @param listenForBackMenuButton listener for the button
 	 */
-	public void addBackStudentMenuListener(ActionListener listenForBackStudentMenuButton) {
-		backButton.addActionListener(listenForBackStudentMenuButton);
+	public void addBackMenuListener(ActionListener listenForBackMenuButton) {
+		backButton.addActionListener(listenForBackMenuButton);
 	}
 
 }

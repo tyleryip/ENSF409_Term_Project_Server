@@ -23,4 +23,11 @@ public class Student implements Serializable {
 	// private ArrayList<CourseOffering> offeringList;
 	private ArrayList<Registration> studentRegList;
 
+	@Override
+	public String toString() {
+		String st = "Student Name: " + studentName + "\n" +
+				"Student Id: " + studentId + "\n\n";
+		return st;
+	}
+
 }
