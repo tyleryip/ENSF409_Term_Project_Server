@@ -1,7 +1,9 @@
 package com.KerrYip.ClientController;
 
-import com.KerrYip.ClientModel.Course;
-import com.KerrYip.ClientModel.Student;
+//import com.KerrYip.ClientModel.Course;
+//import com.KerrYip.ClientModel.Student;
+import com.KerrYip.ServerModel.Course;
+import com.KerrYip.ServerModel.Student;
 
 import java.io.*;
 import java.net.Socket;
@@ -89,7 +91,7 @@ public class ClientCommunicationController {
 	 * @param instruction The instruction the server will execute
 	 * @return The message the server sends back
 	 */
-	public String communicateStudentLogin(String instruction, String id) {
+	public String communicateSendString(String instruction, String id) {
 		String message = null;
 		writeString(instruction);
 
@@ -107,15 +109,20 @@ public class ClientCommunicationController {
 	 * @param course      The course the server needs for the instruction
 	 * @return The message the server sends back
 	 */
-	public Course communicateSearchCourse(String instruction, Course course) {
+	public Course communicateGetCourse(String instruction, Course course) {
 		Course courseResult = null;
+		String message;
 		try {
 			writeString(instruction);
 
 			toServer.writeObject(course);
 			toServer.flush();
 
-			courseResult = (Course) fromServer.readObject();
+			message = readString();
+			if(message.equals("course found")) {
+				courseResult = (Course) fromServer.readObject();
+			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
@@ -151,7 +158,7 @@ public class ClientCommunicationController {
 	 * @param instruction The instruction the server will execute
 	 * @return The Course Array requested
 	 */
-	public ArrayList<Course> communicateBrowseCatalog(String instruction) {
+	public ArrayList<Course> communicateGetCourseList(String instruction) {
 		ArrayList<Course> catalog = new ArrayList<Course>();
 		Course course = null;
 		try {
