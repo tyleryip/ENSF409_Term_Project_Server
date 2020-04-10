@@ -245,7 +245,8 @@ public class ClientGUIController {
 
 				if(result == JOptionPane.OK_OPTION) {
 				Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()));
-				String message = communicate.communicateEnrollCourse("enroll course", tempCourse,lectureNumber.getText());
+				String message = communicate.communicateSendCourse("enroll course", tempCourse);
+				//String message = communicate.communicateEnrollCourse("enroll course", tempCourse,lectureNumber.getText());
 				System.out.println(message);
 				JOptionPane.showMessageDialog(null, message);
 				}
