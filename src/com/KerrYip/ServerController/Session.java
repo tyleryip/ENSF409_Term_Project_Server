@@ -155,8 +155,7 @@ public class Session implements Runnable {
 			return searchForCourse();
 
 		case "admin login":
-			// TODO implement this method along with the class Administrator
-			return false;
+			return adminLogin();
 
 		case "QUIT":
 			return true;
@@ -264,18 +263,25 @@ public class Session implements Runnable {
 		if (!studentLoggedIn()) {
 			return false;
 		}
-		ArrayList<Course> courseToSend = new ArrayList<Course>();
+		//Write each course into the output stream
 		for (Course c : courseController.getCourseList()) {
-			courseToSend.add(c);
+			try {
+				toClient.writeObject(c);
+			} catch (IOException e) {
+				System.err.println("Error: could not write the course to the output strean");
+				e.printStackTrace();
+			}
 		}
+		
+		//The very last thing we write is a null to tell the client we are done
 		try {
-			toClient.writeObject(courseToSend);
+			toClient.writeObject(null);
 		} catch (IOException e) {
-			System.err.println("Error: I/O error with writing course list to object outputstream");
+			System.err.println("Error: could not write the course to the output strean");
 			e.printStackTrace();
 		}
 		writeString("Browse completed");
-		return false;
+		return true;
 	}
 
 	/**
