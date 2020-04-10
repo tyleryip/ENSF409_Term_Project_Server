@@ -2,6 +2,7 @@ package com.KerrYip.ClientView;
 
 //import com.KerrYip.ClientModel.Course;
 import com.KerrYip.ServerModel.Course;
+import com.KerrYip.ServerModel.Student;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -16,9 +17,10 @@ import java.util.ArrayList;
 public class StudentMenuPanel extends JPanel {
 	private int width, height;
 	private JButton searchCatalogButton, enrollCourseButton, dropCourseButton, browseCatalogButton,
-			viewEnrolledCoursesButton, logoutButton;
+			logoutButton;
 	private JLabel studentMenuLabel;
 	private JTextArea dataText;
+	private Student tempStudent;
 
 	/**
 	 * Constructs the Student Menu Panel
@@ -35,7 +37,7 @@ public class StudentMenuPanel extends JPanel {
 		enrollCourseButton = new JButton("Enroll in a Course");
 		dropCourseButton = new JButton("Drop a Course");
 		browseCatalogButton = new JButton("View all Courses in Catalog");
-		viewEnrolledCoursesButton = new JButton("View Enrolled Courses");
+		//viewEnrolledCoursesButton = new JButton("View Enrolled Courses");
 		logoutButton = new JButton("Logout");
 
 		// student menu title
@@ -58,7 +60,7 @@ public class StudentMenuPanel extends JPanel {
 		buttonPanel.add(dropCourseButton);
 		buttonPanel.add(browseCatalogButton);
 		buttonPanel.add(searchCatalogButton);
-		coursePanel.add("South",viewEnrolledCoursesButton);
+		//coursePanel.add("South",viewEnrolledCoursesButton);
 
 		// the data field that displays
 		dataText = new JTextArea((int) (width * 0.75), (int) (height * 0.75));
@@ -80,13 +82,20 @@ public class StudentMenuPanel extends JPanel {
 
 	}
 
-	public void updateCourse(ArrayList<Course> catalog){
+	public void updateEnrolledCourse(){
 		String temp = "";
-		for(int i = 0; i < catalog.size(); i++){
-			temp += catalog.get(i);
+		for(int i = 0; i < tempStudent.getStudentRegList().size(); i++){
+			temp += tempStudent.getStudentRegList().get(i);
 		}
 		dataText.setText(temp);
 	}
+
+	public void updateTitle(){
+		studentMenuLabel.setText(tempStudent.getStudentName() + "'s Course Registration");
+	}
+
+	public Student getTempStudent() { return tempStudent; }
+	public void setTempStudent(Student tempStudent) { this.tempStudent = tempStudent; }
 
 	/**
 	 * Adds listener to the enrollCourseButton
@@ -122,15 +131,6 @@ public class StudentMenuPanel extends JPanel {
 	 */
 	public void addSearchCatalogListener(ActionListener listenForSearchCatalogButton) {
 		searchCatalogButton.addActionListener(listenForSearchCatalogButton);
-	}
-
-	/**
-	 * Adds listener to the viewEnrolledCoursesButton
-	 *
-	 * @param listenForSearchCatalogButton listener for the button
-	 */
-	public void addViewEnrolledCoursesListener(ActionListener listenForSearchCatalogButton) {
-		viewEnrolledCoursesButton.addActionListener(listenForSearchCatalogButton);
 	}
 
 	/**

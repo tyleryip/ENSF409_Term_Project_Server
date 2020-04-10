@@ -19,6 +19,7 @@ import com.KerrYip.ClientView.LoginSelectPanel;
 import com.KerrYip.ClientView.MainView;
 import com.KerrYip.ClientView.StudentMenuPanel;
 import com.KerrYip.ServerModel.CourseOffering;
+import com.KerrYip.ServerModel.Student;
 
 /**
  * This class is used to communicate between the GUI and the
@@ -94,7 +95,6 @@ public class ClientGUIController {
 		frame.getStudentMenu().addDropCourseListener(new StudentDropCourseListener());
 		frame.getStudentMenu().addBrowseCatalogListener(new StudentBrowseCatalogListener());
 		frame.getStudentMenu().addSearchCatalogListener(new SearchCatalogListener());
-		frame.getStudentMenu().addViewEnrolledCoursesListener(new StudentViewEnrolledCoursesListener());
 		frame.getStudentMenu().addLogoutListener(new LogoutListener());
 
 		// adding panel to card Layout for switching between panels
@@ -150,14 +150,18 @@ public class ClientGUIController {
 			} else {
 				// ok is pressed, check if login is valid
 				System.out.println("student login");
-				String message = communicate.communicateSendString("student login", studentID);
-				if (message.equals("login successful")) {
-					// login is successful, take to student menu
-					frame.show("Student Menu");
-				} else {
+				Student tempStudent = communicate.communicateStudentLoginString("student login", studentID);
+				if (tempStudent == null) {
 					// login in unsuccessful, take back to login selection
 					JOptionPane.showMessageDialog(null, "Login Unsuccessful: Could not locate ID");
 					frame.show("Login Select");
+
+				} else {
+					// login is successful, take to student menu
+					frame.getStudentMenu().setTempStudent(tempStudent);
+					frame.getStudentMenu().updateTitle();
+					frame.getStudentMenu().updateEnrolledCourse();
+					frame.show("Student Menu");
 				}
 			}
 		}
@@ -379,21 +383,6 @@ public class ClientGUIController {
 	}
 
 	/**
-	 * Listen for when the Enroll Student in a Course button has been pressed
-	 * Prompts the user for which student and which course they would like to enroll
-	 * in sends it to server and message displays if enrollment is successful or not
-	 */
-	class StudentViewEnrolledCoursesListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			System.out.println("student courses");
-			ArrayList<Course> courseList = communicate.communicateGetCourseList("student courses");
-			frame.getStudentMenu().updateCourse(courseList);
-		}
-	}
-
-	/**
 	 * Listens for when the logout button is pressed and takes the user back to the
 	 * login selection
 	 */
@@ -401,8 +390,8 @@ public class ClientGUIController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			communicate.communicateReceiveString("logout");
 			frame.show("Login Select");
+			communicate.communicateLogout("logout");
 		}
 	}
 

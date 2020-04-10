@@ -97,6 +97,16 @@ public class ClientCommunicationController {
 	 * @param instruction The instruction the server will execute
 	 * @return The message the server sends back
 	 */
+	public void communicateLogout(String instruction) {
+		writeString(instruction);
+	}
+
+	/**
+	 * Sends an instruction to the Server and receives the message back
+	 *
+	 * @param instruction The instruction the server will execute
+	 * @return The message the server sends back
+	 */
 	public String communicateReceiveString(String instruction) {
 		String message = null;
 		writeString(instruction);
@@ -121,6 +131,29 @@ public class ClientCommunicationController {
 		message = readString();
 
 		return message;
+	}
+
+	/**
+	 * Sends an instruction to the Server and receives the message back
+	 *
+	 * @param instruction The instruction the server will execute
+	 * @return The message the server sends back
+	 */
+	public Student communicateStudentLoginString(String instruction, String id) {
+		Student tempStudent = null;
+		writeString(instruction);
+
+		writeString(id);
+
+		try {
+			tempStudent = (Student) fromServer.readObject();
+		}catch(IOException e){
+			e.printStackTrace();
+		}catch(ClassNotFoundException e){
+			e.printStackTrace();
+		}
+
+		return tempStudent;
 	}
 
 	/**
