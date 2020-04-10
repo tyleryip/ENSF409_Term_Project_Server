@@ -38,6 +38,14 @@ public class Course implements Serializable {
 		offeringList = new ArrayList<CourseOffering>();
 	}
 
+	public Course(String courseName, int courseNum, ArrayList<CourseOffering> courseOfferings) {
+		this.setCourseName(courseName);
+		this.setCourseNum(courseNum);
+		// Both of the following are only association
+		preReq = new ArrayList<Course>();
+		offeringList = courseOfferings;
+	}
+
 	/**
 	 * Adds a course offering to this course
 	 * 

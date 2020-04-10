@@ -18,6 +18,7 @@ import com.KerrYip.ClientView.BrowseCatalogPanel;
 import com.KerrYip.ClientView.LoginSelectPanel;
 import com.KerrYip.ClientView.MainView;
 import com.KerrYip.ClientView.StudentMenuPanel;
+import com.KerrYip.ServerModel.CourseOffering;
 
 /**
  * This class is used to communicate between the GUI and the
@@ -114,6 +115,7 @@ public class ClientGUIController {
 		frame.getAdminMenu().addBrowseCatalogListener(new AdminBrowseCatalogListener());
 		frame.getAdminMenu().addSearchCatalogListener(new SearchCatalogListener());
 		frame.getAdminMenu().addViewStudentEnrolledCoursesListener(new AdminViewEnrolledCoursesListener());
+		frame.getAdminMenu().addAddStudentListener(new AddStudentListener());
 		frame.getAdminMenu().addRunCoursesListener(new RunCoursesListener());
 		frame.getAdminMenu().addLogoutListener(new LogoutListener());
 
@@ -440,6 +442,67 @@ public class ClientGUIController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("add course");
+
+			//creates prompt
+			JPanel addPanel = new JPanel();
+			JLabel addTitle = new JLabel("Please enter the course name you would like to add");
+			JPanel input = new JPanel();
+			input.add(new JLabel("Course Name:"));
+			JTextField courseName = new JTextField(10);
+			input.add(courseName);
+			input.add(new JLabel("Course Number:"));
+			JTextField courseNumber = new JTextField(5);
+			input.add(courseNumber);
+
+			addPanel.setLayout(new BorderLayout());
+			addPanel.add("North",addTitle);
+			addPanel.add("Center",input);
+
+			//creates prompt
+			JPanel offeringPanel = new JPanel();
+			JLabel offeringTitle = new JLabel("Please enter the course offering you would like to add");
+			JPanel offeringInput = new JPanel();
+			offeringInput.add(new JLabel("Section Number:"));
+			JTextField secNum = new JTextField(5);
+			offeringInput.add(secNum);
+			offeringInput.add(new JLabel("Section Cap:"));
+			JTextField secCap = new JTextField(5);
+			offeringInput.add(secCap);
+
+			offeringPanel.setLayout(new BorderLayout());
+			offeringPanel.add("North",offeringTitle);
+			offeringPanel.add("Center",offeringInput);
+
+			Object[] options = { "Add another Course Offering", "Complete", "Cancel" };
+
+			// prompts user for the course
+			try {
+				int result = JOptionPane.showOptionDialog(null, addPanel, "Add a Course",
+						JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+
+				if (result == JOptionPane.OK_OPTION) {
+					ArrayList<CourseOffering> courseOfferings = new ArrayList<CourseOffering>();
+					int offeringResult = -1;
+					while(offeringResult != JOptionPane.NO_OPTION) {
+						offeringResult = JOptionPane.showOptionDialog(null, offeringPanel, "Add a Course Offering",
+								JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, null);
+						courseOfferings.add(new CourseOffering(Integer.parseInt(secNum.getText()),Integer.parseInt(secCap.getText())));
+					}
+					if(offeringResult == JOptionPane.CANCEL_OPTION){
+						return;
+					}
+					Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()),courseOfferings);
+					String message = communicate.communicateSendCourse("add course", tempCourse);
+					System.out.println(message);
+					if (message.equals("failed")) {
+						JOptionPane.showMessageDialog(null, "Course could not be added");
+					} else {
+						JOptionPane.showMessageDialog(null, message);
+					}
+				}
+			}catch(NumberFormatException nfe){
+				JOptionPane.showMessageDialog(null, "Invalid input");
+			}
 		}
 	}
 
@@ -452,21 +515,86 @@ public class ClientGUIController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("remove course");
+
+			//creates prompt
+			JPanel dropPanel = new JPanel();
+			JLabel dropTitle = new JLabel("Please enter the course you would like to remove");
+			JPanel input = new JPanel();
+			input.add(new JLabel("Course Name:"));
+			JTextField courseName = new JTextField(10);
+			input.add(courseName);
+			input.add(new JLabel("Course Number:"));
+			JTextField courseNumber = new JTextField(5);
+			input.add(courseNumber);
+
+			dropPanel.setLayout(new BorderLayout());
+			dropPanel.add("North",dropTitle);
+			dropPanel.add("Center",input);
+
+
+			// prompts user for the course
+			try {
+				int result = JOptionPane.showOptionDialog(null, dropPanel, "Remove a Course",
+						JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+
+				if (result == JOptionPane.OK_OPTION) {
+					Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()));
+					String message = communicate.communicateSearchCourse("remove course", tempCourse);
+					System.out.println(message);
+					if (message.equals("course not found")) {
+						JOptionPane.showMessageDialog(null, "Course was not found");
+					} else {
+						JOptionPane.showMessageDialog(null, message);
+					}
+				}
+			}catch(NumberFormatException nfe){
+				JOptionPane.showMessageDialog(null, "Invalid input");
+			}
 		}
 	}
 
 	/**
 	 * Listens for when the view Student's enrolled courses button is pressed
 	 * Prompts the user for the student ID and sends it to server enrolled courses
-	 * by that student is displayed if the ID is found if not displays that it could
+	 * by that student is displays courses if the ID is found if not displays that it could
 	 * not find that student
 	 */
 	class AdminViewEnrolledCoursesListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("admin student courses");
+			System.out.println("admin view student courses");
+			String studentID = JOptionPane.showInputDialog("Please enter the student's id");
+			ArrayList<Course> catalog = communicate.communicateGetStudentsCourseList("admin view student courses", studentID);
+			if(catalog == null) {
+				JOptionPane.showMessageDialog(null, "Unable to find the Student");
+			}else{
+				String temp = "";
+				for(int i = 0; i < catalog.size(); i++) {
+					temp += catalog.get(i);
+				}
+				JOptionPane.showMessageDialog(null, temp);
+			}
 		}
 	}
+	/**
+	 * Listens for when the Add New Student button is pressed
+	 * Prompts the user for the student info and sends it to server to be added
+	 * Message is returns if successful or not
+	 */
+	class AddStudentListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("add student");
+			String studentID = JOptionPane.showInputDialog("Please enter the student's id");
+			String message = communicate.communicateSendString("add student", studentID);
+			if(message == "failed"){
+				JOptionPane.showMessageDialog(null, "Unable to create new Student");
+			}else{
+				JOptionPane.showMessageDialog(null, message);
+			}
+		}
+	}
+
 
 	/**
 	 * Listens for when the Run Courses button is pressed Attempts to run all
@@ -477,6 +605,8 @@ public class ClientGUIController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("run courses");
+			String message = communicate.communicateReceiveString("run courses");
+			JOptionPane.showMessageDialog(null, message);
 		}
 	}
 
@@ -492,7 +622,6 @@ public class ClientGUIController {
 			System.exit(0);
 
 		}
-
 		public void windowOpened(WindowEvent arg0) {
 		}
 
@@ -510,7 +639,6 @@ public class ClientGUIController {
 
 		public void windowDeactivated(WindowEvent arg0) {
 		}
-
 	}
 
 	public int getWidth() {

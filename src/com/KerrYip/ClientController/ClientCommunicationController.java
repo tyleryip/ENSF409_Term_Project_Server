@@ -92,6 +92,21 @@ public class ClientCommunicationController {
 
 	/**
 	 * Sends an instruction to the Server and receives the message back
+	 *
+	 * @param instruction The instruction the server will execute
+	 * @return The message the server sends back
+	 */
+	public String communicateReceiveString(String instruction) {
+		String message = null;
+		writeString(instruction);
+
+		message = readString();
+
+		return message;
+	}
+
+	/**
+	 * Sends an instruction to the Server and receives the message back
 	 * 
 	 * @param instruction The instruction the server will execute
 	 * @return The message the server sends back
@@ -194,6 +209,29 @@ public class ClientCommunicationController {
 		ArrayList<Course> catalog = new ArrayList<Course>();
 		try {
 			writeString(instruction);
+			Course course = (Course) fromServer.readObject();
+			while(course != null){
+				catalog.add(course);
+				course = (Course) fromServer.readObject();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return catalog;
+	}
+
+	/**
+	 * Sends an instruction to the Server and receives back an Course Array
+	 * @param instruction The instruction the server will execute
+	 * @return The Course Array requested
+	 */
+	public ArrayList<Course> communicateGetStudentsCourseList(String instruction, String studentID) {
+		ArrayList<Course> catalog = new ArrayList<Course>();
+		try {
+			writeString(instruction);
+			writeString(studentID);
 			Course course = (Course) fromServer.readObject();
 			while(course != null){
 				catalog.add(course);
