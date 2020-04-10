@@ -222,7 +222,7 @@ public class Session implements Runnable {
 		if (clientCourse != null) {
 			Registration newReg = new Registration();
 			newReg.completeRegistration(studentUser, clientCourse.getCourseOfferingAt(0));
-			writeString("Sucessfullyy added this course to your courses");
+			writeString("Sucessfully added this course to your courses");
 			return true;
 		}
 		writeString("Unable to add this course to your courses");
