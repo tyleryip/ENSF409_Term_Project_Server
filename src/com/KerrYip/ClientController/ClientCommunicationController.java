@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 //import com.KerrYip.ClientModel.Course;
 //import com.KerrYip.ClientModel.Student;
 import com.KerrYip.ServerModel.Course;
+import com.KerrYip.ServerModel.Registration;
 import com.KerrYip.ServerModel.Student;
 
 import java.io.*;
@@ -243,6 +244,29 @@ public class ClientCommunicationController {
 			e.printStackTrace();
 		}
 		return catalog;
+	}
+
+	/**
+	 * Sends an instruction to the Server and receives back an Course Array
+	 * @param instruction The instruction the server will execute
+	 * @return The Course Array requested
+	 */
+	public ArrayList<Registration> communicateGetStudentsRegistrationList(String instruction, String studentID) {
+		ArrayList<Registration> registration = new ArrayList<Registration>();
+		try {
+			writeString(instruction);
+			writeString(studentID);
+			Registration temp = (Registration) fromServer.readObject();
+			while(temp != null){
+				registration.add(temp);
+				temp = (Registration) fromServer.readObject();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return registration;
 	}
 
 	/**

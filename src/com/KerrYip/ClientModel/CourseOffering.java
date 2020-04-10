@@ -23,4 +23,13 @@ public class CourseOffering implements Serializable {
 	private Course theCourse;
 	// private ArrayList<Student> studentList;
 	private ArrayList<Registration> offeringRegList;
+
+	@Override
+	public String toString() {
+		String st = "\nCourse: ";
+		st += theCourse.getCourseName() + " " + theCourse.getCourseNum() + "\n";
+		st += "Section Num: " + secNum + ", section cap: " + secCap + "\n";
+		// We also want to print the names of all students in the section
+		return st;
+	}
 }

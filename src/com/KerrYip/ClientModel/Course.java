@@ -38,4 +38,7 @@ public class Course implements Serializable {
 		st += "\n-------\n";
 		return st;
 	}
+
+	public String getCourseName() { return courseName; }
+	public int getCourseNum() { return courseNum; }
 }

@@ -1,8 +1,11 @@
 package com.KerrYip.ClientView;
 
+import com.KerrYip.ServerModel.Course;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * The Panel for the Admin Menu which allows the admin to select what operations
@@ -51,7 +54,6 @@ public class AdminMenuPanel extends JPanel {
 		titlePanel.add(adminMenuLabel);
 		buttonPanel.add(addCourseButton);
 		buttonPanel.add(removeCourseButton);
-		buttonPanel.add(browseCatalogButton);
 		buttonPanel.add(searchCatalogButton);
 		buttonPanel.add(viewStudentCoursesButton);
 		buttonPanel.add(addStudentButton);
@@ -64,16 +66,28 @@ public class AdminMenuPanel extends JPanel {
 		dataText.setEditable(false); // This ensure that the user cannot edit the data field
 		dataText.setText(""); // This displays empty text in the field
 
+		JPanel coursePanel = new JPanel();
+		coursePanel.setLayout(new BorderLayout());
 		// Make the data field scroll-able if enough data fills the panel
 		JScrollPane dataTextScrollPane = new JScrollPane(dataText);
 		dataTextScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		coursePanel.add("Center", dataTextScrollPane);
+		coursePanel.add("South",browseCatalogButton);
 
 		// adding panels to appropriate quadrants
 		add("North", titlePanel);
 		add("East", buttonPanel);
-		add("Center", dataTextScrollPane);
+		add("Center", coursePanel);
 		add("South", logoutButton);
 
+	}
+
+	public void updateCourse(ArrayList<Course> catalog){
+		String temp = "";
+		for(int i = 0; i < catalog.size(); i++){
+			temp += catalog.get(i);
+		}
+		dataText.setText(temp);
 	}
 
 	/**

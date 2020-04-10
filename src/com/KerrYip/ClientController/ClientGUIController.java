@@ -313,7 +313,6 @@ public class ClientGUIController {
 			System.out.println("browse catalog");
 			ArrayList<Course> catalog = communicate.communicateGetCourseList("browse courses");
 			frame.getBrowseCatalog().updateCatalog(catalog);
-			frame.getBrowseCatalog().addBackMenuListener(new BackStudentMenu());
 			frame.show("Browse Catalog");
 		}
 	}
@@ -326,11 +325,9 @@ public class ClientGUIController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("browse catalog");
+			System.out.println("browse courses");
 			ArrayList<Course> catalog = communicate.communicateGetCourseList("browse courses");
-            frame.getBrowseCatalog().updateCatalog(catalog);
-            frame.getBrowseCatalog().addBackMenuListener(new BackAdminMenu());
-            frame.show("Browse Catalog");
+			frame.getAdminMenu().updateCourse(catalog);
         }
     }
 
@@ -405,6 +402,7 @@ public class ClientGUIController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			communicate.communicateReceiveString("logout");
 			frame.show("Login Select");
 		}
 	}
@@ -418,18 +416,6 @@ public class ClientGUIController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			frame.show("Student Menu");
-		}
-	}
-
-	/**
-	 * listens for when the back button is pressed while logged in as a admin takes
-	 * the user back to the student menu
-	 */
-	class BackAdminMenu implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			frame.show("Admin Menu");
 		}
 	}
 
@@ -576,6 +562,7 @@ public class ClientGUIController {
 			}
 		}
 	}
+
 	/**
 	 * Listens for when the Add New Student button is pressed
 	 * Prompts the user for the student info and sends it to server to be added
@@ -594,7 +581,6 @@ public class ClientGUIController {
 			}
 		}
 	}
-
 
 	/**
 	 * Listens for when the Run Courses button is pressed Attempts to run all

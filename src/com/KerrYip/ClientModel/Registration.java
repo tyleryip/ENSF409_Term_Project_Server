@@ -20,4 +20,15 @@ public class Registration implements Serializable {
 	private Student theStudent;
 	private CourseOffering theOffering;
 	private char grade;
+
+	@Override
+	public String toString() {
+		String st = "\n";
+		st += "Student Name: " + theStudent + "\n";
+		st += "The Offering: " + theOffering + "\n";
+		st += "Grade: " + grade;
+		st += "\n-----------\n";
+		return st;
+
+	}
 }
