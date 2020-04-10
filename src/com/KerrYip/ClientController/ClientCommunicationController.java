@@ -109,9 +109,9 @@ public class ClientCommunicationController {
 	 * @param course      The course the server needs for the instruction
 	 * @return The message the server sends back
 	 */
-	public Course communicateGetCourse(String instruction, Course course) {
+	public String communicateSearchCourse(String instruction, Course course) {
 		Course courseResult = null;
-		String message;
+		String message = "";
 		try {
 			writeString(instruction);
 
@@ -121,6 +121,9 @@ public class ClientCommunicationController {
 			message = readString();
 			if(message.equals("course found")) {
 				courseResult = (Course) fromServer.readObject();
+				message = courseResult.toString();
+			}else{
+				message = readString();
 			}
 
 		} catch (IOException e) {
@@ -128,7 +131,7 @@ public class ClientCommunicationController {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		return courseResult;
+		return message;
 	}
 
 	/**

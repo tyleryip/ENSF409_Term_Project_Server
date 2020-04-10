@@ -349,12 +349,12 @@ public class ClientGUIController {
 
 			if(result == JOptionPane.OK_OPTION) {
 				Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()));
-				Course foundCourse = communicate.communicateGetCourse("search course", tempCourse);
-				System.out.println(foundCourse);
-				if(foundCourse == null){
+				String message = communicate.communicateSearchCourse("search course", tempCourse);
+				System.out.println(message);
+				if(message.equals("Search completed")){
 					JOptionPane.showMessageDialog(null, "Course was not found");
-				}else {
-					JOptionPane.showMessageDialog(null, foundCourse );
+				}else{
+					JOptionPane.showMessageDialog(null, message);
 				}
 			}
 		}
