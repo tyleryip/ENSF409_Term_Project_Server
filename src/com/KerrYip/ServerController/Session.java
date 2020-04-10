@@ -262,7 +262,7 @@ public class Session implements Runnable {
 		}
 		for(int i = 0; i<studentUser.getStudentRegList().size(); i++) {
 			try {
-				toClient.writeObject(studentUser.getStudentRegList().get(i).getTheOffering().getTheCourse());
+				toClient.writeObject(studentUser.getStudentRegList().get(i));
 			} catch (IOException e) {
 				System.err.println("Error: couse not write this course to output stream");
 				e.printStackTrace();

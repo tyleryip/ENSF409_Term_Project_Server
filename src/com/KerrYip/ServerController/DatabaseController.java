@@ -74,19 +74,19 @@ public class DatabaseController {
 	}
 
 	// GETTERS and SETTERS
-	public ArrayList<Student> getStudentList() {
+	public synchronized ArrayList<Student> getStudentList() {
 		return studentList;
 	}
 
-	public void setStudentList(ArrayList<Student> studentList) {
+	public synchronized void setStudentList(ArrayList<Student> studentList) {
 		this.studentList = studentList;
 	}
 
-	public ArrayList<Course> getCourseList() {
+	public synchronized ArrayList<Course> getCourseList() {
 		return courseList;
 	}
 
-	public void setCourseList(ArrayList<Course> courseList) {
+	public synchronized void setCourseList(ArrayList<Course> courseList) {
 		this.courseList = courseList;
 	}
 
