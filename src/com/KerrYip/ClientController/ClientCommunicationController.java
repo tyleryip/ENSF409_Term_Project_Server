@@ -162,6 +162,30 @@ public class ClientCommunicationController {
 	}
 
 	/**
+	 * Sends an instruction to the Server and receives the message back
+	 *
+	 * @param instruction The instruction the server will execute
+	 * @param course      The course the server needs for the instruction
+	 * @return The message the server sends back
+	 */
+	public String communicateEnrollCourse(String instruction, Course course, String lectureNumber) {
+		String message = null;
+		try {
+			writeString(instruction);
+
+			toServer.writeObject(course);
+			toServer.flush();
+
+			writeString(lectureNumber);
+
+			message = readString();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return message;
+	}
+
+	/**
 	 * Sends an instruction to the Server and receives back an Course Array
 	 * @param instruction The instruction the server will execute
 	 * @return The Course Array requested
@@ -172,8 +196,8 @@ public class ClientCommunicationController {
 			writeString(instruction);
 			Course course = (Course) fromServer.readObject();
 			while(course != null){
-				course = (Course) fromServer.readObject();
 				catalog.add(course);
+				course = (Course) fromServer.readObject();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

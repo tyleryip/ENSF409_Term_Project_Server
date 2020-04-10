@@ -227,9 +227,15 @@ public class ClientGUIController {
 			JTextField courseNumber = new JTextField(5);
 			input.add(courseNumber);
 
+			JPanel input2 = new JPanel();
+			input2.add(new JLabel("Lecture Number:"));
+			JTextField lectureNumber = new JTextField(5);
+			input2.add(lectureNumber);
+
 			enrollPanel.setLayout(new BorderLayout());
 			enrollPanel.add("North",enrollTitle);
 			enrollPanel.add("Center",input);
+			enrollPanel.add("South",input2);
 
 
 			// prompts user for the course
@@ -239,7 +245,7 @@ public class ClientGUIController {
 
 				if(result == JOptionPane.OK_OPTION) {
 				Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()));
-				String message = communicate.communicateSendCourse("enroll course", tempCourse);
+				String message = communicate.communicateEnrollCourse("enroll course", tempCourse,lectureNumber.getText());
 				System.out.println(message);
 				JOptionPane.showMessageDialog(null, message);
 				}
