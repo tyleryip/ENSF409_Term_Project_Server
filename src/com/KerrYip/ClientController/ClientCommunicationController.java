@@ -12,8 +12,7 @@ import java.util.concurrent.TimeUnit;
  * This class is primarily used to communicate with the server via sockets
  * 
  * @author tyleryip
- * @author kerrmwill
- * @version 1.0
+ * @version 2.0
  * @since 04/07/20
  *
  */
@@ -33,6 +32,10 @@ public class ClientCommunicationController {
 		try {
 			// create socket
 			aSocket = new Socket(serverName, port);
+
+			// Socket object streams
+			// For some reason, the streams must be initialized in this order or they will
+			// fail
 			toServer = new ObjectOutputStream(aSocket.getOutputStream());
 			fromServer = new ObjectInputStream(aSocket.getInputStream());
 
@@ -47,7 +50,8 @@ public class ClientCommunicationController {
 
 	/**
 	 * This method is a helper method to make allow strings to be read from the
-	 * output stream of the server more easily, used for receiving message
+	 * output stream of the server more easily, used for receiving messages
+	 * 
 	 * @return the string sent by the server
 	 */
 	private String readString() {
@@ -66,6 +70,7 @@ public class ClientCommunicationController {
 	/**
 	 * This method is a helper method to allow sending strings to the input stream
 	 * of the server to be made more easily, used for sending commands to the server
+	 * 
 	 * @param toSend the string to send to server
 	 */
 	private void writeString(String toSend) {
@@ -161,7 +166,7 @@ public class ClientCommunicationController {
 	}
 
 	/**
-	 * Sends an instruction to the Server to quit and closes all socket connections
+	 * Sends an instruction to the Server to quit and closes sockets
 	 */
 	public void communicateQuit() {
 		writeString("QUIT");

@@ -5,9 +5,10 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 /**
- * The Panel for viewing all of the course catalog which will display all courses in the catalog
+ * The Panel for viewing all of the course catalog which will display all
+ * courses in the catalog
  */
-public class BrowseCatalogPanel extends JPanel{
+public class BrowseCatalogPanel extends JPanel {
 
 	private int width, height;
 	private JButton backButton;
@@ -20,15 +21,15 @@ public class BrowseCatalogPanel extends JPanel{
 		// Buttons for the main window
 		backButton = new JButton("Back");
 
-        //browse catalog title
-        browseCatalogLabel = new JLabel();
-        browseCatalogLabel.setText("Course Catalog");
+		// browse catalog title
+		browseCatalogLabel = new JLabel();
+		browseCatalogLabel.setText("Course Catalog");
 
-        //browse catalog panels for formatting
-        JPanel titlePanel = new JPanel();
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.PAGE_AXIS));
-        
+		// browse catalog panels for formatting
+		JPanel titlePanel = new JPanel();
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.PAGE_AXIS));
+
 		// This is the login select label
 		browseCatalogLabel = new JLabel();
 		browseCatalogLabel.setText("Course Catalog");
@@ -47,25 +48,24 @@ public class BrowseCatalogPanel extends JPanel{
 		dataText.setEditable(false); // This ensure that the user cannot edit the data field
 		dataText.setText(""); // This displays empty text in the field
 
-
 		// Make the data field scroll-able if enough data fills the panel
 		JScrollPane dataTextScrollPane = new JScrollPane(dataText);
 		dataTextScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
-        //adding panels to appropriate quadrants
-        add("North", titlePanel);
-        add("South", buttonPanel);
-        add("Center", dataTextScrollPane);
+		// adding panels to appropriate quadrants
+		add("North", titlePanel);
+		add("South", buttonPanel);
+		add("Center", dataTextScrollPane);
 
+	}
 
-    }
-
-    /**
-     * Adds listener for the backButton
-     * @param listenForBackStudentMenuButton listener for the button
-     */
-    public void addBackStudentMenuListener (ActionListener listenForBackStudentMenuButton){
-        backButton.addActionListener(listenForBackStudentMenuButton);
-    }
+	/**
+	 * Adds listener for the backButton
+	 * 
+	 * @param listenForBackStudentMenuButton listener for the button
+	 */
+	public void addBackStudentMenuListener(ActionListener listenForBackStudentMenuButton) {
+		backButton.addActionListener(listenForBackStudentMenuButton);
+	}
 
 }

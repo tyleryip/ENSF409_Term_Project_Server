@@ -151,13 +151,13 @@ public class Session implements Runnable {
 
 		case "search for course":
 			return searchForCourse();
-			
+
 		case "admin login":
 			return false;
 
 		default:
 			System.err.println("No option available that matched: " + command);
-			return          false;
+			return false;
 		}
 
 	}
