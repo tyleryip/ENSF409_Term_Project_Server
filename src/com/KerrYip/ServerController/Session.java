@@ -171,9 +171,7 @@ public class Session implements Runnable {
 			return true;
 			
 		case "logout":
-			//TODO implement this method
-			return false;
-
+			return logout();
 		default:
 			System.err.println("No option available that matched: " + command);
 			return false;
@@ -210,6 +208,12 @@ public class Session implements Runnable {
 		return false;
 	}
 	
+	private boolean logout() {
+		setStudentUser(null);
+		setAdminUser(null);
+		return true;
+	}
+	
 	/**
 	 * This method takes a student and course from the client, looks for the course,
 	 * and if successful, adds it to the student and returns the student object to
@@ -222,9 +226,10 @@ public class Session implements Runnable {
 		Course clientCourse = readCourseFromClient();
 
 		clientCourse = courseController.searchCat(clientCourse.getCourseName(), clientCourse.getCourseNum());
+		int section = Integer.parseInt(readString());
 		if (clientCourse != null) {
 			Registration newReg = new Registration();
-			newReg.completeRegistration(studentUser, clientCourse.getCourseOfferingAt(0));
+			newReg.completeRegistration(studentUser, clientCourse.getCourseOfferingAt(section));
 			writeString("Sucessfully added this course to your courses");
 			return true;
 		}
