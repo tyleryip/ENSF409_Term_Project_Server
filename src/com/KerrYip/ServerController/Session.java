@@ -139,7 +139,6 @@ public class Session implements Runnable {
 	private boolean executeCommand(String command) {
 		switch (command) {
 		case "student login":
-			System.out.println("doing student login");
 			return studentLogin();
 
 		case "enroll course":	
@@ -185,9 +184,9 @@ public class Session implements Runnable {
 	private boolean studentLogin() {
 		int checkID = -1;
 		checkID = Integer.parseInt(readString());
-		System.out.println(checkID);
 		studentUser = studentController.searchStudent(checkID);
 		if (studentUser != null) {
+			System.out.println("[Sever] User logged in using id: " + checkID);
 			writeString("login successful");
 			return true;
 		}
