@@ -143,19 +143,21 @@ public class Session implements Runnable {
 			return studentLogin();
 
 		case "enroll course":	
-			return false;
+			return enrollCourse();
 		
 		case "drop course":
-			return false;
+			return dropCourse();
 			
 		case "student courses":
 			return false;
 			
 		case "add course":
-			return addCourse();
+			//TODO implement this method for admin
+			return false;
 
 		case "remove course":
-			return removeCourse();
+			//TODO implement this method for admin
+			return false;
 
 		case "browse courses":
 			return browseCourses();
@@ -204,6 +206,48 @@ public class Session implements Runnable {
 		}
 		return false;
 	}
+	
+	/**
+	 * This method takes a student and course from the client, looks for the course,
+	 * and if successful, adds it to the student and returns the student object to
+	 * client
+	 */
+	private boolean enrollCourse() {
+		if (!studentLoggedIn()) {
+			return false;
+		}
+		Course clientCourse = readCourseFromClient();
+
+		clientCourse = courseController.searchCat(clientCourse.getCourseName(), clientCourse.getCourseNum());
+		if (clientCourse != null) {
+			Registration newReg = new Registration();
+			newReg.completeRegistration(studentUser, clientCourse.getCourseOfferingAt(0));
+			writeString("Sucessfullyy added this course to your courses");
+			return true;
+		}
+		writeString("Unable to add this course to your courses");
+		return false;
+	}
+
+	/**
+	 * Removes a course from the user's registration list
+	 */
+	private boolean dropCourse() {
+		if (!studentLoggedIn()) {
+			return false;
+		}
+		Course clientCourse = readCourseFromClient();
+
+		Registration removeReg = studentUser.searchStudentReg(clientCourse);
+		if (removeReg != null) {
+			studentUser.getStudentRegList().remove(removeReg);
+			writeString("Successfully removed this course from your courses");
+			return true;
+		}
+		writeString("Unable to add this course to your courses: could not find this course in your courses");
+		return false;
+
+	}
 
 	/**
 	 * This method allows administrator users to log into the system
@@ -232,7 +276,7 @@ public class Session implements Runnable {
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Allows a student to search for a course and returns the results of their
 	 * search back to the client
@@ -249,7 +293,6 @@ public class Session implements Runnable {
 			try {
 				writeString("course found");
 				toClient.writeObject(clientCourse);
-				writeString("Search completed");
 				return true;
 			} catch (IOException e) {
 				System.err.println("Error: unable to write course to output stream");
@@ -287,48 +330,6 @@ public class Session implements Runnable {
 		}
 		writeString("Browse completed");
 		return true;
-	}
-
-	/**
-	 * This method takes a student and course from the client, looks for the course,
-	 * and if successful, adds it to the student and returns the student object to
-	 * client
-	 */
-	private boolean addCourse() {
-		if (!studentLoggedIn()) {
-			return false;
-		}
-		Course clientCourse = readCourseFromClient();
-
-		clientCourse = courseController.searchCat(clientCourse.getCourseName(), clientCourse.getCourseNum());
-		if (clientCourse != null) {
-			Registration newReg = new Registration();
-			newReg.completeRegistration(studentUser, clientCourse.getCourseOfferingAt(0));
-			writeString("Sucessfullyy added this course to your courses");
-			return true;
-		}
-		writeString("Unable to add this course to your courses");
-		return false;
-	}
-
-	/**
-	 * Removes a course from the user's registration list
-	 */
-	private boolean removeCourse() {
-		if (!studentLoggedIn()) {
-			return false;
-		}
-		Course clientCourse = readCourseFromClient();
-
-		Registration removeReg = studentUser.searchStudentReg(clientCourse);
-		if (removeReg != null) {
-			studentUser.getStudentRegList().remove(removeReg);
-			writeString("Successfully removed this course from your courses");
-			return true;
-		}
-		writeString("Unable to add this course to your courses: could not find this course in your courses");
-		return false;
-
 	}
 
 	/**
