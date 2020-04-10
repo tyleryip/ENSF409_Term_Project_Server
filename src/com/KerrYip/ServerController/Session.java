@@ -149,7 +149,7 @@ public class Session implements Runnable {
 			return dropCourse();
 			
 		case "student courses":
-			return false;
+			return showStudentCourses();
 			
 		case "add course":
 			//TODO implement this method for admin
@@ -244,9 +244,37 @@ public class Session implements Runnable {
 			writeString("Successfully removed this course from your courses");
 			return true;
 		}
-		writeString("Unable to add this course to your courses: could not find this course in your courses");
+		writeString("Unable to remove this course from your courses: could not find this course in your courses");
 		return false;
 
+	}
+	
+	/**
+	 * Sends all courses in the student's registered courses to the client
+	 * @return true if successful, false if failed
+	 */
+	private boolean showStudentCourses() {
+		if (!studentLoggedIn()) {
+			return false;
+		}
+		for(int i = 0; i<studentUser.getStudentRegList().size(); i++) {
+			try {
+				toClient.writeObject(studentUser.getStudentRegList().get(i).getTheOffering().getTheCourse());
+			} catch (IOException e) {
+				System.err.println("Error: couse not write this course to output stream");
+				e.printStackTrace();
+			}
+		}
+		
+		//The very last thing we write is a null to tell the client we are done
+		try {
+			toClient.writeObject(null);
+		} catch (IOException e) {
+			System.err.println("Error: could not write the course to the output strean");
+			e.printStackTrace();
+		}
+		writeString("Browse completed");
+		return true;
 	}
 
 	/**
