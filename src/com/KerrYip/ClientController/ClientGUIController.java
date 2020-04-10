@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 import com.KerrYip.ClientModel.Course;
+
 import com.KerrYip.ClientView.AdminMenuPanel;
 import com.KerrYip.ClientView.BrowseCatalogPanel;
 import com.KerrYip.ClientView.LoginSelectPanel;
