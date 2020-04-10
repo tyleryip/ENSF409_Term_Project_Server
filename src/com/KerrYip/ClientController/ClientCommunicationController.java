@@ -168,13 +168,13 @@ public class ClientCommunicationController {
 	 */
 	public ArrayList<Course> communicateGetCourseList(String instruction) {
 		ArrayList<Course> catalog = new ArrayList<Course>();
-		Course course = null;
 		try {
 			writeString(instruction);
-			do{
+			Course course = (Course) fromServer.readObject();
+			while(course != null){
 				course = (Course) fromServer.readObject();
 				catalog.add(course);
-			}while(course != null);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {

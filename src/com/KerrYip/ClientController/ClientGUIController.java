@@ -224,7 +224,7 @@ public class ClientGUIController {
 			JTextField courseName = new JTextField(10);
 			input.add(courseName);
 			input.add(new JLabel("Course Number:"));
-			JTextField courseNumber = new JTextField(15);
+			JTextField courseNumber = new JTextField(5);
 			input.add(courseNumber);
 
 			enrollPanel.setLayout(new BorderLayout());
@@ -233,14 +233,18 @@ public class ClientGUIController {
 
 
 			// prompts user for the course
-			int result = JOptionPane.showOptionDialog(null, enrollPanel, "Enroll In New Course",
+			try{
+				int result = JOptionPane.showOptionDialog(null, enrollPanel, "Enroll In New Course",
 					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
 
-			if(result == JOptionPane.OK_OPTION) {
+				if(result == JOptionPane.OK_OPTION) {
 				Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()));
 				String message = communicate.communicateSendCourse("enroll course", tempCourse);
 				System.out.println(message);
 				JOptionPane.showMessageDialog(null, message);
+				}
+			}catch(NumberFormatException nfe){
+				JOptionPane.showMessageDialog(null, "Invalid input");
 			}
 		}
 	}
@@ -273,14 +277,18 @@ public class ClientGUIController {
 
 
 			// prompts user for the course
-			int result = JOptionPane.showOptionDialog(null, enrollPanel, "Enroll In New Course",
+			try{
+				int result = JOptionPane.showOptionDialog(null, enrollPanel, "Enroll In New Course",
 					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
 
-			if(result == JOptionPane.OK_OPTION) {
-				Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()));
-				String message = communicate.communicateSendCourse("enroll course", tempCourse);
-				System.out.println(message);
-				JOptionPane.showMessageDialog(null, message);
+				if(result == JOptionPane.OK_OPTION) {
+					Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()));
+					String message = communicate.communicateSendCourse("enroll course", tempCourse);
+					System.out.println(message);
+					JOptionPane.showMessageDialog(null, message);
+				}
+			}catch(NumberFormatException nfe){
+				JOptionPane.showMessageDialog(null, "Invalid input");
 			}
 		}
 	}
@@ -345,18 +353,22 @@ public class ClientGUIController {
 
 
 			// prompts user for the course
-			int result = JOptionPane.showOptionDialog(null, dropPanel, "Search for a Course",
-					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+			try {
+				int result = JOptionPane.showOptionDialog(null, dropPanel, "Search for a Course",
+						JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
 
-			if(result == JOptionPane.OK_OPTION) {
-				Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()));
-				String message = communicate.communicateSearchCourse("search course", tempCourse);
-				System.out.println(message);
-				if(message.equals("Search completed")){
-					JOptionPane.showMessageDialog(null, "Course was not found");
-				}else{
-					JOptionPane.showMessageDialog(null, message);
+				if (result == JOptionPane.OK_OPTION) {
+					Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()));
+					String message = communicate.communicateSearchCourse("search for course", tempCourse);
+					System.out.println(message);
+					if (message.equals("Search completed")) {
+						JOptionPane.showMessageDialog(null, "Course was not found");
+					} else {
+						JOptionPane.showMessageDialog(null, message);
+					}
 				}
+			}catch(NumberFormatException nfe){
+				JOptionPane.showMessageDialog(null, "Invalid input");
 			}
 		}
 	}
