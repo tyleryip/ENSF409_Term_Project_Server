@@ -103,7 +103,7 @@ public class CourseController {
 	}
 
 	/**
-	 * Removes a course from the course list
+	 * Removes a course from the course list and removes the course listed as a prereq from all other courses
 	 * 
 	 * @param nameNum the name and number of the course you want to remove, ex. ENGG
 	 *                233

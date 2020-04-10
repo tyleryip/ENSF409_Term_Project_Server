@@ -151,12 +151,12 @@ public class Session implements Runnable {
 			return showStudentCourses();
 			
 		case "add course":
-			//TODO implement this method for admin
-			return false;
+			//TODO modify this method to allow the addition of sections
+			return addCourse();
 
 		case "remove course":
-			//TODO implement this method for admin
-			return false;
+			//TODO implement this method for admin, modify this method in courseController to remove the course as a prereq from exisiting courses
+			return removeCourse();
 
 		case "browse courses":
 			return browseCourses();
@@ -169,6 +169,10 @@ public class Session implements Runnable {
 
 		case "QUIT":
 			return true;
+			
+		case "logout":
+			//TODO implement this method
+			return false;
 
 		default:
 			System.err.println("No option available that matched: " + command);
@@ -262,6 +266,7 @@ public class Session implements Runnable {
 			} catch (IOException e) {
 				System.err.println("Error: couse not write this course to output stream");
 				e.printStackTrace();
+				return false;
 			}
 		}
 		
@@ -271,6 +276,7 @@ public class Session implements Runnable {
 		} catch (IOException e) {
 			System.err.println("Error: could not write the course to the output strean");
 			e.printStackTrace();
+			return false;
 		}
 		return true;
 	}
@@ -304,13 +310,63 @@ public class Session implements Runnable {
 	}
 	
 	/**
+	 * Adds a course to the list of available courses
+	 * @return true if successful, false otherwise
+	 */
+	private boolean addCourse() {
+		if(!adminLoggedIn()) {
+			return false;
+		}
+		Course toAdd = null;
+		try {
+			toAdd = (Course)fromClient.readObject();
+		} catch (ClassNotFoundException e) {
+			System.err.println("Error: problem reading course from the input stream");
+			e.printStackTrace();
+			return false;
+		} catch (IOException e) {
+			System.err.println("Error: unknown I/O exception");
+			e.printStackTrace();
+			return false;
+		}
+		//The following method already does error checking by looking to see if the course already exists in the catalog
+		courseController.addCourse(toAdd.getCourseName() + " " + toAdd.getCourseNum());
+		return true;
+	}
+	
+	/**
+	 * Removes a course to the list of available courses
+	 * @return true if successful, false otherwise
+	 */
+	private boolean removeCourse() {
+		if(!adminLoggedIn()) {
+			return false;
+		}
+		Course toRemove = null;
+		try {
+			toRemove = (Course)fromClient.readObject();
+		} catch (ClassNotFoundException e) {
+			System.err.println("Error: problem reading course from the input stream");
+			e.printStackTrace();
+			return false;
+		} catch (IOException e) {
+			System.err.println("Error: unknown I/O exception");
+			e.printStackTrace();
+			return false;
+		}
+
+		courseController.removeCourse(toRemove.getCourseName() + " " + toRemove.getCourseNum());
+		return true;
+	}
+	
+	/**
 	 * Allows a student to search for a course and returns the results of their
 	 * search back to the client
 	 * 
 	 * @return true if found, false otherwise
 	 */
 	private boolean searchForCourse() {
-		if (!studentLoggedIn()) {
+		if (!studentLoggedIn() && !adminLoggedIn()) {
 			return false;
 		}
 		Course clientCourse = readCourseFromClient();
@@ -334,7 +390,7 @@ public class Session implements Runnable {
 	 * Sends each course in the catalog back to the user
 	 */
 	private boolean browseCourses() {
-		if (!studentLoggedIn()) {
+		if (!studentLoggedIn() && !adminLoggedIn()) {
 			return false;
 		}
 		//Write each course into the output stream
@@ -344,6 +400,7 @@ public class Session implements Runnable {
 			} catch (IOException e) {
 				System.err.println("Error: could not write the course to the output strean");
 				e.printStackTrace();
+				return false;
 			}
 		}
 		
@@ -353,6 +410,7 @@ public class Session implements Runnable {
 		} catch (IOException e) {
 			System.err.println("Error: could not write the course to the output strean");
 			e.printStackTrace();
+			return false;
 		}
 		return true;
 	}
