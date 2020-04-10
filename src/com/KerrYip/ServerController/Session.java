@@ -117,13 +117,14 @@ public class Session implements Runnable {
 				System.out.println("[Server] Command: " + command + ", failed to execute");
 		}
 
-		// Close all communication channels in the event that the user quits
-		/*
-		 * try { stringOut.close(); stringIn.close(); //objectOut.close();
-		 * //objectIn.close(); } catch (IOException e) {
-		 * System.err.println("Error: unable to close communication sockets");
-		 * e.printStackTrace(); }
-		 */
+		//Now we have to close all connections to the client
+		try {
+			fromClient.close();
+			toClient.close();
+		} catch (IOException e) {
+			System.err.println("Error: problem closing the sockets");
+			e.printStackTrace();
+		}
 
 	}
 
@@ -153,8 +154,12 @@ public class Session implements Runnable {
 			return searchForCourse();
 
 		case "admin login":
+			//TODO implement this method along with the class Administrator
 			return false;
-
+		
+		case "QUIT":
+			return true;
+			
 		default:
 			System.err.println("No option available that matched: " + command);
 			return false;
