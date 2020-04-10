@@ -1,11 +1,8 @@
 package com.KerrYip.ServerController;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 
 import com.KerrYip.ServerModel.Administrator;
@@ -18,6 +15,8 @@ import com.KerrYip.ServerModel.Student;
  * the application during runtime
  * 
  * @author tyleryip
+ * @version 2.0
+ * @since 04/09/20
  *
  */
 public class Session implements Runnable {
@@ -44,15 +43,15 @@ public class Session implements Runnable {
 		// Set up instruction I/O
 //			stringIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
 //			stringOut = new PrintWriter(aSocket.getOutputStream(), true);
-			// The boolean argument for this line was
-			// added around 11:00am on 04/09/20, after a
-			// massive 4 hour debugging session; when
-			// setting up communication sockets for the
-			// server and client, it is imperative that
-			// this boolean be included or the
-			// client/server will hang waiting, even if
-			// a println() is used.
-		
+		// The boolean argument for this line was
+		// added around 11:00am on 04/09/20, after a
+		// massive 4 hour debugging session; when
+		// setting up communication sockets for the
+		// server and client, it is imperative that
+		// this boolean be included or the
+		// client/server will hang waiting, even if
+		// a println() is used.
+
 		// Set up object I/O
 		try {
 			fromClient = new ObjectInputStream(aSocket.getInputStream());
@@ -66,16 +65,19 @@ public class Session implements Runnable {
 		this.courseController = courseController;
 
 		this.studentUser = null;
+		this.adminUser = null;
 	}
-	
+
 	/**
-	 * The following method is a helper to read the next object in the input stream as a string, used for commands
+	 * The following method is a helper to read the next object in the input stream
+	 * as a string, used for commands
+	 * 
 	 * @return a string from the input stream
 	 */
 	private String readString() {
 		String input = "";
 		try {
-			input = (String)fromClient.readObject();
+			input = (String) fromClient.readObject();
 		} catch (ClassNotFoundException e) {
 			System.err.println("Error: could not convert the object to a string");
 			e.printStackTrace();
@@ -84,7 +86,13 @@ public class Session implements Runnable {
 		}
 		return input;
 	}
-	
+
+	/**
+	 * The following method allows strings to be sent though the object output
+	 * socket easily, used for sending messages back to the client
+	 * 
+	 * @param toSend the string to send to the client
+	 */
 	private void writeString(String toSend) {
 		try {
 			toClient.writeObject(toSend);
@@ -101,13 +109,13 @@ public class Session implements Runnable {
 		String command = "";
 
 		while (!command.contentEquals("QUIT")) {
-				command = readString();
-				boolean successful = executeCommand(command);
-			
-				if(successful)
-					System.out.println("[Server] Command: " + command + ", executed successfully");
-				else 
-					System.out.println("[Server] Command: " + command + ", failed to execute");
+			command = readString();
+			boolean successful = executeCommand(command);
+
+			if (successful)
+				System.out.println("[Server] Command: " + command + ", executed successfully");
+			else
+				System.out.println("[Server] Command: " + command + ", failed to execute");
 		}
 
 		// Close all communication channels in the event that the user quits
@@ -143,10 +151,13 @@ public class Session implements Runnable {
 
 		case "search for course":
 			return searchForCourse();
+			
+		case "admin login":
+			return false;
 
 		default:
 			System.err.println("No option available that matched: " + command);
-			return false;
+			return          false;
 		}
 
 	}

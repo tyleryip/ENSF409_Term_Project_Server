@@ -117,10 +117,6 @@ public class StudentMenuPanel extends JPanel {
     public void addLogoutListener (ActionListener listenForSearchCatalogButton){
         logoutButton.addActionListener(listenForSearchCatalogButton);
     }
-	private JButton searchCatalogButton, enrollCourseButton, dropCourseButton, browseCatalogButton,
-			viewEnrolledCoursesButton, logoutButton;
-	private JLabel studentMenuLabel;
-	private JTextArea dataText;
 
 	public StudentMenuPanel() {
 
@@ -169,29 +165,5 @@ public class StudentMenuPanel extends JPanel {
 		add("Center", dataTextScrollPane);
 		add("South", logoutButton);
 
-	}
-
-	public void addEnrollCourseListener(ActionListener listenForSearchCatalogButton) {
-		enrollCourseButton.addActionListener(listenForSearchCatalogButton);
-	}
-
-	public void addDropCourseListener(ActionListener listenForSearchCatalogButton) {
-		dropCourseButton.addActionListener(listenForSearchCatalogButton);
-	}
-
-	public void addBrowseCatalogListener(ActionListener listenForSearchCatalogButton) {
-		browseCatalogButton.addActionListener(listenForSearchCatalogButton);
-	}
-
-	public void addSearchCatalogListener(ActionListener listenForSearchCatalogButton) {
-		searchCatalogButton.addActionListener(listenForSearchCatalogButton);
-	}
-
-	public void addViewEnrolledCoursesListener(ActionListener listenForSearchCatalogButton) {
-		viewEnrolledCoursesButton.addActionListener(listenForSearchCatalogButton);
-	}
-
-	public void addLogoutListener(ActionListener listenForSearchCatalogButton) {
-		logoutButton.addActionListener(listenForSearchCatalogButton);
 	}
 }
