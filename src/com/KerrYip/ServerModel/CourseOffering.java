@@ -13,22 +13,48 @@ import java.util.ArrayList;
 public class CourseOffering implements Serializable {
 
 	/**
-	 * 
+	 * This long is used for serialization
 	 */
 	private static final long serialVersionUID = 3885505324085384368L;
 
 	private int secNum;
 	private int secCap;
 	private Course theCourse;
-	// private ArrayList<Student> studentList;
 	private ArrayList<Registration> offeringRegList;
 
+	/**
+	 * The constructor for class CourseOffering
+	 * 
+	 * @param secNum the section number
+	 * @param secCap the capacity of the course offering
+	 */
 	public CourseOffering(int secNum, int secCap) {
 		this.setSecNum(secNum);
 		this.setSecCap(secCap);
 		offeringRegList = new ArrayList<Registration>();
 	}
 
+	/**
+	 * Adds a registration to the course offering's registration list
+	 * 
+	 * @param registration the registration to add
+	 */
+	public void addRegistration(Registration registration) {
+		// TODO Auto-generated method stub
+		offeringRegList.add(registration);
+
+	}
+
+	@Override
+	public String toString() {
+		String st = "\nCourse: ";
+		st += getTheCourse().getCourseName() + " " + getTheCourse().getCourseNum() + "\n";
+		st += "Section Num: " + getSecNum() + ", section cap: " + getSecCap() + "\n";
+		// We also want to print the names of all students in the section
+		return st;
+	}
+
+	// GETTERS and SETTERS
 	public int getSecNum() {
 		return secNum;
 	}
@@ -59,21 +85,6 @@ public class CourseOffering implements Serializable {
 
 	public void setOfferingRegList(ArrayList<Registration> offeringRegList) {
 		this.offeringRegList = offeringRegList;
-	}
-
-	@Override
-	public String toString() {
-		String st = "\nCourse: ";
-		st += getTheCourse().getCourseName() + " " + getTheCourse().getCourseNum() + "\n";
-		st += "Section Num: " + getSecNum() + ", section cap: " + getSecCap() + "\n";
-		// We also want to print the names of all students in the section
-		return st;
-	}
-
-	public void addRegistration(Registration registration) {
-		// TODO Auto-generated method stub
-		offeringRegList.add(registration);
-
 	}
 
 }

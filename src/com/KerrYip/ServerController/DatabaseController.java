@@ -32,30 +32,6 @@ public class DatabaseController {
 		readStudentsFromDatabase();
 	}
 
-	public ArrayList<Student> getStudentList() {
-		return studentList;
-	}
-
-	public void setStudentList(ArrayList<Student> studentList) {
-		this.studentList = studentList;
-	}
-
-	public ArrayList<Course> getCourseList() {
-		return courseList;
-	}
-
-	public void setCourseList(ArrayList<Course> courseList) {
-		this.courseList = courseList;
-	}
-
-	public ArrayList<Student> loadStudents() {
-		return studentList;
-	}
-
-	public ArrayList<Course> loadCourses() {
-		return courseList;
-	}
-
 	// The following methods create and add the simulated data, in the future we
 	// will have to put the SQL data here
 	private void readStudentsFromDatabase() {
@@ -95,6 +71,31 @@ public class DatabaseController {
 		courseList.get(1).addPreReq(courseList.get(4));
 		courseList.get(4).addPreReq(courseList.get(3));
 		courseList.get(2).addPreReq(courseList.get(3));
+	}
+
+	// GETTERS and SETTERS
+	public ArrayList<Student> getStudentList() {
+		return studentList;
+	}
+
+	public void setStudentList(ArrayList<Student> studentList) {
+		this.studentList = studentList;
+	}
+
+	public ArrayList<Course> getCourseList() {
+		return courseList;
+	}
+
+	public void setCourseList(ArrayList<Course> courseList) {
+		this.courseList = courseList;
+	}
+
+	public ArrayList<Student> loadStudents() {
+		return studentList;
+	}
+
+	public ArrayList<Course> loadCourses() {
+		return courseList;
 	}
 
 }

@@ -13,8 +13,9 @@ import java.util.ArrayList;
  *
  */
 public class Course implements Serializable {
+
 	/**
-	 * 
+	 * This long is used for serialization
 	 */
 	private static final long serialVersionUID = 2108036660174376139L;
 
@@ -23,6 +24,12 @@ public class Course implements Serializable {
 	private ArrayList<Course> preReq;
 	private ArrayList<CourseOffering> offeringList;
 
+	/**
+	 * Constructor for the class Course
+	 * 
+	 * @param courseName the name of the course
+	 * @param courseNum  the number of the course
+	 */
 	public Course(String courseName, int courseNum) {
 		this.setCourseName(courseName);
 		this.setCourseNum(courseNum);
@@ -31,14 +38,11 @@ public class Course implements Serializable {
 		offeringList = new ArrayList<CourseOffering>();
 	}
 
-	public ArrayList<CourseOffering> getOfferingList() {
-		return offeringList;
-	}
-
-	public void setOfferingList(ArrayList<CourseOffering> offeringList) {
-		this.offeringList = offeringList;
-	}
-
+	/**
+	 * Adds a course offering to this course
+	 * 
+	 * @param offering the course offering to add
+	 */
 	public void addOffering(CourseOffering offering) {
 		if (offering != null) {
 			offering.setTheCourse(this);
@@ -52,8 +56,46 @@ public class Course implements Serializable {
 		}
 	}
 
+	/**
+	 * Adds a prerequisite course to this course
+	 * 
+	 * @param preReqCourse the coruse to add as a prereq
+	 */
 	public void addPreReq(Course preReqCourse) {
 		preReq.add(preReqCourse);
+	}
+
+	public CourseOffering getCourseOfferingAt(int i) {
+		// TODO Auto-generated method stub
+		if (i < 0 || i >= offeringList.size()) {
+			System.out.println("Offering " + i + " does not exist.");
+			return null;
+		} else
+			return offeringList.get(i);
+	}
+
+	@Override
+	public String toString() {
+		String st = "\n";
+		st += getCourseName() + " " + getCourseNum();
+		st += "\n---------------------------------------";
+		st += "\nAll course sections:\n";
+		for (CourseOffering c : offeringList)
+			st += c;
+		st += "\nAll course prerequisites:\n";
+		for (Course c : preReq)
+			st += c.getCourseName() + " " + c.getCourseNum();
+		st += "\n---------------------------------------\n";
+		return st;
+	}
+
+	// GETTERS and SETTERS
+	public ArrayList<CourseOffering> getOfferingList() {
+		return offeringList;
+	}
+
+	public void setOfferingList(ArrayList<CourseOffering> offeringList) {
+		this.offeringList = offeringList;
 	}
 
 	public String getCourseName() {
@@ -78,30 +120,6 @@ public class Course implements Serializable {
 
 	public void setPreReq(ArrayList<Course> preReq) {
 		this.preReq = preReq;
-	}
-
-	@Override
-	public String toString() {
-		String st = "\n";
-		st += getCourseName() + " " + getCourseNum();
-		st += "\n---------------------------------------";
-		st += "\nAll course sections:\n";
-		for (CourseOffering c : offeringList)
-			st += c;
-		st += "\nAll course prerequisites:\n";
-		for (Course c : preReq)
-			st += c.getCourseName() + " " + c.getCourseNum();
-		st += "\n---------------------------------------\n";
-		return st;
-	}
-
-	public CourseOffering getCourseOfferingAt(int i) {
-		// TODO Auto-generated method stub
-		if (i < 0 || i >= offeringList.size()) {
-			System.out.println("Offering " + i + " does not exist.");
-			return null;
-		} else
-			return offeringList.get(i);
 	}
 
 }

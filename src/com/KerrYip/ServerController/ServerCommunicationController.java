@@ -75,6 +75,7 @@ public class ServerCommunicationController {
 		}
 	}
 
+	// GETTERS and SETTERS
 	public ServerSocket getServerSocket() {
 		return serverSocket;
 	}

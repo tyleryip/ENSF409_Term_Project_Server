@@ -41,16 +41,15 @@ public class Session implements Runnable {
 	 */
 	public Session(Socket aSocket, CourseController courseController, StudentController studentController) {
 		// Set up instruction I/O
-//			stringIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
-//			stringOut = new PrintWriter(aSocket.getOutputStream(), true);
-		// The boolean argument for this line was
-		// added around 11:00am on 04/09/20, after a
-		// massive 4 hour debugging session; when
-		// setting up communication sockets for the
-		// server and client, it is imperative that
-		// this boolean be included or the
-		// client/server will hang waiting, even if
-		// a println() is used.
+		/*
+		 * stringIn = new BufferedReader(new
+		 * InputStreamReader(aSocket.getInputStream())); stringOut = new
+		 * PrintWriter(aSocket.getOutputStream(), true); The boolean argument for this
+		 * line was added around 11:00am on 04/09/20, after a massive 4 hour debugging
+		 * session; when setting up communication sockets for the server and client, it
+		 * is imperative that this boolean be included or the client/server will hang
+		 * waiting, even if a println is used.
+		 */
 
 		// Set up object I/O
 		try {
@@ -133,6 +132,7 @@ public class Session implements Runnable {
 	 * execute
 	 * 
 	 * @param command a string telling the server which command they want to execute
+	 * @return true if the command executes successfully, false otherwise
 	 */
 	private boolean executeCommand(String command) {
 		switch (command) {
@@ -289,6 +289,55 @@ public class Session implements Runnable {
 			e.printStackTrace();
 		}
 		return clientCourse;
+	}
+
+	// GETTERS and SETTERS
+	public ObjectInputStream getFromClient() {
+		return fromClient;
+	}
+
+	public void setFromClient(ObjectInputStream fromClient) {
+		this.fromClient = fromClient;
+	}
+
+	public ObjectOutputStream getToClient() {
+		return toClient;
+	}
+
+	public void setToClient(ObjectOutputStream toClient) {
+		this.toClient = toClient;
+	}
+
+	public CourseController getCourseController() {
+		return courseController;
+	}
+
+	public void setCourseController(CourseController courseController) {
+		this.courseController = courseController;
+	}
+
+	public StudentController getStudentController() {
+		return studentController;
+	}
+
+	public void setStudentController(StudentController studentController) {
+		this.studentController = studentController;
+	}
+
+	public Student getStudentUser() {
+		return studentUser;
+	}
+
+	public void setStudentUser(Student studentUser) {
+		this.studentUser = studentUser;
+	}
+
+	public Administrator getAdminUser() {
+		return adminUser;
+	}
+
+	public void setAdminUser(Administrator adminUser) {
+		this.adminUser = adminUser;
 	}
 
 }

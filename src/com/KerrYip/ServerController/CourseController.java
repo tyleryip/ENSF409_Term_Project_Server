@@ -1,6 +1,5 @@
 package com.KerrYip.ServerController;
 
-import com.KerrYip.ServerModel.*;
 import java.util.ArrayList;
 
 import com.KerrYip.ServerModel.Course;
@@ -17,10 +16,23 @@ public class CourseController {
 
 	private DatabaseController databaseController;
 
+	/**
+	 * Constructor for class CourseController, links the coure controller to the
+	 * database controller
+	 * 
+	 * @param db the DatabaseController
+	 */
 	public CourseController(DatabaseController db) {
 		this.databaseController = db;
 	}
 
+	/**
+	 * Creates a new course offering for a specified course
+	 * 
+	 * @param c      the course
+	 * @param secNum the section number
+	 * @param secCap the section capacity
+	 */
 	public void createCourseOffering(Course c, int secNum, int secCap) {
 		if (c != null && secCap > 0) {
 			CourseOffering theOffering = new CourseOffering(secNum, secCap);
@@ -28,6 +40,13 @@ public class CourseController {
 		}
 	}
 
+	/**
+	 * Searches the database for a specified course
+	 * 
+	 * @param courseName the name of the course, ex. ENGG
+	 * @param courseNum  the number of the course, ex. 233
+	 * @return the course you are searching for, or null if not found
+	 */
 	public Course searchCat(String courseName, int courseNum) {
 		for (Course c : databaseController.getCourseList()) {
 			if (courseName.equals(c.getCourseName()) && courseNum == c.getCourseNum()) {
@@ -38,6 +57,13 @@ public class CourseController {
 		return null;
 	}
 
+	/**
+	 * Another search method that uses the primary search method, but enables easier
+	 * searching by lumping name and number together
+	 * 
+	 * @param nameNum the course's full name and number, ex. ENGG 233
+	 * @return the course you are searching for, or null if not found
+	 */
 	public Course searchCat(String nameNum) {
 		if (nameNum == null) {
 			return null;
@@ -54,16 +80,13 @@ public class CourseController {
 		System.err.println("Course was not found!");
 	}
 
-	@Override
-	public String toString() {
-		String st = "All courses in the catalogue: \n";
-		for (Course c : databaseController.getCourseList()) {
-			st += c; // This line invokes the toString() method of Course
-			st += "\n";
-		}
-		return st;
-	}
-
+	/**
+	 * Adds a course to the course list
+	 * 
+	 * @param nameNum the name and number of the course you want to add, ex. ENGG
+	 *                233
+	 * @return the course you added, or null if course already exists
+	 */
 	public Course addCourse(String nameNum) {
 		if (nameNum == null) {
 			System.err.println("Error: Invalid input!");
@@ -79,6 +102,12 @@ public class CourseController {
 		return null;
 	}
 
+	/**
+	 * Removes a course from the course list
+	 * 
+	 * @param nameNum the name and number of the course you want to remove, ex. ENGG
+	 *                233
+	 */
 	public void removeCourse(String nameNum) {
 		if (nameNum == null) {
 			System.err.println("Error: Invalid input!");
@@ -88,6 +117,12 @@ public class CourseController {
 		databaseController.getCourseList().remove(searchCat(split[0], Integer.parseInt(split[1])));
 	}
 
+	/**
+	 * Adds a pre-requisite course to an existing course
+	 * 
+	 * @param advancedCourse the course that will require a prereq
+	 * @param preReqCourse   the prereq course
+	 */
 	public void addPreRequisite(String advancedCourse, String preReqCourse) {
 		if (advancedCourse == null || preReqCourse == null) {
 			System.err.println("Error: Invalid input!");
@@ -104,6 +139,12 @@ public class CourseController {
 		displayCourseNotFoundError();
 	}
 
+	/**
+	 * Another variant of the search feature that prints out the results to the
+	 * console
+	 * 
+	 * @param nameNum the name and number of the course, ex. ENGG 233
+	 */
 	public void searchCourseCatalogue(String nameNum) {
 		if (nameNum == null) {
 			System.err.println("Error: Invalid input!");
@@ -120,6 +161,17 @@ public class CourseController {
 		return;
 	}
 
+	@Override
+	public String toString() {
+		String st = "All courses in the catalogue: \n";
+		for (Course c : databaseController.getCourseList()) {
+			st += c; // This line invokes the toString() method of Course
+			st += "\n";
+		}
+		return st;
+	}
+
+	// GETTERS and SETTERS
 	public ArrayList<Course> getCourseList() {
 		return databaseController.getCourseList();
 	}

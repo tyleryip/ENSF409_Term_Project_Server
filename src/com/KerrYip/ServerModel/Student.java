@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Student implements Serializable {
 
 	/**
-	 * 
+	 * This long is used for serialization
 	 */
 	private static final long serialVersionUID = 3885505324085384368L;
 
@@ -23,12 +23,52 @@ public class Student implements Serializable {
 	// private ArrayList<CourseOffering> offeringList;
 	private ArrayList<Registration> studentRegList;
 
+	/**
+	 * Constructor for class student
+	 * 
+	 * @param studentName the name of the student
+	 * @param studentId   the ID number of the student
+	 */
 	public Student(String studentName, int studentId) {
 		this.setStudentName(studentName);
 		this.setStudentId(studentId);
 		studentRegList = new ArrayList<Registration>();
 	}
 
+	/**
+	 * Searchs a student's registration list for a registration that matches a
+	 * specified course
+	 * 
+	 * @param theCourse the course to search
+	 * @return the registration if found, null otherwsie
+	 */
+	public Registration searchStudentReg(Course theCourse) {
+		for (Registration reg : studentRegList) {
+			if (reg.getTheOffering().getTheCourse().equals(theCourse)) {
+				return reg;
+			}
+		}
+		System.out.println("Error: Could not find the registration matching that course!");
+		return null;
+	}
+
+	/**
+	 * Adds a registration to the student's list of registrations
+	 * 
+	 * @param registration the registration to add
+	 */
+	public void addRegistration(Registration registration) {
+		// TODO Auto-generated method stub
+		studentRegList.add(registration);
+	}
+
+	@Override
+	public String toString() {
+		String st = "Student Name: " + getStudentName() + "\n" + "Student Id: " + getStudentId() + "\n\n";
+		return st;
+	}
+
+	// GETTERS and SETTERS
 	public String getStudentName() {
 		return studentName;
 	}
@@ -51,27 +91,6 @@ public class Student implements Serializable {
 
 	public void setStudentRegList(ArrayList<Registration> studentRegList) {
 		this.studentRegList = studentRegList;
-	}
-
-	public Registration searchStudentReg(Course theCourse) {
-		for (Registration reg : studentRegList) {
-			if (reg.getTheOffering().getTheCourse().equals(theCourse)) {
-				return reg;
-			}
-		}
-		System.out.println("Error: Could not find the registration matching that course!");
-		return null;
-	}
-
-	@Override
-	public String toString() {
-		String st = "Student Name: " + getStudentName() + "\n" + "Student Id: " + getStudentId() + "\n\n";
-		return st;
-	}
-
-	public void addRegistration(Registration registration) {
-		// TODO Auto-generated method stub
-		studentRegList.add(registration);
 	}
 
 }

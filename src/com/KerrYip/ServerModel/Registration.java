@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class Registration implements Serializable {
 
 	/**
-	 * 
+	 * This long is used for serialization
 	 */
 	private static final long serialVersionUID = 9101593004016454800L;
 
@@ -21,12 +21,22 @@ public class Registration implements Serializable {
 	private CourseOffering theOffering;
 	private char grade;
 
+	/**
+	 * Links a student and course offering together via a registration
+	 * 
+	 * @param st the student
+	 * @param of the course offering
+	 */
 	public void completeRegistration(Student st, CourseOffering of) {
 		theStudent = st;
 		theOffering = of;
 		addRegistration();
 	}
 
+	/**
+	 * Adds a registration to the student's registration list and the course
+	 * offering's registration list
+	 */
 	private void addRegistration() {
 		if (theStudent.getStudentRegList().size() > 6) {
 			System.out.println(
@@ -37,6 +47,18 @@ public class Registration implements Serializable {
 		theOffering.addRegistration(this);
 	}
 
+	@Override
+	public String toString() {
+		String st = "\n";
+		st += "Student Name: " + getTheStudent() + "\n";
+		st += "The Offering: " + getTheOffering() + "\n";
+		st += "Grade: " + getGrade();
+		st += "\n-----------\n";
+		return st;
+
+	}
+
+	// GETTERS and SETTERS
 	public Student getTheStudent() {
 		return theStudent;
 	}
@@ -59,17 +81,6 @@ public class Registration implements Serializable {
 
 	public void setGrade(char grade) {
 		this.grade = grade;
-	}
-
-	@Override
-	public String toString() {
-		String st = "\n";
-		st += "Student Name: " + getTheStudent() + "\n";
-		st += "The Offering: " + getTheOffering() + "\n";
-		st += "Grade: " + getGrade();
-		st += "\n-----------\n";
-		return st;
-
 	}
 
 }
