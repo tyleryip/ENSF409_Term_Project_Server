@@ -30,6 +30,7 @@ public class DatabaseController {
 		// Load the simulated data in
 		readCoursesFromDatabase();
 		readStudentsFromDatabase();
+		registerStudentsInCourses();
 	}
 
 	// The following methods create and add the simulated data, in the future we
@@ -43,7 +44,8 @@ public class DatabaseController {
 		studentList.add(new Student("Jenny", 6));
 		studentList.add(new Student("Alex", 7));
 		studentList.add(new Student("Megan", 8));
-		studentList.add(new Student("Mike", 8));
+		studentList.add(new Student("Mike", 9));
+		studentList.add(new Student("Sugar Tits", 10));
 	}
 
 	private void readCoursesFromDatabase() {
@@ -71,6 +73,13 @@ public class DatabaseController {
 		courseList.get(1).addPreReq(courseList.get(4));
 		courseList.get(4).addPreReq(courseList.get(3));
 		courseList.get(2).addPreReq(courseList.get(3));
+	}
+	
+	private void registerStudentsInCourses() {
+		Registration r = new Registration();
+		r.completeRegistration(studentList.get(1), courseList.get(1).getCourseOfferingAt(0));
+		r.completeRegistration(studentList.get(1), courseList.get(2).getCourseOfferingAt(1));
+		r.completeRegistration(studentList.get(1), courseList.get(3).getCourseOfferingAt(1));
 	}
 
 	// GETTERS and SETTERS

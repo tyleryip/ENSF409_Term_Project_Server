@@ -189,10 +189,23 @@ public class Session implements Runnable {
 		studentUser = studentController.searchStudent(checkID);
 		if (studentUser != null) {
 			System.out.println("[Sever] User logged in using id: " + checkID);
-			writeString("login successful");
+			try {
+				toClient.writeObject(studentUser);
+			} catch (IOException e) {
+				System.err.println("Error: unable to write student object to client");
+				e.printStackTrace();
+				return false;
+			}
 			return true;
 		}
-		writeString("login failed");
+		//If search fails write null to the client
+		try {
+			toClient.writeObject(null);
+		} catch (IOException e) {
+			System.err.println("Error: unable to write student object to client");
+			e.printStackTrace();
+			return false;
+		}
 		return false;
 	}
 
