@@ -354,7 +354,6 @@ public class Session implements Runnable {
 			System.err.println("Error: could not write the course to the output strean");
 			e.printStackTrace();
 		}
-		writeString("Browse completed");
 		return true;
 	}
 
