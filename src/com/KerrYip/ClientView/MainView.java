@@ -78,3 +78,4 @@ public class MainView extends JFrame {
     public void setBrowseCatalog(BrowseCatalogPanel browseCatalog) { this.browseCatalog = browseCatalog; }
 
 }
+

@@ -9,12 +9,14 @@ import java.awt.event.ActionListener;
  */
 public class BrowseCatalogPanel extends JPanel{
 
+	private int width, height;
 	private JButton backButton;
 	private JLabel browseCatalogLabel;
 	private JTextArea dataText;
 
-	public BrowseCatalogPanel() {
-
+	public BrowseCatalogPanel(int width, int height) {
+		this.width = width;
+		this.height = height;
 		// Buttons for the main window
 		backButton = new JButton("Back");
 
@@ -45,13 +47,16 @@ public class BrowseCatalogPanel extends JPanel{
 		dataText.setEditable(false); // This ensure that the user cannot edit the data field
 		dataText.setText(""); // This displays empty text in the field
 
+
 		// Make the data field scroll-able if enough data fills the panel
 		JScrollPane dataTextScrollPane = new JScrollPane(dataText);
 		dataTextScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+
         //adding panels to appropriate quadrants
         add("North", titlePanel);
         add("South", buttonPanel);
         add("Center", dataTextScrollPane);
+
 
     }
 

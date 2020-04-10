@@ -15,7 +15,8 @@ public class AdminMenuPanel extends JPanel {
 
     /**
      * Constructs the Admin Menu Panel
-     * @param width width of the Frame the panel will be in
+     *
+     * @param width  width of the Frame the panel will be in
      * @param height width of the Frame the panel will be in
      */
     public AdminMenuPanel(int width, int height) {
@@ -53,7 +54,7 @@ public class AdminMenuPanel extends JPanel {
         buttonPanel.add(runButton);
 
         //the data field that displays
-        dataText = new JTextArea((int)(width*0.75), (int)(height*0.75));
+        dataText = new JTextArea((int) (width * 0.75), (int) (height * 0.75));
         dataText.setLineWrap(true); // Allows text to wrap if it reaches the end of the line
         dataText.setWrapStyleWord(true); // text should wrap at word boundaries rather than character boundaries
         dataText.setEditable(false);  // This ensure that the user cannot edit the data field
@@ -73,58 +74,64 @@ public class AdminMenuPanel extends JPanel {
 
     /**
      * Adds Listeners to the addCourseButton
+     *
      * @param listenForAddCourseToCatalogButton the listener for the button
      */
-    public void addAddCourseToCatalogListener (ActionListener listenForAddCourseToCatalogButton){
+    public void addAddCourseToCatalogListener(ActionListener listenForAddCourseToCatalogButton) {
         addCourseButton.addActionListener(listenForAddCourseToCatalogButton);
     }
 
     /**
      * Adds Listeners to the removeCourseButton
+     *
      * @param listenForRemoveCourseFromCatalogButton the listener for the button
      */
-    public void addRemoveCourseFromCatalogListener (ActionListener listenForRemoveCourseFromCatalogButton){
+    public void addRemoveCourseFromCatalogListener(ActionListener listenForRemoveCourseFromCatalogButton) {
         removeCourseButton.addActionListener(listenForRemoveCourseFromCatalogButton);
     }
 
     /**
      * Adds Listeners to the browseCatalogButton
+     *
      * @param listenForSearchCatalogButton the listener for the button
      */
-    public void addBrowseCatalogListener (ActionListener listenForSearchCatalogButton){
+    public void addBrowseCatalogListener(ActionListener listenForSearchCatalogButton) {
         browseCatalogButton.addActionListener(listenForSearchCatalogButton);
     }
 
     /**
      * Adds listeners to the searchCatalogButton
+     *
      * @param listenForSearchCatalogButton the listener for the button
      */
-    public void addSearchCatalogListener (ActionListener listenForSearchCatalogButton){
+    public void addSearchCatalogListener(ActionListener listenForSearchCatalogButton) {
         searchCatalogButton.addActionListener(listenForSearchCatalogButton);
     }
 
     /**
      * Adds listeners to the viewStudentCoursesButton
+     *
      * @param listenForStudentEnrolledCoursesButton the listener for the button
      */
-    public void addViewStudentEnrolledCoursesListener (ActionListener listenForStudentEnrolledCoursesButton){
+    public void addViewStudentEnrolledCoursesListener(ActionListener listenForStudentEnrolledCoursesButton) {
         viewStudentCoursesButton.addActionListener(listenForStudentEnrolledCoursesButton);
     }
 
     /**
      * Adds listeners to the runButton
+     *
      * @param listenForRunCoursesButton the listener for the button
      */
-    public void addRunCoursesListener (ActionListener listenForRunCoursesButton){
+    public void addRunCoursesListener(ActionListener listenForRunCoursesButton) {
         runButton.addActionListener(listenForRunCoursesButton);
     }
 
     /**
      * Adds listeners to the logoutButton
+     *
      * @param listenForLogoutButton the listener for the button
      */
-    public void addLogoutListener (ActionListener listenForLogoutButton){
+    public void addLogoutListener(ActionListener listenForLogoutButton) {
         logoutButton.addActionListener(listenForLogoutButton);
     }
-
 }

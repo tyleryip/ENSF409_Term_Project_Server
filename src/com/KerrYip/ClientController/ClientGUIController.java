@@ -114,7 +114,7 @@ public class ClientGUIController {
      * Creates the JPanel for viewing the course catalog and adds all the buttons and adds it to the frame
      */
     public void browseCatalogSetup() {
-        frame.setBrowseCatalog(new BrowseCatalogPanel());
+        frame.setBrowseCatalog(new BrowseCatalogPanel(getWidth(),getHeight()));
         frame.getBrowseCatalog().addBackStudentMenuListener(new BackStudentMenu());
         frame.addCard(frame.getBrowseCatalog(), "Browse Catalog");
     }
