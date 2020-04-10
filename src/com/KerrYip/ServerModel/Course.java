@@ -129,5 +129,9 @@ public class Course implements Serializable {
 	public void setPreReq(ArrayList<Course> preReq) {
 		this.preReq = preReq;
 	}
+	
+	public String getNameNum() {
+		return this.courseName + " " + this.getCourseNum();
+	}
 
 }

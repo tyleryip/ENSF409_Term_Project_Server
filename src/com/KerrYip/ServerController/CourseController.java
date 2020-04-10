@@ -103,7 +103,8 @@ public class CourseController {
 	}
 
 	/**
-	 * Removes a course from the course list and removes the course listed as a prereq from all other courses
+	 * Removes a course from the course list and removes the course listed as a
+	 * prereq from all other courses
 	 * 
 	 * @param nameNum the name and number of the course you want to remove, ex. ENGG
 	 *                233
@@ -113,6 +114,20 @@ public class CourseController {
 			System.err.println("Error: Invalid input!");
 			return;
 		}
+		if (searchCat(nameNum) == null) { // Check to see if the coruse is in the catalog
+			return;
+		}
+		// We now need to deal with other courses that may have this course listed as a
+		// prerequisite
+		for (Course c : databaseController.getCourseList()) {
+			for (Course p : c.getPreReq()) {
+				if (p.getNameNum() == nameNum) {
+					c.getPreReq().remove(p);
+				}
+			}
+		}
+		// Now that prereqs are dealt with, we can finally remove the course itself from
+		// the catalog
 		String[] split = nameNum.split(" ");
 		databaseController.getCourseList().remove(searchCat(split[0], Integer.parseInt(split[1])));
 	}
