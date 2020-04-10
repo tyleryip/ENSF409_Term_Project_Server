@@ -142,6 +142,15 @@ public class Session implements Runnable {
 			System.out.println("doing student login");
 			return studentLogin();
 
+		case "enroll course":	
+			return false;
+		
+		case "drop course":
+			return false;
+			
+		case "student courses":
+			return false;
+			
 		case "add course":
 			return addCourse();
 
@@ -238,6 +247,7 @@ public class Session implements Runnable {
 		clientCourse = courseController.searchCat(clientCourse.getCourseName(), clientCourse.getCourseNum());
 		if (clientCourse != null) {
 			try {
+				writeString("course found");
 				toClient.writeObject(clientCourse);
 				writeString("Search completed");
 				return true;
@@ -246,12 +256,7 @@ public class Session implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		try {
-			toClient.writeObject(null);
-		} catch (IOException e) {
-			System.err.println("Error: unable to write course to output stream");
-			e.printStackTrace();
-		}
+		writeString("course not found");
 		writeString("Search completed");
 		return false;
 	}

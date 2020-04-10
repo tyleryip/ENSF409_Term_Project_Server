@@ -12,6 +12,7 @@ import javax.swing.border.Border;
 
 import com.KerrYip.ServerModel.Course;
 //import com.KerrYip.ClientModel.Course;
+
 import com.KerrYip.ClientView.AdminMenuPanel;
 import com.KerrYip.ClientView.BrowseCatalogPanel;
 import com.KerrYip.ClientView.LoginSelectPanel;
