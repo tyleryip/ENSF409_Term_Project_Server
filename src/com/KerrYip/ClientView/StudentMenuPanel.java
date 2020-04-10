@@ -1,8 +1,13 @@
 package com.KerrYip.ClientView;
 
+//import com.KerrYip.ClientModel.Course;
+import com.KerrYip.ServerModel.Course;
+
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * The Panel for the Student Menu which allows the student to select what
@@ -41,6 +46,7 @@ public class StudentMenuPanel extends JPanel {
 		JPanel titlePanel = new JPanel();
 		JPanel buttonPanel = new JPanel();
 		JPanel coursePanel = new JPanel();
+		coursePanel.setLayout(new BorderLayout());
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.PAGE_AXIS));
 
 		// Set up the layout of the main window
@@ -52,7 +58,7 @@ public class StudentMenuPanel extends JPanel {
 		buttonPanel.add(dropCourseButton);
 		buttonPanel.add(browseCatalogButton);
 		buttonPanel.add(searchCatalogButton);
-		buttonPanel.add(viewEnrolledCoursesButton);
+		coursePanel.add("South",viewEnrolledCoursesButton);
 
 		// the data field that displays
 		dataText = new JTextArea((int) (width * 0.75), (int) (height * 0.75));
@@ -64,13 +70,22 @@ public class StudentMenuPanel extends JPanel {
 		// Make the data field scroll-able if enough data fills the panel
 		JScrollPane dataTextScrollPane = new JScrollPane(dataText);
 		dataTextScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		coursePanel.add("Center",dataTextScrollPane);
 
 		// adding panels to appropriate quadrants
 		add("North", titlePanel);
 		add("East", buttonPanel);
-		add("Center", dataTextScrollPane);
+		add("Center", coursePanel);
 		add("South", logoutButton);
 
+	}
+
+	public void updateCourse(ArrayList<Course> catalog){
+		String temp = "";
+		for(int i = 0; i < catalog.size(); i++){
+			temp += catalog.get(i);
+		}
+		dataText.setText(temp);
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package com.KerrYip.ClientController;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -7,8 +8,10 @@ import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 
-import com.KerrYip.ClientModel.Course;
+import com.KerrYip.ServerModel.Course;
+//import com.KerrYip.ClientModel.Course;
 
 import com.KerrYip.ClientView.AdminMenuPanel;
 import com.KerrYip.ClientView.BrowseCatalogPanel;
@@ -89,7 +92,7 @@ public class ClientGUIController {
 		frame.getStudentMenu().addEnrollCourseListener(new StudentEnrollCourseListener());
 		frame.getStudentMenu().addDropCourseListener(new StudentDropCourseListener());
 		frame.getStudentMenu().addBrowseCatalogListener(new StudentBrowseCatalogListener());
-		frame.getStudentMenu().addSearchCatalogListener(new StudentSearchCatalogListener());
+		frame.getStudentMenu().addSearchCatalogListener(new SearchCatalogListener());
 		frame.getStudentMenu().addViewEnrolledCoursesListener(new StudentViewEnrolledCoursesListener());
 		frame.getStudentMenu().addLogoutListener(new LogoutListener());
 
@@ -109,7 +112,7 @@ public class ClientGUIController {
 		frame.getAdminMenu().addAddCourseToCatalogListener(new AddCourseToCatalogListener());
 		frame.getAdminMenu().addRemoveCourseFromCatalogListener(new RemoveCourseFromCatalogListener());
 		frame.getAdminMenu().addBrowseCatalogListener(new AdminBrowseCatalogListener());
-		frame.getAdminMenu().addSearchCatalogListener(new AdminSearchCatalogListener());
+		frame.getAdminMenu().addSearchCatalogListener(new SearchCatalogListener());
 		frame.getAdminMenu().addViewStudentEnrolledCoursesListener(new AdminViewEnrolledCoursesListener());
 		frame.getAdminMenu().addRunCoursesListener(new RunCoursesListener());
 		frame.getAdminMenu().addLogoutListener(new LogoutListener());
@@ -145,7 +148,7 @@ public class ClientGUIController {
 			} else {
 				// ok is pressed, check if login is valid
 				System.out.println("student login");
-				String message = communicate.communicateStudentLogin("student login", studentID);
+				String message = communicate.communicateSendString("student login", studentID);
 				if (message.equals("login successful")) {
 					// login is successful, take to student menu
 					frame.show("Student Menu");
@@ -175,7 +178,7 @@ public class ClientGUIController {
 			} else {
 				// ok is pressed, check if login is valid
 				System.out.println("admin login");
-				String message = communicate.communicateStudentLogin("admin login", adminID);
+				String message = communicate.communicateSendString("admin login", adminID);
 				if (message.equals("login successful")) {
 					// login is successful, take to admin menu
 					frame.show("Admin Menu");
@@ -212,13 +215,33 @@ public class ClientGUIController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("enroll course");
+
+			//creates prompt
+			JPanel enrollPanel = new JPanel();
+			JLabel enrollTitle = new JLabel("Please enter the course you would like to enroll in");
+			JPanel input = new JPanel();
+			input.add(new JLabel("Course Name:"));
+			JTextField courseName = new JTextField(10);
+			input.add(courseName);
+			input.add(new JLabel("Course Number:"));
+			JTextField courseNumber = new JTextField(15);
+			input.add(courseNumber);
+
+			enrollPanel.setLayout(new BorderLayout());
+			enrollPanel.add("North",enrollTitle);
+			enrollPanel.add("Center",input);
+
+
 			// prompts user for the course
-			String courseName = JOptionPane.showInputDialog("Please enter the course you would like to enroll in");
-			String[] temp = courseName.split(" ");
-			Course tempCourse = new Course(temp[0], Integer.parseInt(temp[1]));
-			String message = communicate.communicateSendCourse("enroll course", tempCourse);
-			System.out.println(message);
-			JOptionPane.showMessageDialog(null, message);
+			int result = JOptionPane.showOptionDialog(null, enrollPanel, "Enroll In New Course",
+					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+
+			if(result == JOptionPane.OK_OPTION) {
+				Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()));
+				String message = communicate.communicateSendCourse("enroll course", tempCourse);
+				System.out.println(message);
+				JOptionPane.showMessageDialog(null, message);
+			}
 		}
 	}
 
@@ -232,12 +255,33 @@ public class ClientGUIController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("drop course");
-			String courseName = JOptionPane.showInputDialog("Please enter the course you would like to drop");
-			String[] temp = courseName.split(" ");
-			Course tempCourse = new Course(temp[0], Integer.parseInt(temp[1]));
-			String message = communicate.communicateSendCourse("add course", tempCourse);
-			System.out.println(message);
-			JOptionPane.showMessageDialog(null, message);
+
+			//creates prompt
+			JPanel enrollPanel = new JPanel();
+			JLabel enrollTitle = new JLabel("Please enter the course you would like to drop");
+			JPanel input = new JPanel();
+			input.add(new JLabel("Course Name:"));
+			JTextField courseName = new JTextField(10);
+			input.add(courseName);
+			input.add(new JLabel("Course Number:"));
+			JTextField courseNumber = new JTextField(15);
+			input.add(courseNumber);
+
+			enrollPanel.setLayout(new BorderLayout());
+			enrollPanel.add("North",enrollTitle);
+			enrollPanel.add("Center",input);
+
+
+			// prompts user for the course
+			int result = JOptionPane.showOptionDialog(null, enrollPanel, "Enroll In New Course",
+					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+
+			if(result == JOptionPane.OK_OPTION) {
+				Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()));
+				String message = communicate.communicateSendCourse("enroll course", tempCourse);
+				System.out.println(message);
+				JOptionPane.showMessageDialog(null, message);
+			}
 		}
 	}
 
@@ -250,7 +294,7 @@ public class ClientGUIController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("browse catalog");
-			ArrayList<Course> catalog = communicate.communicateBrowseCatalog("browse courses");
+			ArrayList<Course> catalog = communicate.communicateGetCourseList("browse courses");
 			frame.getBrowseCatalog().updateCatalog(catalog);
 			frame.getBrowseCatalog().addBackMenuListener(new BackStudentMenu());
 			frame.show("Browse Catalog");
@@ -266,7 +310,7 @@ public class ClientGUIController {
         @Override
         public void actionPerformed(ActionEvent e) {
             System.out.println("browse catalog");
-			ArrayList<Course> catalog = communicate.communicateBrowseCatalog("browse courses");
+			ArrayList<Course> catalog = communicate.communicateGetCourseList("browse courses");
             frame.getBrowseCatalog().updateCatalog(catalog);
             frame.getBrowseCatalog().addBackMenuListener(new BackAdminMenu());
             frame.show("Browse Catalog");
@@ -278,38 +322,44 @@ public class ClientGUIController {
 	 * the course they are searching for and sends it to server if the result is
 	 * found display, if not display that course isn't found
 	 */
-	class StudentSearchCatalogListener implements ActionListener {
+	class SearchCatalogListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("search catalog");
-			String courseName = JOptionPane.showInputDialog("Please enter the course you would like to search for");
-			String[] temp = courseName.split(" ");
-			Course tempCourse = new Course(temp[0], Integer.parseInt(temp[1]));
-			String message = communicate.communicateSendCourse("add course", tempCourse);
-			System.out.println(message);
-			JOptionPane.showMessageDialog(null, message);
+
+			//creates prompt
+			JPanel dropPanel = new JPanel();
+			JLabel dropTitle = new JLabel("Please enter the course you would like to search for");
+			JPanel input = new JPanel();
+			input.add(new JLabel("Course Name:"));
+			JTextField courseName = new JTextField(10);
+			input.add(courseName);
+			input.add(new JLabel("Course Number:"));
+			JTextField courseNumber = new JTextField(5);
+			input.add(courseNumber);
+
+			dropPanel.setLayout(new BorderLayout());
+			dropPanel.add("North",dropTitle);
+			dropPanel.add("Center",input);
+
+
+			// prompts user for the course
+			int result = JOptionPane.showOptionDialog(null, dropPanel, "Search for a Course",
+					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+
+			if(result == JOptionPane.OK_OPTION) {
+				Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()));
+				Course foundCourse = communicate.communicateGetCourse("search course", tempCourse);
+				System.out.println(foundCourse);
+				if(foundCourse == null){
+					JOptionPane.showMessageDialog(null, "Course was not found");
+				}else {
+					JOptionPane.showMessageDialog(null, foundCourse );
+				}
+			}
 		}
 	}
-
-    /**
-     * Listens for when the search catalog button has been pressed Prompts user for
-     * the course they are searching for and sends it to server if the result is
-     * found display, if not display that course isn't found
-     */
-    class AdminSearchCatalogListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            System.out.println("search catalog");
-            String courseName = JOptionPane.showInputDialog("Please enter the course you would like to search for");
-            String[] temp = courseName.split(" ");
-            Course tempCourse = new Course(temp[0], Integer.parseInt(temp[1]));
-            String message = communicate.communicateSendCourse("add course", tempCourse);
-            System.out.println(message);
-            JOptionPane.showMessageDialog(null, message);
-        }
-    }
 
 	/**
 	 * Listen for when the Enroll Student in a Course button has been pressed
@@ -321,6 +371,8 @@ public class ClientGUIController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("student courses");
+			ArrayList<Course> courseList = communicate.communicateGetCourseList("student courses");
+			frame.getStudentMenu().updateCourse(courseList);
 		}
 	}
 
@@ -449,4 +501,5 @@ public class ClientGUIController {
 	public int getHeight() {
 		return height;
 	}
+
 }
