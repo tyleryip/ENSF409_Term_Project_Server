@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import com.KerrYip.ServerModel.Administrator;
 import com.KerrYip.ServerModel.Course;
@@ -117,7 +118,7 @@ public class Session implements Runnable {
 				System.out.println("[Server] Command: " + command + ", failed to execute");
 		}
 
-		//Now we have to close all connections to the client
+		// Now we have to close all connections to the client
 		try {
 			fromClient.close();
 			toClient.close();
@@ -154,12 +155,12 @@ public class Session implements Runnable {
 			return searchForCourse();
 
 		case "admin login":
-			//TODO implement this method along with the class Administrator
+			// TODO implement this method along with the class Administrator
 			return false;
-		
+
 		case "QUIT":
 			return true;
-			
+
 		default:
 			System.err.println("No option available that matched: " + command);
 			return false;
@@ -196,6 +197,40 @@ public class Session implements Runnable {
 		return false;
 	}
 
+	/**
+	 * This method allows administrator users to log into the system
+	 */
+	private boolean adminLogin() {
+		String credentials = "";
+		credentials = readString();
+		if (credentials.contentEquals("admin")) {
+			adminUser = new Administrator();
+			writeString("login successful");
+			return true;
+		}
+		writeString("login failed");
+		return false;
+	}
+
+	/**
+	 * Checks to see if the administrator user is logged in or not
+	 * 
+	 * @return true if the administrator is logged in to a valid administrator
+	 *         account, false otherwise
+	 */
+	private boolean adminLoggedIn() {
+		if (adminUser != null) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Allows a student to search for a course and returns the results of their
+	 * search back to the client
+	 * 
+	 * @return true if found, false otherwise
+	 */
 	private boolean searchForCourse() {
 		if (!studentLoggedIn()) {
 			return false;
@@ -205,13 +240,20 @@ public class Session implements Runnable {
 		if (clientCourse != null) {
 			try {
 				toClient.writeObject(clientCourse);
+				writeString("Search completed");
 				return true;
 			} catch (IOException e) {
 				System.err.println("Error: unable to write course to output stream");
 				e.printStackTrace();
 			}
 		}
-		writeString("Search completed.");
+		try {
+			toClient.writeObject(null);
+		} catch (IOException e) {
+			System.err.println("Error: unable to write course to output stream");
+			e.printStackTrace();
+		}
+		writeString("Search completed");
 		return false;
 	}
 
@@ -222,16 +264,17 @@ public class Session implements Runnable {
 		if (!studentLoggedIn()) {
 			return false;
 		}
+		ArrayList<Course> courseToSend = new ArrayList<Course>();
 		for (Course c : courseController.getCourseList()) {
-			try {
-				toClient.writeObject(c);
-				return true;
-			} catch (IOException e) {
-				System.err.println("Error: unable to write course to output stream");
-				e.printStackTrace();
-			}
+			courseToSend.add(c);
 		}
-		writeString("Browse completed.");
+		try {
+			toClient.writeObject(courseToSend);
+		} catch (IOException e) {
+			System.err.println("Error: I/O error with writing course list to object outputstream");
+			e.printStackTrace();
+		}
+		writeString("Browse completed");
 		return false;
 	}
 
@@ -250,10 +293,10 @@ public class Session implements Runnable {
 		if (clientCourse != null) {
 			Registration newReg = new Registration();
 			newReg.completeRegistration(studentUser, clientCourse.getCourseOfferingAt(0));
-			writeString("Sucessfullyy added this course to your courses.");
+			writeString("Sucessfullyy added this course to your courses");
 			return true;
 		}
-		writeString("Unable to add this course to your courses.");
+		writeString("Unable to add this course to your courses");
 		return false;
 	}
 
@@ -269,10 +312,10 @@ public class Session implements Runnable {
 		Registration removeReg = studentUser.searchStudentReg(clientCourse);
 		if (removeReg != null) {
 			studentUser.getStudentRegList().remove(removeReg);
-			writeString("Successfully removed this course from your courses.");
+			writeString("Successfully removed this course from your courses");
 			return true;
 		}
-		writeString("Unable to add this course to your courses: could not find this course in your courses.");
+		writeString("Unable to add this course to your courses: could not find this course in your courses");
 		return false;
 
 	}
