@@ -216,8 +216,8 @@ public class ClientCommunicationController {
 	 * @param course      The course the server needs for the instruction
 	 * @return The message the server sends back
 	 */
-	public ArrayList<Registration> communicateEnrollCourse(String instruction, Course course, String lectureNumber) {
-		ArrayList<Registration> registrationList = new ArrayList<Registration>();
+	public String communicateEnrollCourse(String instruction, Course course, String lectureNumber, ArrayList<Registration> registrationList) {
+		String message = "";
 		try {
 			writeString(instruction);
 
@@ -225,6 +225,8 @@ public class ClientCommunicationController {
 			toServer.flush();
 
 			writeString(lectureNumber);
+
+			message = readString();
 
 			Registration registration = (Registration) fromServer.readObject();
 			while (registration != null) {
@@ -236,7 +238,7 @@ public class ClientCommunicationController {
 		}catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		return registrationList;
+		return message;
 	}
 
 	/**
@@ -246,14 +248,15 @@ public class ClientCommunicationController {
 	 * @param course      The course the server needs for the instruction
 	 * @return The message the server sends back
 	 */
-	public ArrayList<Registration> communicateDropCourse(String instruction, Course course) {
-		ArrayList<Registration> registrationList = new ArrayList<Registration>();
+	public String communicateDropCourse(String instruction, Course course, ArrayList<Registration> registrationList) {
+		String temp = "";
 		try {
 			writeString(instruction);
 
 			toServer.writeObject(course);
 			toServer.flush();
 
+			temp = readString();
 
 			Registration registration = (Registration) fromServer.readObject();
 			while (registration != null) {
@@ -265,7 +268,8 @@ public class ClientCommunicationController {
 		}catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		return registrationList;
+		System.out.println("reg list size = " + registrationList.size());
+		return temp;
 	}
 
 	/**
