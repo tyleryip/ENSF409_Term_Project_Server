@@ -29,7 +29,7 @@ public class Course implements Serializable {
 	private ArrayList<CourseOffering> offeringList;
 
 	@Override
-	public String toString () {
+	public String toString() {
 		String st = "\n";
 		st += courseName + " " + courseNum;
 		st += "\nAll course sections:\n";
@@ -39,6 +39,11 @@ public class Course implements Serializable {
 		return st;
 	}
 
-	public String getCourseName() { return courseName; }
-	public int getCourseNum() { return courseNum; }
+	public String getCourseName() {
+		return courseName;
+	}
+
+	public int getCourseNum() {
+		return courseNum;
+	}
 }

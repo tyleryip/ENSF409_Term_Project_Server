@@ -16,7 +16,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-
 /**
  * This class is primarily used to communicate with the server via sockets
  * 
@@ -147,9 +146,9 @@ public class ClientCommunicationController {
 
 		try {
 			tempStudent = (Student) fromServer.readObject();
-		}catch(IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
-		}catch(ClassNotFoundException e){
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 
@@ -173,10 +172,10 @@ public class ClientCommunicationController {
 			toServer.flush();
 
 			message = readString();
-			if(message.equals("course found")) {
+			if (message.equals("course found")) {
 				courseResult = (Course) fromServer.readObject();
 				message = courseResult.toString();
-			}else{
+			} else {
 				message = readString();
 			}
 
@@ -262,6 +261,7 @@ public class ClientCommunicationController {
 
 	/**
 	 * Sends an instruction to the Server and receives back an Course Array
+	 * 
 	 * @param instruction The instruction the server will execute
 	 * @return The Course Array requested
 	 */
@@ -270,7 +270,7 @@ public class ClientCommunicationController {
 		try {
 			writeString(instruction);
 			Course course = (Course) fromServer.readObject();
-			while(course != null){
+			while (course != null) {
 				catalog.add(course);
 				course = (Course) fromServer.readObject();
 			}
@@ -284,6 +284,7 @@ public class ClientCommunicationController {
 
 	/**
 	 * Sends an instruction to the Server and receives back an Course Array
+	 * 
 	 * @param instruction The instruction the server will execute
 	 * @return The Course Array requested
 	 */
@@ -293,7 +294,7 @@ public class ClientCommunicationController {
 			writeString(instruction);
 			writeString(studentID);
 			Course course = (Course) fromServer.readObject();
-			while(course != null){
+			while (course != null) {
 				catalog.add(course);
 				course = (Course) fromServer.readObject();
 			}
@@ -307,6 +308,7 @@ public class ClientCommunicationController {
 
 	/**
 	 * Sends an instruction to the Server and receives back an Course Array
+	 * 
 	 * @param instruction The instruction the server will execute
 	 * @return The Course Array requested
 	 */
@@ -316,7 +318,7 @@ public class ClientCommunicationController {
 			writeString(instruction);
 			writeString(studentID);
 			Registration temp = (Registration) fromServer.readObject();
-			while(temp != null){
+			while (temp != null) {
 				registration.add(temp);
 				temp = (Registration) fromServer.readObject();
 			}

@@ -11,7 +11,28 @@ package com.KerrYip.ServerModel;
  */
 public class Administrator {
 
-	public Administrator() {
+	private String name;
+	private boolean active;
 
+	public Administrator() {
+		this.name = "admin";
+		this.active = false;
+	}
+
+	// GETTERS and SETTERS
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

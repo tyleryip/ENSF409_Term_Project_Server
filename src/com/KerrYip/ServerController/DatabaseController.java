@@ -19,6 +19,13 @@ public class DatabaseController {
 	private ArrayList<Course> courseList;
 
 	/**
+	 * These two array lists are currently inactive, but will be needed for the SQL
+	 * database
+	 */
+	private ArrayList<Registration> registrationList;
+	private ArrayList<CourseOffering> courseOfferingList;
+
+	/**
 	 * Constructor for class DatabaseController creates ArrayLists and populates
 	 * them with simulated data, this data will be replaced with data from the SQL
 	 * database in a future milestone
@@ -74,7 +81,7 @@ public class DatabaseController {
 		courseList.get(4).addPreReq(courseList.get(3));
 		courseList.get(2).addPreReq(courseList.get(3));
 	}
-	
+
 	private void registerStudentsInCourses() {
 		Registration r = new Registration();
 		r.completeRegistration(studentList.get(0), courseList.get(0).getCourseOfferingAt(0));

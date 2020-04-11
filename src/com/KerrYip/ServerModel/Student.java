@@ -20,7 +20,7 @@ public class Student implements Serializable {
 
 	private String studentName;
 	private int studentId;
-	// private ArrayList<CourseOffering> offeringList;
+	private boolean active;
 	private ArrayList<Registration> studentRegList;
 
 	/**
@@ -32,6 +32,7 @@ public class Student implements Serializable {
 	public Student(String studentName, int studentId) {
 		this.setStudentName(studentName);
 		this.setStudentId(studentId);
+		this.setActive(false);
 		studentRegList = new ArrayList<Registration>();
 	}
 
@@ -91,6 +92,14 @@ public class Student implements Serializable {
 
 	public void setStudentRegList(ArrayList<Registration> studentRegList) {
 		this.studentRegList = studentRegList;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 }
