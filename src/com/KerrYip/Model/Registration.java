@@ -1,4 +1,4 @@
-package com.KerrYip.ServerModel;
+package com.KerrYip.Model;
 
 import java.io.Serializable;
 

@@ -6,11 +6,11 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import com.KerrYip.ServerModel.Administrator;
-import com.KerrYip.ServerModel.Course;
-import com.KerrYip.ServerModel.CourseOffering;
-import com.KerrYip.ServerModel.Registration;
-import com.KerrYip.ServerModel.Student;
+import com.KerrYip.Model.Administrator;
+import com.KerrYip.Model.Course;
+import com.KerrYip.Model.CourseOffering;
+import com.KerrYip.Model.Registration;
+import com.KerrYip.Model.Student;
 
 /**
  * This class implements the runnable interface so that user can interact with

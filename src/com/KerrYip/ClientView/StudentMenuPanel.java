@@ -1,12 +1,12 @@
 package com.KerrYip.ClientView;
 
-//import com.KerrYip.ClientModel.Course;
-import com.KerrYip.ServerModel.Course;
-import com.KerrYip.ServerModel.Registration;
-import com.KerrYip.ServerModel.Student;
-
 import javax.swing.*;
 import javax.swing.border.Border;
+
+import com.KerrYip.Model.Course;
+import com.KerrYip.Model.Registration;
+import com.KerrYip.Model.Student;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;

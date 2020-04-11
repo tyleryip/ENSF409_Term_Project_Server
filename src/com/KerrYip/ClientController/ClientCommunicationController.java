@@ -3,19 +3,16 @@ package com.KerrYip.ClientController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-//import com.KerrYip.ClientModel.Course;
-//import com.KerrYip.ClientModel.Student;
-import com.KerrYip.ServerModel.Course;
-import com.KerrYip.ServerModel.CourseOffering;
-import com.KerrYip.ServerModel.Registration;
-import com.KerrYip.ServerModel.Student;
-
 import java.io.*;
 
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+
+import com.KerrYip.Model.Course;
+import com.KerrYip.Model.CourseOffering;
+import com.KerrYip.Model.Registration;
+import com.KerrYip.Model.Student;
 
 /**
  * This class is primarily used to communicate with the server via sockets

@@ -10,17 +10,15 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import com.KerrYip.ServerModel.Course;
-//import com.KerrYip.ClientModel.Course;
-
 import com.KerrYip.ClientView.AdminMenuPanel;
 import com.KerrYip.ClientView.BrowseCatalogPanel;
 import com.KerrYip.ClientView.LoginSelectPanel;
 import com.KerrYip.ClientView.MainView;
 import com.KerrYip.ClientView.StudentMenuPanel;
-import com.KerrYip.ServerModel.CourseOffering;
-import com.KerrYip.ServerModel.Registration;
-import com.KerrYip.ServerModel.Student;
+import com.KerrYip.Model.Course;
+import com.KerrYip.Model.CourseOffering;
+import com.KerrYip.Model.Registration;
+import com.KerrYip.Model.Student;
 
 /**
  * This class is used to communicate between the GUI and the

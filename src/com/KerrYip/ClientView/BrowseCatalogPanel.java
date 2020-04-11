@@ -1,9 +1,9 @@
 package com.KerrYip.ClientView;
 
-//import com.KerrYip.ClientModel.Course;
-import com.KerrYip.ServerModel.Course;
-
 import javax.swing.*;
+
+import com.KerrYip.Model.Course;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;

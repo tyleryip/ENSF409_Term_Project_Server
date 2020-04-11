@@ -1,4 +1,4 @@
-package com.KerrYip.ServerModel;
+package com.KerrYip.Model;
 
 /**
  * This class will be used to store administrator information and will have

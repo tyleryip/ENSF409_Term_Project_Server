@@ -3,7 +3,7 @@ package com.KerrYip.ServerController;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.KerrYip.ServerModel.Student;
+import com.KerrYip.Model.Student;
 
 /**
  * This class manages everything to do with students

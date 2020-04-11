@@ -2,8 +2,8 @@ package com.KerrYip.ServerController;
 
 import java.util.ArrayList;
 
-import com.KerrYip.ServerModel.Course;
-import com.KerrYip.ServerModel.CourseOffering;
+import com.KerrYip.Model.Course;
+import com.KerrYip.Model.CourseOffering;
 
 /**
  * This class manages everything to do with courses

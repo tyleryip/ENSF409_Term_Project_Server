@@ -2,7 +2,7 @@ package com.KerrYip.ServerController;
 
 import java.util.ArrayList;
 
-import com.KerrYip.ServerModel.*;
+import com.KerrYip.Model.*;
 
 /**
  * This class manages our database, including loading and saving data on
