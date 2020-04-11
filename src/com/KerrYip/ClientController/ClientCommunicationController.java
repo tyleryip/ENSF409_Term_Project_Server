@@ -216,8 +216,8 @@ public class ClientCommunicationController {
 	 * @param course      The course the server needs for the instruction
 	 * @return The message the server sends back
 	 */
-	public Student communicateEnrollCourse(String instruction, Course course, String lectureNumber) {
-		Student tempStudent = null;
+	public ArrayList<Registration> communicateEnrollCourse(String instruction, Course course, String lectureNumber) {
+		ArrayList<Registration> registrationList = new ArrayList<Registration>();
 		try {
 			writeString(instruction);
 
@@ -226,16 +226,17 @@ public class ClientCommunicationController {
 
 			writeString(lectureNumber);
 
-			tempStudent = (Student)(fromServer.readObject());
-			for(int i = 0; i < tempStudent.getStudentRegList().size(); i++){
-				System.out.println(tempStudent.getStudentRegList().get(i));
+			Registration registration = (Registration) fromServer.readObject();
+			while (registration != null) {
+				registrationList.add(registration);
+				registration = (Registration) fromServer.readObject();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		return tempStudent;
+		return registrationList;
 	}
 
 	/**
@@ -245,21 +246,26 @@ public class ClientCommunicationController {
 	 * @param course      The course the server needs for the instruction
 	 * @return The message the server sends back
 	 */
-	public Student communicateDropCourse(String instruction, Course course) {
-		Student tempStudent = null;
+	public ArrayList<Registration> communicateDropCourse(String instruction, Course course) {
+		ArrayList<Registration> registrationList = new ArrayList<Registration>();
 		try {
 			writeString(instruction);
 
 			toServer.writeObject(course);
 			toServer.flush();
 
-			tempStudent = (Student)(fromServer.readObject());
+
+			Registration registration = (Registration) fromServer.readObject();
+			while (registration != null) {
+				registrationList.add(registration);
+				registration = (Registration) fromServer.readObject();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		return tempStudent;
+		return registrationList;
 	}
 
 	/**

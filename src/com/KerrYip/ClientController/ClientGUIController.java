@@ -251,19 +251,12 @@ public class ClientGUIController {
 
 				if(result == JOptionPane.OK_OPTION) {
 					Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()));
-					Student tempStudent = communicate.communicateEnrollCourse("enroll course", tempCourse,lectureNumber.getText());
+					ArrayList<Registration> registrationList = communicate.communicateEnrollCourse("enroll course", tempCourse,lectureNumber.getText());
 
-
-					for(Registration r: tempStudent.getStudentRegList()) {
-						System.out.println(r);
-					}
-
-
-					if(tempStudent == null) {
+					if(registrationList == null) {
 						JOptionPane.showMessageDialog(null, "Enrollment was unsuccessful");
 					}else{
-						frame.getStudentMenu().setTempStudent(tempStudent);
-						frame.getStudentMenu().updateEnrolledCourse();
+						frame.getStudentMenu().updateEnrolledCourse(registrationList);
 						frame.show("Student Menu");
 						JOptionPane.showMessageDialog(null, "Enrollment was successful");
 					}
@@ -308,19 +301,12 @@ public class ClientGUIController {
 
 				if (result == JOptionPane.OK_OPTION) {
 					Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()));
-					Student tempStudent = communicate.communicateDropCourse("drop course", tempCourse);
+					ArrayList<Registration> registrationList = communicate.communicateDropCourse("drop course", tempCourse);
 
-
-					for(Registration r: tempStudent.getStudentRegList()) {
-						System.out.println(r);
-					}
-
-
-					if(tempStudent == null) {
+					if(registrationList == null) {
 						JOptionPane.showMessageDialog(null, "Drop was unsuccessful");
 					}else{
-						frame.getStudentMenu().setTempStudent(tempStudent);
-						frame.getStudentMenu().updateEnrolledCourse();
+						frame.getStudentMenu().updateEnrolledCourse(registrationList);
 						frame.show("Student Menu");
 						JOptionPane.showMessageDialog(null, "Drop was successful");
 					}

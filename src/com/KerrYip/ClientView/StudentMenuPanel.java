@@ -2,6 +2,7 @@ package com.KerrYip.ClientView;
 
 //import com.KerrYip.ClientModel.Course;
 import com.KerrYip.ServerModel.Course;
+import com.KerrYip.ServerModel.Registration;
 import com.KerrYip.ServerModel.Student;
 
 import javax.swing.*;
@@ -81,16 +82,22 @@ public class StudentMenuPanel extends JPanel {
 
 	}
 
-	private static int jk = 0;
-
 	public void updateEnrolledCourse() {
 		System.out.println(tempStudent);
 		String temp = "";
 		for (int i = 0; i < tempStudent.getStudentRegList().size(); i++) {
 			temp += tempStudent.getStudentRegList().get(i);
 		}
-		jk++;
-		dataText.setText(temp + "\n" + jk);
+		dataText.setText(temp);
+	}
+
+	public void updateEnrolledCourse(ArrayList<Registration> registrationsList) {
+		System.out.println(tempStudent);
+		String temp = "";
+		for (int i = 0; i < registrationsList.size(); i++) {
+			temp += registrationsList.get(i);
+		}
+		dataText.setText(temp);
 	}
 
 	public void updateTitle() {
