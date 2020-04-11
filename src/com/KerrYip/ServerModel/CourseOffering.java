@@ -15,7 +15,7 @@ public class CourseOffering implements Serializable {
 	/**
 	 * This long is used for serialization
 	 */
-	private static final long serialVersionUID = 3885505324085384368L;
+	private static final long serialVersionUID = 1L;
 
 	private int secNum;
 	private int secCap;

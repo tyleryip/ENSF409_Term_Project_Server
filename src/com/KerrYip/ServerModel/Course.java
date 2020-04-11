@@ -17,7 +17,7 @@ public class Course implements Serializable {
 	/**
 	 * This long is used for serialization
 	 */
-	private static final long serialVersionUID = 2108036660174376139L;
+	private static final long serialVersionUID = 1L;
 
 	private String courseName;
 	private int courseNum;

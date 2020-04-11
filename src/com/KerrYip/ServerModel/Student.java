@@ -16,7 +16,7 @@ public class Student implements Serializable {
 	/**
 	 * This long is used for serialization
 	 */
-	private static final long serialVersionUID = 3885505324085384368L;
+	private static final long serialVersionUID = 1L;
 
 	private String studentName;
 	private int studentId;

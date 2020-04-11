@@ -15,7 +15,7 @@ public class Registration implements Serializable {
 	/**
 	 * This long is used for serialization
 	 */
-	private static final long serialVersionUID = 9101593004016454800L;
+	private static final long serialVersionUID = 1L;
 
 	private Student theStudent;
 	private CourseOffering theOffering;
