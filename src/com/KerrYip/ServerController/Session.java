@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import com.KerrYip.ServerModel.Administrator;
 import com.KerrYip.ServerModel.Course;
+import com.KerrYip.ServerModel.CourseOffering;
 import com.KerrYip.ServerModel.Registration;
 import com.KerrYip.ServerModel.Student;
 
@@ -272,17 +273,20 @@ public class Session implements Runnable {
 		int section = Integer.parseInt(readString());
 		if (clientCourse != null) {
 			Registration newReg = new Registration();
-			if(section-1 > 0 && section-1 <= clientCourse.getOfferingList().size()) {
-				writeString("enroll successful");
-				newReg.completeRegistration(studentUser, clientCourse.getCourseOfferingAt(section-1));
-				try {
-					for(Registration r: studentUser.getStudentRegList()) {
-						toClient.writeObject(r);
+			for(CourseOffering offer: clientCourse.getOfferingList())
+			{
+				if(section == offer.getSecNum()) {
+					writeString("enroll successful");
+					newReg.completeRegistration(studentUser, clientCourse.getCourseOfferingAt(section-1));
+					try {
+						for(Registration r: studentUser.getStudentRegList()) {
+							toClient.writeObject(r);
+						}
+						toClient.writeObject(null);
+						return true;
+					} catch (IOException e) {
+						e.printStackTrace();
 					}
-					toClient.writeObject(null);
-					return true;
-				} catch (IOException e) {
-					e.printStackTrace();
 				}
 			}
 		}
@@ -309,7 +313,7 @@ public class Session implements Runnable {
 		removeReg = studentUser.searchStudentReg(clientCourse);
 		if (removeReg != null) {
 			studentUser.getStudentRegList().remove(removeReg);
-			writeString("drop sucessful");
+			writeString("drop successful");
 			try {
 				for(Registration r: studentUser.getStudentRegList()) {
 					toClient.writeObject(r);
@@ -403,15 +407,18 @@ public class Session implements Runnable {
 		} catch (ClassNotFoundException e) {
 			System.err.println("Error: problem reading course from the input stream");
 			e.printStackTrace();
+			writeString("new course not added");
 			return false;
 		} catch (IOException e) {
 			System.err.println("Error: unknown I/O exception");
 			e.printStackTrace();
+			writeString("new course not added");
 			return false;
 		}
 		// The following method already does error checking by looking to see if the
 		// course already exists in the catalog
 		courseController.addCourse(toAdd.getCourseName() + " " + toAdd.getCourseNum());
+		writeString("new course added");
 		return true;
 	}
 
@@ -430,14 +437,17 @@ public class Session implements Runnable {
 		} catch (ClassNotFoundException e) {
 			System.err.println("Error: problem reading course from the input stream");
 			e.printStackTrace();
+			writeString("course not removed");
 			return false;
 		} catch (IOException e) {
 			System.err.println("Error: unknown I/O exception");
 			e.printStackTrace();
+			writeString("course not removed");
 			return false;
 		}
 
 		courseController.removeCourse(toRemove.getCourseName() + " " + toRemove.getCourseNum());
+		writeString("course removed");
 		return true;
 	}
 
