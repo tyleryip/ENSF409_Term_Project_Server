@@ -217,8 +217,8 @@ public class ClientCommunicationController {
 	 * @param course      The course the server needs for the instruction
 	 * @return The message the server sends back
 	 */
-	public String communicateEnrollCourse(String instruction, Course course, String lectureNumber) {
-		String message = null;
+	public Student communicateEnrollCourse(String instruction, Course course, String lectureNumber) {
+		Student tempStudent = null;
 		try {
 			writeString(instruction);
 
@@ -227,11 +227,37 @@ public class ClientCommunicationController {
 
 			writeString(lectureNumber);
 
-			message = readString();
+			tempStudent = (Student)(fromServer.readObject());
 		} catch (IOException e) {
 			e.printStackTrace();
+		}catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		}
-		return message;
+		return tempStudent;
+	}
+
+	/**
+	 * Sends an instruction to the Server and receives the message back
+	 *
+	 * @param instruction The instruction the server will execute
+	 * @param course      The course the server needs for the instruction
+	 * @return The message the server sends back
+	 */
+	public Student communicateDropCourse(String instruction, Course course) {
+		Student tempStudent = null;
+		try {
+			writeString(instruction);
+
+			toServer.writeObject(course);
+			toServer.flush();
+
+			tempStudent = (Student)(fromServer.readObject());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return tempStudent;
 	}
 
 	/**

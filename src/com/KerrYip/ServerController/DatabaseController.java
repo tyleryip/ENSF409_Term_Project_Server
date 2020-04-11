@@ -77,9 +77,9 @@ public class DatabaseController {
 	
 	private void registerStudentsInCourses() {
 		Registration r = new Registration();
-		r.completeRegistration(studentList.get(1), courseList.get(1).getCourseOfferingAt(0));
+		r.completeRegistration(studentList.get(0), courseList.get(0).getCourseOfferingAt(0));
 		r.completeRegistration(studentList.get(1), courseList.get(2).getCourseOfferingAt(1));
-		r.completeRegistration(studentList.get(1), courseList.get(3).getCourseOfferingAt(1));
+		r.completeRegistration(studentList.get(2), courseList.get(3).getCourseOfferingAt(1));
 	}
 
 	// GETTERS and SETTERS

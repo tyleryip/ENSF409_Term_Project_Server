@@ -250,10 +250,15 @@ public class ClientGUIController {
 					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
 
 				if(result == JOptionPane.OK_OPTION) {
-				Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()));
-				String message = communicate.communicateEnrollCourse("enroll course", tempCourse,lectureNumber.getText());
-				System.out.println(message);
-				JOptionPane.showMessageDialog(null, message);
+					Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()));
+					Student tempStudent = communicate.communicateEnrollCourse("enroll course", tempCourse,lectureNumber.getText());
+					if(tempStudent == null) {
+						JOptionPane.showMessageDialog(null, "Enrollment was unsuccessful");
+					}else{
+						frame.getStudentMenu().setTempStudent(tempStudent);
+						frame.getStudentMenu().updateEnrolledCourse();
+						JOptionPane.showMessageDialog(null, "Enrollment was successful");
+					}
 				}
 			}catch(NumberFormatException nfe){
 				JOptionPane.showMessageDialog(null, "Invalid input");
@@ -290,14 +295,19 @@ public class ClientGUIController {
 
 			// prompts user for the course
 			try{
-				int result = JOptionPane.showOptionDialog(null, enrollPanel, "Enroll In New Course",
+				int result = JOptionPane.showOptionDialog(null, enrollPanel, "Drop a Course",
 					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
 
 				if(result == JOptionPane.OK_OPTION) {
 					Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()));
-					String message = communicate.communicateSendCourse("enroll course", tempCourse);
-					System.out.println(message);
-					JOptionPane.showMessageDialog(null, message);
+					Student tempStudent = communicate.communicateDropCourse("drop course", tempCourse);
+					if(tempStudent == null) {
+						JOptionPane.showMessageDialog(null, "Drop was unsuccessful");
+					}else{
+						frame.getStudentMenu().setTempStudent(tempStudent);
+						frame.getStudentMenu().updateEnrolledCourse();
+						JOptionPane.showMessageDialog(null, "Drop was successful");
+					}
 				}
 			}catch(NumberFormatException nfe){
 				JOptionPane.showMessageDialog(null, "Invalid input");
