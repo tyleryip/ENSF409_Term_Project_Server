@@ -254,12 +254,12 @@ public class ClientGUIController {
 					ArrayList<Registration> registrationList = new ArrayList<Registration>();
 					String message = communicate.communicateEnrollCourse("enroll course", tempCourse,lectureNumber.getText(),registrationList);
 
-					if(message.equals("enroll failed")) {
-						JOptionPane.showMessageDialog(null, "Enrollment was unsuccessful");
-					}else{
+					if(message.equals("enroll successful")) {
 						frame.getStudentMenu().updateEnrolledCourse(registrationList);
 						frame.show("Student Menu");
 						JOptionPane.showMessageDialog(null, "Enrollment was successful");
+					}else{
+						JOptionPane.showMessageDialog(null, "Enrollment was unsuccessful");
 					}
 
 				}
@@ -305,12 +305,12 @@ public class ClientGUIController {
 					ArrayList<Registration> registrationList = new ArrayList<Registration>();
 					String message = communicate.communicateDropCourse("drop course", tempCourse, registrationList);
 
-					if(message.equals("drop failed")) {
-						JOptionPane.showMessageDialog(null, "Drop was unsuccessful");
-					}else{
+					if(message.equals("drop successful")) {
 						frame.getStudentMenu().updateEnrolledCourse(registrationList);
 						frame.show("Student Menu");
 						JOptionPane.showMessageDialog(null, "Drop was successful");
+					}else{
+						JOptionPane.showMessageDialog(null, "Drop was unsuccessful");
 					}
 				}
 			} catch (NumberFormatException nfe) {
@@ -483,10 +483,10 @@ public class ClientGUIController {
 							courseOfferings);
 					String message = communicate.communicateAddCourse("add course", tempCourse, courseOfferings);
 					System.out.println(message);
-					if (message.equals("failed")) {
-						JOptionPane.showMessageDialog(null, "Course could not be added");
+					if (message.equals("new course added")) {
+						JOptionPane.showMessageDialog(null, "Course was successfully added");
 					} else {
-						JOptionPane.showMessageDialog(null, message);
+						JOptionPane.showMessageDialog(null, "Course could not be added");
 					}
 				}
 			} catch (NumberFormatException nfe) {
@@ -529,10 +529,10 @@ public class ClientGUIController {
 					Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()));
 					String message = communicate.communicateSearchCourse("remove course", tempCourse);
 					System.out.println(message);
-					if (message.equals("course not found")) {
-						JOptionPane.showMessageDialog(null, "Course was not found");
+					if (message.equals("course removed")) {
+						JOptionPane.showMessageDialog(null, "Course was successfully removed");
 					} else {
-						JOptionPane.showMessageDialog(null, message);
+						JOptionPane.showMessageDialog(null, "Course could not be removed");
 					}
 				}
 			} catch (NumberFormatException nfe) {
