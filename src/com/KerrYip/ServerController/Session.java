@@ -272,7 +272,8 @@ public class Session implements Runnable {
 		int section = Integer.parseInt(readString());
 		if (clientCourse != null) {
 			Registration newReg = new Registration();
-			if(section-1 > 0 && section -1 < clientCourse.getOfferingList().size()) {
+			if(section-1 > 0 && section-1 <= clientCourse.getOfferingList().size()) {
+				writeString("enroll successful");
 				newReg.completeRegistration(studentUser, clientCourse.getCourseOfferingAt(section-1));
 				try {
 					for(Registration r: studentUser.getStudentRegList()) {
@@ -285,6 +286,7 @@ public class Session implements Runnable {
 				}
 			}
 		}
+		writeString("enroll failed");
 		try {
 			toClient.writeObject(null);
 		} catch (IOException e) {
@@ -307,6 +309,7 @@ public class Session implements Runnable {
 		removeReg = studentUser.searchStudentReg(clientCourse);
 		if (removeReg != null) {
 			studentUser.getStudentRegList().remove(removeReg);
+			writeString("drop sucessful");
 			try {
 				for(Registration r: studentUser.getStudentRegList()) {
 					toClient.writeObject(r);
@@ -317,6 +320,7 @@ public class Session implements Runnable {
 			}
 			return true;
 		}
+		writeString("drop failed");
 		try {
 			toClient.writeObject(null);
 		} catch (IOException e) {
