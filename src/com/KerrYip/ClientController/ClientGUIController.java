@@ -481,7 +481,7 @@ public class ClientGUIController {
 					}
 					Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()),
 							courseOfferings);
-					String message = communicate.communicateSendCourse("add course", tempCourse);
+					String message = communicate.communicateAddCourse("add course", tempCourse, courseOfferings);
 					System.out.println(message);
 					if (message.equals("failed")) {
 						JOptionPane.showMessageDialog(null, "Course could not be added");

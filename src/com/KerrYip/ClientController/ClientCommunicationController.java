@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 //import com.KerrYip.ClientModel.Course;
 //import com.KerrYip.ClientModel.Student;
 import com.KerrYip.ServerModel.Course;
+import com.KerrYip.ServerModel.CourseOffering;
 import com.KerrYip.ServerModel.Registration;
 import com.KerrYip.ServerModel.Student;
 
@@ -270,6 +271,34 @@ public class ClientCommunicationController {
 		}
 		System.out.println("reg list size = " + registrationList.size());
 		return temp;
+	}
+
+
+	/**
+	 * Sends an instruction to the Server and receives the message back
+	 *
+	 * @param instruction The instruction the server will execute
+	 * @param course      The course the server needs for the instruction
+	 * @return The message the server sends back
+	 */
+	public String communicateAddCourse(String instruction, Course course, ArrayList<CourseOffering> courseOfferings) {
+		String message = null;
+		try {
+			writeString(instruction);
+
+			toServer.writeObject(course);
+			toServer.flush();
+
+			for(CourseOffering co : courseOfferings){
+				toServer.writeObject(co);
+				toServer.flush();
+			}
+
+			message = readString();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return message;
 	}
 
 	/**
