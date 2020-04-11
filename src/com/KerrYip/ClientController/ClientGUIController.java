@@ -253,7 +253,7 @@ public class ClientGUIController {
 					Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()));
 					ArrayList<Registration> registrationList = communicate.communicateEnrollCourse("enroll course", tempCourse,lectureNumber.getText());
 
-					if(registrationList == null) {
+					if(registrationList.size() == 0) {
 						JOptionPane.showMessageDialog(null, "Enrollment was unsuccessful");
 					}else{
 						frame.getStudentMenu().updateEnrolledCourse(registrationList);
@@ -303,7 +303,7 @@ public class ClientGUIController {
 					Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()));
 					ArrayList<Registration> registrationList = communicate.communicateDropCourse("drop course", tempCourse);
 
-					if(registrationList == null) {
+					if(registrationList.size() == 0) {
 						JOptionPane.showMessageDialog(null, "Drop was unsuccessful");
 					}else{
 						frame.getStudentMenu().updateEnrolledCourse(registrationList);
