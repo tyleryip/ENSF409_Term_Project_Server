@@ -217,7 +217,8 @@ public class ClientCommunicationController {
 	 * @param course      The course the server needs for the instruction
 	 * @return The message the server sends back
 	 */
-	public String communicateEnrollCourse(String instruction, Course course, String lectureNumber, ArrayList<Registration> registrationList) {
+	public String communicateEnrollCourse(String instruction, Course course, String lectureNumber,
+			ArrayList<Registration> registrationList) {
 		String message = "";
 		try {
 			writeString(instruction);
@@ -236,7 +237,7 @@ public class ClientCommunicationController {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-		}catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		return message;
@@ -266,13 +267,12 @@ public class ClientCommunicationController {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-		}catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		System.out.println("reg list size = " + registrationList.size());
 		return temp;
 	}
-
 
 	/**
 	 * Sends an instruction to the Server and receives the message back
@@ -289,7 +289,7 @@ public class ClientCommunicationController {
 			toServer.writeObject(course);
 			toServer.flush();
 
-			for(CourseOffering co : courseOfferings){
+			for (CourseOffering co : courseOfferings) {
 				toServer.writeObject(co);
 				toServer.flush();
 			}

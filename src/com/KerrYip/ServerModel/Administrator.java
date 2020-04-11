@@ -35,5 +35,5 @@ public class Administrator {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 }

@@ -249,16 +249,17 @@ public class ClientGUIController {
 				int result = JOptionPane.showOptionDialog(null, enrollPanel, "Enroll In New Course",
 						JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
 
-				if(result == JOptionPane.OK_OPTION) {
+				if (result == JOptionPane.OK_OPTION) {
 					Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()));
 					ArrayList<Registration> registrationList = new ArrayList<Registration>();
-					String message = communicate.communicateEnrollCourse("enroll course", tempCourse,lectureNumber.getText(),registrationList);
+					String message = communicate.communicateEnrollCourse("enroll course", tempCourse,
+							lectureNumber.getText(), registrationList);
 
-					if(message.equals("enroll successful")) {
+					if (message.equals("enroll successful")) {
 						frame.getStudentMenu().updateEnrolledCourse(registrationList);
 						frame.show("Student Menu");
 						JOptionPane.showMessageDialog(null, "Enrollment was successful");
-					}else{
+					} else {
 						JOptionPane.showMessageDialog(null, "Enrollment was unsuccessful");
 					}
 
@@ -296,20 +297,20 @@ public class ClientGUIController {
 			enrollPanel.add("Center", input);
 
 			// prompts user for the course
-			try{
+			try {
 				int result = JOptionPane.showOptionDialog(null, enrollPanel, "Drop a Course",
-					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+						JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
 
 				if (result == JOptionPane.OK_OPTION) {
 					Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()));
 					ArrayList<Registration> registrationList = new ArrayList<Registration>();
 					String message = communicate.communicateDropCourse("drop course", tempCourse, registrationList);
 
-					if(message.equals("drop successful")) {
+					if (message.equals("drop successful")) {
 						frame.getStudentMenu().updateEnrolledCourse(registrationList);
 						frame.show("Student Menu");
 						JOptionPane.showMessageDialog(null, "Drop was successful");
-					}else{
+					} else {
 						JOptionPane.showMessageDialog(null, "Drop was unsuccessful");
 					}
 				}

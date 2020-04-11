@@ -39,8 +39,8 @@ public class Session implements Runnable {
 	/**
 	 * Constructor for session connects I/O
 	 * 
-	 * @param aSocket the socket to communicate with the client
-	 * @param courseController a controller to manipulate courses
+	 * @param aSocket           the socket to communicate with the client
+	 * @param courseController  a controller to manipulate courses
 	 * @param studentController a controller to manipulate students
 	 */
 	public Session(Socket aSocket, CourseController courseController, StudentController studentController) {
@@ -244,8 +244,7 @@ public class Session implements Runnable {
 		if (successful) {
 			try {
 				toClient.writeObject(getStudentUser());
-			} 
-			catch (IOException e) {
+			} catch (IOException e) {
 				System.err.println("Error: could not write student to output stream");
 				e.printStackTrace();
 			}
@@ -273,13 +272,12 @@ public class Session implements Runnable {
 		int section = Integer.parseInt(readString());
 		if (clientCourse != null) {
 			Registration newReg = new Registration();
-			for(CourseOffering offer: clientCourse.getOfferingList())
-			{
-				if(section == offer.getSecNum()) {
+			for (CourseOffering offer : clientCourse.getOfferingList()) {
+				if (section == offer.getSecNum()) {
 					writeString("enroll successful");
-					newReg.completeRegistration(studentUser, clientCourse.getCourseOfferingAt(section-1));
+					newReg.completeRegistration(studentUser, clientCourse.getCourseOfferingAt(section - 1));
 					try {
-						for(Registration r: studentUser.getStudentRegList()) {
+						for (Registration r : studentUser.getStudentRegList()) {
 							toClient.writeObject(r);
 						}
 						toClient.writeObject(null);
@@ -315,7 +313,7 @@ public class Session implements Runnable {
 			studentUser.getStudentRegList().remove(removeReg);
 			writeString("drop successful");
 			try {
-				for(Registration r: studentUser.getStudentRegList()) {
+				for (Registration r : studentUser.getStudentRegList()) {
 					toClient.writeObject(r);
 				}
 				toClient.writeObject(null);
@@ -370,7 +368,7 @@ public class Session implements Runnable {
 	private boolean adminLogin() {
 		String credentials = "";
 		credentials = readString();
-		if (credentials.contentEquals(adminUser.getPassword())) { //Check to see if the password matches
+		if (credentials.contentEquals(adminUser.getPassword())) { // Check to see if the password matches
 			adminUser.setActive(true);
 			writeString("login successful");
 			return true;
