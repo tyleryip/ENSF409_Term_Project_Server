@@ -251,6 +251,9 @@ public class ClientGUIController {
 				if(result == JOptionPane.OK_OPTION) {
 					Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()));
 					Student tempStudent = communicate.communicateEnrollCourse("enroll course", tempCourse,lectureNumber.getText());
+					for(int i = 0; i < tempStudent.getStudentRegList().size(); i++){
+						System.out.println(tempStudent.getStudentRegList().get(i));
+					}
 					if(tempStudent == null) {
 						JOptionPane.showMessageDialog(null, "Enrollment was unsuccessful");
 					}else{
@@ -301,6 +304,9 @@ public class ClientGUIController {
 				if (result == JOptionPane.OK_OPTION) {
 					Course tempCourse = new Course(courseName.getText(), Integer.parseInt(courseNumber.getText()));
 					Student tempStudent = communicate.communicateDropCourse("drop course", tempCourse);
+					for(int i = 0; i < tempStudent.getStudentRegList().size(); i++){
+						System.out.println(tempStudent.getStudentRegList().get(i));
+					}
 					if(tempStudent == null) {
 						JOptionPane.showMessageDialog(null, "Drop was unsuccessful");
 					}else{
