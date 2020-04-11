@@ -272,16 +272,18 @@ public class Session implements Runnable {
 		int section = Integer.parseInt(readString());
 		if (clientCourse != null) {
 			Registration newReg = new Registration();
-			newReg.completeRegistration(studentUser, clientCourse.getCourseOfferingAt(section-1));
-			try {
-				for(Registration r: studentUser.getStudentRegList()) {
-					toClient.writeObject(r);
+			if(section-1 > 0 && section -1 < clientCourse.getOfferingList().size()) {
+				newReg.completeRegistration(studentUser, clientCourse.getCourseOfferingAt(section-1));
+				try {
+					for(Registration r: studentUser.getStudentRegList()) {
+						toClient.writeObject(r);
+					}
+					toClient.writeObject(null);
+					return true;
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-				toClient.writeObject(null);
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
-			return true;
 		}
 		try {
 			toClient.writeObject(null);
