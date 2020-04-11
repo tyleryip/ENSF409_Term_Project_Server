@@ -201,13 +201,26 @@ public class Session implements Runnable {
 			if (!studentUser.isActive()) { // Check to make sure that this student is not already logged in to the
 											// system
 				System.out.println("[Sever] User logged in using id: " + checkID);
-				updateStudent(true);
-				return true;
+				writeString(studentUser.getStudentName());
+				try {
+					for (Registration r : studentUser.getStudentRegList()) {
+						toClient.writeObject(r);
+					}
+					toClient.writeObject(null);
+					return true;
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 			System.err.println("User " + checkID + " is already logged in to the system");
 		}
 		// If search fails write null to the client
-		updateStudent(false);
+		writeString("login failed");
+		try {
+			toClient.writeObject(null);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
