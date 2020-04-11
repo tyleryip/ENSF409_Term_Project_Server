@@ -65,7 +65,7 @@ public class Session implements Runnable {
 		this.courseController = courseController;
 
 		this.studentUser = null;
-		this.adminUser = null;
+		this.adminUser = new Administrator();
 	}
 
 	/**
@@ -126,7 +126,7 @@ public class Session implements Runnable {
 			System.err.println("Error: problem closing the sockets");
 			e.printStackTrace();
 		}
-
+		System.out.println("[Server] User disconnected");
 	}
 
 	/**
@@ -141,21 +141,22 @@ public class Session implements Runnable {
 		case "student login":
 			return studentLogin();
 
-		case "enroll course":	
+		case "enroll course":
 			return enrollCourse();
-		
+
 		case "drop course":
 			return dropCourse();
-			
+
 		case "student courses":
 			return showStudentCourses();
-			
+
 		case "add course":
-			//TODO modify this method to allow the addition of sections
+			// TODO modify this method to allow the addition of sections
 			return addCourse();
 
 		case "remove course":
-			//TODO implement this method for admin, modify this method in courseController to remove the course as a prereq from exisiting courses
+			// TODO implement this method for admin, modify this method in courseController
+			// to remove the course as a prereq from exisiting courses
 			return removeCourse();
 
 		case "browse courses":
@@ -169,15 +170,14 @@ public class Session implements Runnable {
 
 		case "QUIT":
 			return true;
-			
+
 		case "logout":
 			return logout();
-			
+
 		default:
 			System.err.println("No option available that matched: " + command);
 			return false;
 		}
-
 	}
 
 	/**
@@ -189,24 +189,16 @@ public class Session implements Runnable {
 		checkID = Integer.parseInt(readString());
 		studentUser = studentController.searchStudent(checkID);
 		if (studentUser != null) {
-			System.out.println("[Sever] User logged in using id: " + checkID);
-			try {
-				toClient.writeObject(studentUser);
-			} catch (IOException e) {
-				System.err.println("Error: unable to write student object to client");
-				e.printStackTrace();
-				return false;
+			if (!studentUser.isActive()) { // Check to make sure that this student is not already logged in to the
+											// system
+				System.out.println("[Sever] User logged in using id: " + checkID);
+				updateStudent(true);
+				return true;
 			}
-			return true;
+			System.err.println("User " + checkID + " is already logged in to the system");
 		}
-		//If search fails write null to the client
-		try {
-			toClient.writeObject(null);
-		} catch (IOException e) {
-			System.err.println("Error: unable to write student object to client");
-			e.printStackTrace();
-			return false;
-		}
+		// If search fails write null to the client
+		updateStudent(false);
 		return false;
 	}
 
@@ -221,23 +213,32 @@ public class Session implements Runnable {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Logs the user out
+	 * 
 	 * @return true if successful
 	 */
 	private boolean logout() {
-		setStudentUser(null);
-		setAdminUser(null);
+		if (studentUser != null) {
+			studentUser.setActive(false);
+			setStudentUser(null);
+		}
+		if (adminUser.isActive()) {
+			adminUser.setActive(false);
+		}
 		return true;
 	}
-	
+
 	/**
-	 * Updates the student in the client, returns null if the operation to change was unsuccessful
-	 * @param successful determines whether or not to send an updated student or null
+	 * Updates the student in the client, returns null if the operation to change
+	 * was unsuccessful
+	 * 
+	 * @param successful determines whether or not to send an updated student or
+	 *                   null
 	 */
 	private void updateStudent(boolean successful) {
-		if(successful) {
+		if (successful) {
 			try {
 				toClient.writeObject(studentUser);
 			} catch (IOException e) {
@@ -253,7 +254,7 @@ public class Session implements Runnable {
 			}
 		}
 	}
-	
+
 	/**
 	 * This method takes a student and course from the client, looks for the course,
 	 * and if successful, adds it to the student and returns the student object to
@@ -296,16 +297,17 @@ public class Session implements Runnable {
 		return false;
 
 	}
-	
+
 	/**
 	 * Sends all courses in the student's registered courses to the client
+	 * 
 	 * @return true if successful, false if failed
 	 */
 	private boolean showStudentCourses() {
 		if (!studentLoggedIn()) {
 			return false;
 		}
-		for(int i = 0; i<studentUser.getStudentRegList().size(); i++) {
+		for (int i = 0; i < studentUser.getStudentRegList().size(); i++) {
 			try {
 				toClient.writeObject(studentUser.getStudentRegList().get(i));
 			} catch (IOException e) {
@@ -314,8 +316,8 @@ public class Session implements Runnable {
 				return false;
 			}
 		}
-		
-		//The very last thing we write is a null to tell the client we are done
+
+		// The very last thing we write is a null to tell the client we are done
 		try {
 			toClient.writeObject(null);
 		} catch (IOException e) {
@@ -333,7 +335,7 @@ public class Session implements Runnable {
 		String credentials = "";
 		credentials = readString();
 		if (credentials.contentEquals("admin")) {
-			adminUser = new Administrator();
+			adminUser.setActive(true);
 			writeString("login successful");
 			return true;
 		}
@@ -348,23 +350,24 @@ public class Session implements Runnable {
 	 *         account, false otherwise
 	 */
 	private boolean adminLoggedIn() {
-		if (adminUser != null) {
+		if (adminUser.isActive()) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Adds a course to the list of available courses
+	 * 
 	 * @return true if successful, false otherwise
 	 */
 	private boolean addCourse() {
-		if(!adminLoggedIn()) {
+		if (!adminLoggedIn()) {
 			return false;
 		}
 		Course toAdd = null;
 		try {
-			toAdd = (Course)fromClient.readObject();
+			toAdd = (Course) fromClient.readObject();
 		} catch (ClassNotFoundException e) {
 			System.err.println("Error: problem reading course from the input stream");
 			e.printStackTrace();
@@ -374,22 +377,24 @@ public class Session implements Runnable {
 			e.printStackTrace();
 			return false;
 		}
-		//The following method already does error checking by looking to see if the course already exists in the catalog
+		// The following method already does error checking by looking to see if the
+		// course already exists in the catalog
 		courseController.addCourse(toAdd.getCourseName() + " " + toAdd.getCourseNum());
 		return true;
 	}
-	
+
 	/**
 	 * Removes a course to the list of available courses
+	 * 
 	 * @return true if successful, false otherwise
 	 */
 	private boolean removeCourse() {
-		if(!adminLoggedIn()) {
+		if (!adminLoggedIn()) {
 			return false;
 		}
 		Course toRemove = null;
 		try {
-			toRemove = (Course)fromClient.readObject();
+			toRemove = (Course) fromClient.readObject();
 		} catch (ClassNotFoundException e) {
 			System.err.println("Error: problem reading course from the input stream");
 			e.printStackTrace();
@@ -403,7 +408,7 @@ public class Session implements Runnable {
 		courseController.removeCourse(toRemove.getCourseName() + " " + toRemove.getCourseNum());
 		return true;
 	}
-	
+
 	/**
 	 * Allows a student to search for a course and returns the results of their
 	 * search back to the client
@@ -438,7 +443,7 @@ public class Session implements Runnable {
 		if (!studentLoggedIn() && !adminLoggedIn()) {
 			return false;
 		}
-		//Write each course into the output stream
+		// Write each course into the output stream
 		for (Course c : courseController.getCourseList()) {
 			try {
 				toClient.writeObject(c);
@@ -448,8 +453,8 @@ public class Session implements Runnable {
 				return false;
 			}
 		}
-		
-		//The very last thing we write is a null to tell the client we are done
+
+		// The very last thing we write is a null to tell the client we are done
 		try {
 			toClient.writeObject(null);
 		} catch (IOException e) {

@@ -63,9 +63,9 @@ public class BrowseCatalogPanel extends JPanel {
 
 	}
 
-	public void updateCatalog(ArrayList<Course> catalog){
+	public void updateCatalog(ArrayList<Course> catalog) {
 		String temp = "";
-		for(int i = 0; i < catalog.size(); i++){
+		for (int i = 0; i < catalog.size(); i++) {
 			temp += catalog.get(i);
 		}
 		dataText.setText(temp);

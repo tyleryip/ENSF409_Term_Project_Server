@@ -17,10 +17,21 @@ public class StudentController {
 
 	private DatabaseController databaseController;
 
+	/**
+	 * Constructor for the class StudentManager
+	 * 
+	 * @param db the DatabaseController for the student manager to use
+	 */
 	public StudentController(DatabaseController db) {
 		this.databaseController = db;
 	}
 
+	/**
+	 * Searches for a student with a matching name
+	 * 
+	 * @param name the name of desired student
+	 * @return the student with a matching name
+	 */
 	public Student searchStudent(String name) {
 		Iterator<Student> itr = databaseController.getStudentList().iterator();
 		while (itr.hasNext()) {
@@ -34,6 +45,12 @@ public class StudentController {
 
 	}
 
+	/**
+	 * Searches for a student with a matching ID number
+	 * 
+	 * @param id the id number of the desired student
+	 * @return the student with a matching ID number, otherwise returns null
+	 */
 	public Student searchStudent(int id) {
 		Iterator<Student> itr = databaseController.getStudentList().iterator();
 		while (itr.hasNext()) {
@@ -47,11 +64,16 @@ public class StudentController {
 
 	}
 
+	/**
+	 * Adds a student to the student list
+	 * 
+	 * @param name the name of the student
+	 */
 	public void addStudent(String name) {
 		int id = databaseController.getStudentList().size();
 		Student newStudent = new Student(name, id + 1);
 		databaseController.getStudentList().add(newStudent);
-		System.out.println("New student " + name + " created successfully with an id of: " + id);
+		System.out.println("[Server] New student " + name + " created successfully with an id of: " + id);
 	}
 
 	public DatabaseController getDatabaseController() {

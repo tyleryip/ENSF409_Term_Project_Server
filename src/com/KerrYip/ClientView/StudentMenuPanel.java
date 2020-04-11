@@ -16,8 +16,7 @@ import java.util.ArrayList;
  */
 public class StudentMenuPanel extends JPanel {
 	private int width, height;
-	private JButton searchCatalogButton, enrollCourseButton, dropCourseButton, browseCatalogButton,
-			logoutButton;
+	private JButton searchCatalogButton, enrollCourseButton, dropCourseButton, browseCatalogButton, logoutButton;
 	private JLabel studentMenuLabel;
 	private JTextArea dataText;
 	private Student tempStudent;
@@ -37,7 +36,7 @@ public class StudentMenuPanel extends JPanel {
 		enrollCourseButton = new JButton("Enroll in a Course");
 		dropCourseButton = new JButton("Drop a Course");
 		browseCatalogButton = new JButton("View all Courses in Catalog");
-		//viewEnrolledCoursesButton = new JButton("View Enrolled Courses");
+		// viewEnrolledCoursesButton = new JButton("View Enrolled Courses");
 		logoutButton = new JButton("Logout");
 
 		// student menu title
@@ -60,7 +59,7 @@ public class StudentMenuPanel extends JPanel {
 		buttonPanel.add(dropCourseButton);
 		buttonPanel.add(browseCatalogButton);
 		buttonPanel.add(searchCatalogButton);
-		//coursePanel.add("South",viewEnrolledCoursesButton);
+		// coursePanel.add("South",viewEnrolledCoursesButton);
 
 		// the data field that displays
 		dataText = new JTextArea((int) (width * 0.75), (int) (height * 0.75));
@@ -72,7 +71,7 @@ public class StudentMenuPanel extends JPanel {
 		// Make the data field scroll-able if enough data fills the panel
 		JScrollPane dataTextScrollPane = new JScrollPane(dataText);
 		dataTextScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		coursePanel.add("Center",dataTextScrollPane);
+		coursePanel.add("Center", dataTextScrollPane);
 
 		// adding panels to appropriate quadrants
 		add("North", titlePanel);
@@ -82,20 +81,25 @@ public class StudentMenuPanel extends JPanel {
 
 	}
 
-	public void updateEnrolledCourse(){
+	public void updateEnrolledCourse() {
 		String temp = "";
-		for(int i = 0; i < tempStudent.getStudentRegList().size(); i++){
+		for (int i = 0; i < tempStudent.getStudentRegList().size(); i++) {
 			temp += tempStudent.getStudentRegList().get(i);
 		}
 		dataText.setText(temp);
 	}
 
-	public void updateTitle(){
+	public void updateTitle() {
 		studentMenuLabel.setText(tempStudent.getStudentName() + "'s Course Registration");
 	}
 
-	public Student getTempStudent() { return tempStudent; }
-	public void setTempStudent(Student tempStudent) { this.tempStudent = tempStudent; }
+	public Student getTempStudent() {
+		return tempStudent;
+	}
+
+	public void setTempStudent(Student tempStudent) {
+		this.tempStudent = tempStudent;
+	}
 
 	/**
 	 * Adds listener to the enrollCourseButton

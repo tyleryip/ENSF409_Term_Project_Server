@@ -72,7 +72,7 @@ public class AdminMenuPanel extends JPanel {
 		JScrollPane dataTextScrollPane = new JScrollPane(dataText);
 		dataTextScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		coursePanel.add("Center", dataTextScrollPane);
-		coursePanel.add("South",browseCatalogButton);
+		coursePanel.add("South", browseCatalogButton);
 
 		// adding panels to appropriate quadrants
 		add("North", titlePanel);
@@ -82,9 +82,9 @@ public class AdminMenuPanel extends JPanel {
 
 	}
 
-	public void updateCourse(ArrayList<Course> catalog){
+	public void updateCourse(ArrayList<Course> catalog) {
 		String temp = "";
-		for(int i = 0; i < catalog.size(); i++){
+		for (int i = 0; i < catalog.size(); i++) {
 			temp += catalog.get(i);
 		}
 		dataText.setText(temp);
@@ -92,6 +92,7 @@ public class AdminMenuPanel extends JPanel {
 
 	/**
 	 * Adds Listeners to the addCourseButton
+	 * 
 	 * @param listenForAddCourseToCatalogButton the listener for the button
 	 */
 	public void addAddCourseToCatalogListener(ActionListener listenForAddCourseToCatalogButton) {
@@ -100,6 +101,7 @@ public class AdminMenuPanel extends JPanel {
 
 	/**
 	 * Adds Listeners to the removeCourseButton
+	 * 
 	 * @param listenForRemoveCourseFromCatalogButton the listener for the button
 	 */
 	public void addRemoveCourseFromCatalogListener(ActionListener listenForRemoveCourseFromCatalogButton) {
@@ -108,6 +110,7 @@ public class AdminMenuPanel extends JPanel {
 
 	/**
 	 * Adds Listeners to the browseCatalogButton
+	 * 
 	 * @param listenForSearchCatalogButton the listener for the button
 	 */
 	public void addBrowseCatalogListener(ActionListener listenForSearchCatalogButton) {
@@ -116,6 +119,7 @@ public class AdminMenuPanel extends JPanel {
 
 	/**
 	 * Adds listeners to the searchCatalogButton
+	 * 
 	 * @param listenForSearchCatalogButton the listener for the button
 	 */
 	public void addSearchCatalogListener(ActionListener listenForSearchCatalogButton) {
@@ -124,6 +128,7 @@ public class AdminMenuPanel extends JPanel {
 
 	/**
 	 * Adds listeners to the viewStudentCoursesButton
+	 * 
 	 * @param listenForStudentEnrolledCoursesButton the listener for the button
 	 */
 	public void addViewStudentEnrolledCoursesListener(ActionListener listenForStudentEnrolledCoursesButton) {
@@ -132,16 +137,16 @@ public class AdminMenuPanel extends JPanel {
 
 	/**
 	 * Adds listeners to the addStudentButton
+	 * 
 	 * @param listenForAddStudentButton the listener for the button
 	 */
 	public void addAddStudentListener(ActionListener listenForAddStudentButton) {
 		addStudentButton.addActionListener(listenForAddStudentButton);
 	}
 
-
-
 	/**
 	 * Adds listeners to the runButton
+	 * 
 	 * @param listenForRunCoursesButton the listener for the button
 	 */
 	public void addRunCoursesListener(ActionListener listenForRunCoursesButton) {
@@ -150,6 +155,7 @@ public class AdminMenuPanel extends JPanel {
 
 	/**
 	 * Adds listeners to the logoutButton
+	 * 
 	 * @param listenForLogoutButton the listener for the button
 	 */
 	public void addLogoutListener(ActionListener listenForLogoutButton) {

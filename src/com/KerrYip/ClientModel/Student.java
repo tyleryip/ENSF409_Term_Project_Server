@@ -25,8 +25,7 @@ public class Student implements Serializable {
 
 	@Override
 	public String toString() {
-		String st = "Student Name: " + studentName + "\n" +
-				"Student Id: " + studentId + "\n\n";
+		String st = "Student Name: " + studentName + "\n" + "Student Id: " + studentId + "\n\n";
 		return st;
 	}
 
