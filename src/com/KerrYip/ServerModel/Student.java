@@ -45,7 +45,7 @@ public class Student implements Serializable {
 	 */
 	public Registration searchStudentReg(Course theCourse) {
 		for(int i = 0; i<studentRegList.size(); i++) {
-			if (studentRegList.get(i).getTheOffering().getTheCourse().getNameNum().contentEquals(theCourse.getNameNum())) {
+			if (studentRegList.get(i).getTheOffering().getTheCourse().getNameNum().equals(theCourse.getNameNum())) {
 				return studentRegList.get(i);
 			}
 		}
