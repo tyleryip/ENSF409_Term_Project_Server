@@ -112,6 +112,7 @@ public class Session implements Runnable {
 		String command = "";
 
 		while (!command.contentEquals("QUIT")) {
+			syncData();
 			command = readString();
 			boolean successful = executeCommand(command);
 
@@ -120,7 +121,7 @@ public class Session implements Runnable {
 			else
 				System.out.println("[Server] Command: " + command + ", failed to execute");
 		}
-
+		syncData();
 		// Now we have to close all connections to the client
 		try {
 			fromClient.close();
@@ -181,6 +182,11 @@ public class Session implements Runnable {
 			System.err.println("No option available that matched: " + command);
 			return false;
 		}
+	}
+	
+	public void syncData() {
+		studentController.syncData();
+		courseController.syncData();
 	}
 
 	/**

@@ -15,15 +15,22 @@ import com.KerrYip.ServerModel.CourseOffering;
 public class CourseController {
 
 	private DatabaseController databaseController;
+	
+	private ArrayList<Course> myCourseList;
 
 	/**
-	 * Constructor for class CourseController, links the coure controller to the
+	 * Constructor for class CourseController, links the course controller to the
 	 * database controller
 	 * 
 	 * @param db the DatabaseController
 	 */
 	public CourseController(DatabaseController db) {
 		this.databaseController = db;
+		setMyCourseList(databaseController.getCourseList());
+	}
+	
+	public void syncData() {
+		databaseController.setCourseList(myCourseList);
 	}
 
 	/**
@@ -48,7 +55,7 @@ public class CourseController {
 	 * @return the course you are searching for, or null if not found
 	 */
 	public Course searchCat(String courseName, int courseNum) {
-		for (Course c : databaseController.getCourseList()) {
+		for (Course c : myCourseList) {
 			if (courseName.equals(c.getCourseName()) && courseNum == c.getCourseNum()) {
 				return c;
 			}
@@ -95,7 +102,7 @@ public class CourseController {
 		String[] split = nameNum.split(" ");
 		if (searchCat(split[0], Integer.parseInt(split[1])) == null) {
 			Course newCourse = new Course(split[0], Integer.parseInt(split[1]));
-			databaseController.getCourseList().add(newCourse);
+			myCourseList.add(newCourse);
 			return newCourse;
 		}
 		System.out.println("Error: Course already exists in the catalogue!");
@@ -119,7 +126,7 @@ public class CourseController {
 		}
 		// We now need to deal with other courses that may have this course listed as a
 		// prerequisite
-		for (Course c : databaseController.getCourseList()) {
+		for (Course c : myCourseList) {
 			for (Course p : c.getPreReq()) {
 				if (p.getNameNum() == nameNum) {
 					c.getPreReq().remove(p);
@@ -129,7 +136,7 @@ public class CourseController {
 		// Now that prereqs are dealt with, we can finally remove the course itself from
 		// the catalog
 		String[] split = nameNum.split(" ");
-		databaseController.getCourseList().remove(searchCat(split[0], Integer.parseInt(split[1])));
+		myCourseList.remove(searchCat(split[0], Integer.parseInt(split[1])));
 	}
 
 	/**
@@ -179,7 +186,7 @@ public class CourseController {
 	@Override
 	public String toString() {
 		String st = "All courses in the catalogue: \n";
-		for (Course c : databaseController.getCourseList()) {
+		for (Course c : myCourseList) {
 			st += c; // This line invokes the toString() method of Course
 			st += "\n";
 		}
@@ -188,7 +195,15 @@ public class CourseController {
 
 	// GETTERS and SETTERS
 	public ArrayList<Course> getCourseList() {
-		return databaseController.getCourseList();
+		return myCourseList;
+	}
+
+	public ArrayList<Course> getMyCourseList() {
+		return myCourseList;
+	}
+
+	public void setMyCourseList(ArrayList<Course> myCourseList) {
+		this.myCourseList = myCourseList;
 	}
 
 }

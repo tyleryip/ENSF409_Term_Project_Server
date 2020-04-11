@@ -16,6 +16,8 @@ import com.KerrYip.ServerModel.Student;
 public class StudentController {
 
 	private DatabaseController databaseController;
+	
+	private ArrayList<Student> myStudentList;
 
 	/**
 	 * Constructor for the class StudentManager
@@ -24,6 +26,7 @@ public class StudentController {
 	 */
 	public StudentController(DatabaseController db) {
 		this.databaseController = db;
+		setMyStudentList(databaseController.getStudentList());
 	}
 
 	/**
@@ -33,7 +36,7 @@ public class StudentController {
 	 * @return the student with a matching name
 	 */
 	public Student searchStudent(String name) {
-		Iterator<Student> itr = databaseController.getStudentList().iterator();
+		Iterator<Student> itr = myStudentList.iterator();
 		while (itr.hasNext()) {
 			Student check = itr.next();
 			if (check.getStudentName().equalsIgnoreCase(name)) {
@@ -52,7 +55,7 @@ public class StudentController {
 	 * @return the student with a matching ID number, otherwise returns null
 	 */
 	public Student searchStudent(int id) {
-		Iterator<Student> itr = databaseController.getStudentList().iterator();
+		Iterator<Student> itr = myStudentList.iterator();
 		while (itr.hasNext()) {
 			Student check = itr.next();
 			if (check.getStudentId() == id) {
@@ -63,6 +66,25 @@ public class StudentController {
 		return null;
 
 	}
+	
+	public int searchStudentIndex(int id) {
+		Iterator<Student> itr = myStudentList.iterator();
+		int i = 0;
+		while (itr.hasNext()) {
+			Student check = itr.next();
+			if (check.getStudentId() == id) {
+				return i;
+			}
+			i++;
+		}
+		System.err.println("Could not find student with id: " + id);
+		return -1;
+
+	}
+	
+	public void syncData() {
+		databaseController.setStudentList(myStudentList);
+	}
 
 	/**
 	 * Adds a student to the student list
@@ -70,7 +92,7 @@ public class StudentController {
 	 * @param name the name of the student
 	 */
 	public void addStudent(String name) {
-		int id = databaseController.getStudentList().size();
+		int id = myStudentList.size();
 		Student newStudent = new Student(name, id + 1);
 		databaseController.getStudentList().add(newStudent);
 		System.out.println("[Server] New student " + name + " created successfully with an id of: " + id);
@@ -82,6 +104,14 @@ public class StudentController {
 
 	public void setDatabaseController(DatabaseController databaseController) {
 		this.databaseController = databaseController;
+	}
+
+	public ArrayList<Student> getMyStudentList() {
+		return myStudentList;
+	}
+
+	public void setMyStudentList(ArrayList<Student> myStudentList) {
+		this.myStudentList = myStudentList;
 	}
 
 }
