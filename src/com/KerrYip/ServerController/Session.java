@@ -172,6 +172,7 @@ public class Session implements Runnable {
 			
 		case "logout":
 			return logout();
+			
 		default:
 			System.err.println("No option available that matched: " + command);
 			return false;
@@ -221,10 +222,36 @@ public class Session implements Runnable {
 		return false;
 	}
 	
+	/**
+	 * Logs the user out
+	 * @return true if successful
+	 */
 	private boolean logout() {
 		setStudentUser(null);
 		setAdminUser(null);
 		return true;
+	}
+	
+	/**
+	 * Updates the student in the client, returns null if the operation to change was unsuccessful
+	 * @param successful determines whether or not to send an updated student or null
+	 */
+	private void updateStudent(boolean successful) {
+		if(successful) {
+			try {
+				toClient.writeObject(studentUser);
+			} catch (IOException e) {
+				System.err.println("Error: could not write student to output stream");
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				toClient.writeObject(null);
+			} catch (IOException e) {
+				System.err.println("Error: could not write null to output stream");
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**
@@ -243,10 +270,10 @@ public class Session implements Runnable {
 		if (clientCourse != null) {
 			Registration newReg = new Registration();
 			newReg.completeRegistration(studentUser, clientCourse.getCourseOfferingAt(section));
-			writeString("Sucessfully added this course to your courses");
+			updateStudent(true);
 			return true;
 		}
-		writeString("Unable to add this course to your courses");
+		updateStudent(false);
 		return false;
 	}
 
@@ -262,10 +289,10 @@ public class Session implements Runnable {
 		Registration removeReg = studentUser.searchStudentReg(clientCourse);
 		if (removeReg != null) {
 			studentUser.getStudentRegList().remove(removeReg);
-			writeString("Successfully removed this course from your courses");
+			updateStudent(true);
 			return true;
 		}
-		writeString("Unable to remove this course from your courses: could not find this course in your courses");
+		updateStudent(false);
 		return false;
 
 	}
