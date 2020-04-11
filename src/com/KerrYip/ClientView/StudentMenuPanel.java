@@ -82,6 +82,7 @@ public class StudentMenuPanel extends JPanel {
 	}
 
 	public void updateEnrolledCourse() {
+		System.out.println(tempStudent);
 		String temp = "";
 		for (int i = 0; i < tempStudent.getStudentRegList().size(); i++) {
 			temp += tempStudent.getStudentRegList().get(i);

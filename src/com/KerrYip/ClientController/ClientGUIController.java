@@ -256,6 +256,7 @@ public class ClientGUIController {
 					}else{
 						frame.getStudentMenu().setTempStudent(tempStudent);
 						frame.getStudentMenu().updateEnrolledCourse();
+						frame.show("Student Menu");
 						JOptionPane.showMessageDialog(null, "Enrollment was successful");
 					}
 
@@ -305,6 +306,7 @@ public class ClientGUIController {
 					}else{
 						frame.getStudentMenu().setTempStudent(tempStudent);
 						frame.getStudentMenu().updateEnrolledCourse();
+						frame.show("Student Menu");
 						JOptionPane.showMessageDialog(null, "Drop was successful");
 					}
 				}
