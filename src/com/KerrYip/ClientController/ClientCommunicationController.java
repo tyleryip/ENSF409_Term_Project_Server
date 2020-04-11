@@ -227,6 +227,11 @@ public class ClientCommunicationController {
 			writeString(lectureNumber);
 
 			tempStudent = (Student)(fromServer.readObject());
+			
+			for(int i = 0; i<tempStudent.getStudentRegList().size(); i++) {
+				System.out.println("[DEBUG] " + tempStudent.getStudentRegList().get(i));
+			}
+			
 			for(int i = 0; i < tempStudent.getStudentRegList().size(); i++){
 				System.out.println(tempStudent.getStudentRegList().get(i));
 			}

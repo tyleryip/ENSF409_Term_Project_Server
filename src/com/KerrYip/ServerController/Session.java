@@ -242,11 +242,7 @@ public class Session implements Runnable {
 	private void updateStudent(boolean successful) {
 		if (successful) {
 			try {
-				System.out.println(studentUser);
-				for(Registration r: studentUser.getStudentRegList()) {
-					System.out.println(r);
-				}
-				toClient.writeObject(studentUser);
+				toClient.writeObject(getStudentUser());
 			} 
 			catch (IOException e) {
 				System.err.println("Error: could not write student to output stream");
@@ -277,10 +273,21 @@ public class Session implements Runnable {
 		if (clientCourse != null) {
 			Registration newReg = new Registration();
 			newReg.completeRegistration(studentUser, clientCourse.getCourseOfferingAt(section-1));
-			updateStudent(true);
+			try {
+				for(Registration r: studentUser.getStudentRegList()) {
+					toClient.writeObject(r);
+				}
+				toClient.writeObject(null);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			return true;
 		}
-		updateStudent(false);
+		try {
+			toClient.writeObject(null);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
@@ -298,10 +305,21 @@ public class Session implements Runnable {
 		removeReg = studentUser.searchStudentReg(clientCourse);
 		if (removeReg != null) {
 			studentUser.getStudentRegList().remove(removeReg);
-			updateStudent(true);
+			try {
+				for(Registration r: studentUser.getStudentRegList()) {
+					toClient.writeObject(r);
+				}
+				toClient.writeObject(null);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			return true;
 		}
-		updateStudent(false);
+		try {
+			toClient.writeObject(null);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return false;
 
 	}
