@@ -88,11 +88,15 @@ public class Course implements Serializable {
 		st += getCourseName() + " " + getCourseNum();
 		st += "\n---------------------------------------";
 		st += "\nAll course sections:\n";
+		if(offeringList.size() <= 0) {
 		for (CourseOffering c : offeringList)
 			st += c;
+		}
 		st += "\nAll course prerequisites:\n";
+		if(preReq.size() <= 0) {
 		for (Course c : preReq)
 			st += c.getCourseName() + " " + c.getCourseNum();
+		}
 		st += "\n---------------------------------------\n";
 		return st;
 	}

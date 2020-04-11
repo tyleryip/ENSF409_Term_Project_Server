@@ -432,13 +432,13 @@ public class Session implements Runnable {
 			writeString("new course not added");
 			return false;
 		}
-		if (courseController.searchCat(toAdd.getCourseName(), toAdd.getCourseNum()) == null) {
-			courseController.addCourse(toAdd.getCourseName() + " " + toAdd.getCourseNum());
+		if (courseController.searchCat(toAdd.getNameNum()) == null) {
+			courseController.addCourse(toAdd.getNameNum());
 			CourseOffering newCourseOffering = null;
 			do {
 				try {
 					newCourseOffering = (CourseOffering) fromClient.readObject();
-					courseController.createCourseOffering(toAdd, newCourseOffering.getSecNum(), newCourseOffering.getSecCap());
+					courseController.searchCat(toAdd.getNameNum()).addOffering(newCourseOffering);
 				} catch (ClassNotFoundException e) {
 					System.err.println("Error: class not  found, unable to cast");
 					e.printStackTrace();
