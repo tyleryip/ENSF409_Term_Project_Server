@@ -11,11 +11,11 @@ package com.KerrYip.ServerModel;
  */
 public class Administrator {
 
-	private String name;
+	private String password;
 	private boolean active;
 
 	public Administrator() {
-		this.name = "admin";
+		this.password = "admin";
 		this.active = false;
 	}
 
@@ -28,11 +28,12 @@ public class Administrator {
 		this.active = active;
 	}
 
-	public String getName() {
-		return name;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setPassword(String password) {
+		this.password = password;
 	}
+	
 }

@@ -41,11 +41,11 @@ public class Student implements Serializable {
 	 * specified course
 	 * 
 	 * @param theCourse the course to search
-	 * @return the registration if found, null otherwsie
+	 * @return the registration if found, null otherwise
 	 */
 	public Registration searchStudentReg(Course theCourse) {
 		for (Registration reg : studentRegList) {
-			if (reg.getTheOffering().getTheCourse().equals(theCourse)) {
+			if (reg.getTheOffering().getTheCourse().getNameNum() == theCourse.getNameNum()) {
 				return reg;
 			}
 		}

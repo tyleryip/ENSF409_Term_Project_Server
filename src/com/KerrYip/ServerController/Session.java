@@ -38,7 +38,9 @@ public class Session implements Runnable {
 	/**
 	 * Constructor for session connects I/O
 	 * 
-	 * @param aSocket
+	 * @param aSocket the socket to communicate with the client
+	 * @param courseController a controller to manipulate courses
+	 * @param studentController a controller to manipulate students
 	 */
 	public Session(Socket aSocket, CourseController courseController, StudentController studentController) {
 		// Set up instruction I/O
@@ -334,7 +336,7 @@ public class Session implements Runnable {
 	private boolean adminLogin() {
 		String credentials = "";
 		credentials = readString();
-		if (credentials.contentEquals("admin")) {
+		if (credentials.contentEquals(adminUser.getPassword())) { //Check to see if the password matches
 			adminUser.setActive(true);
 			writeString("login successful");
 			return true;
