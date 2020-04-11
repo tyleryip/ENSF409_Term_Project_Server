@@ -44,9 +44,9 @@ public class Student implements Serializable {
 	 * @return the registration if found, null otherwise
 	 */
 	public Registration searchStudentReg(Course theCourse) {
-		for (Registration reg : studentRegList) {
-			if (reg.getTheOffering().getTheCourse().getNameNum() == theCourse.getNameNum()) {
-				return reg;
+		for(int i = 0; i<studentRegList.size(); i++) {
+			if (studentRegList.get(i).getTheOffering().getTheCourse().getNameNum() == theCourse.getNameNum()) {
+				return studentRegList.get(i);
 			}
 		}
 		System.out.println("Error: Could not find the registration matching that course!");

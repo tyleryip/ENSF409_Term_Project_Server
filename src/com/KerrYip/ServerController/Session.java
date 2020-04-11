@@ -267,7 +267,6 @@ public class Session implements Runnable {
 			return false;
 		}
 		Course clientCourse = readCourseFromClient();
-
 		clientCourse = courseController.searchCat(clientCourse.getCourseName(), clientCourse.getCourseNum());
 		int section = Integer.parseInt(readString());
 		if (clientCourse != null) {
@@ -288,8 +287,10 @@ public class Session implements Runnable {
 			return false;
 		}
 		Course clientCourse = readCourseFromClient();
-
-		Registration removeReg = studentUser.searchStudentReg(clientCourse);
+		clientCourse = courseController.searchCat(clientCourse.getCourseName(), clientCourse.getCourseNum());
+		System.out.println("[TEST] " + clientCourse);
+		Registration removeReg = null;
+		removeReg = studentUser.searchStudentReg(clientCourse);
 		if (removeReg != null) {
 			studentUser.getStudentRegList().remove(removeReg);
 			updateStudent(true);
