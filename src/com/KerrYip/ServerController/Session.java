@@ -242,12 +242,13 @@ public class Session implements Runnable {
 	private void updateStudent(boolean successful) {
 		if (successful) {
 			try {
-				toClient.writeObject(studentUser);
 				System.out.println(studentUser);
 				for(Registration r: studentUser.getStudentRegList()) {
 					System.out.println(r);
 				}
-			} catch (IOException e) {
+				toClient.writeObject(studentUser);
+			} 
+			catch (IOException e) {
 				System.err.println("Error: could not write student to output stream");
 				e.printStackTrace();
 			}
