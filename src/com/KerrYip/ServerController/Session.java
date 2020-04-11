@@ -243,6 +243,10 @@ public class Session implements Runnable {
 		if (successful) {
 			try {
 				toClient.writeObject(studentUser);
+				System.out.println(studentUser);
+				for(Registration r: studentUser.getStudentRegList()) {
+					System.out.println(r);
+				}
 			} catch (IOException e) {
 				System.err.println("Error: could not write student to output stream");
 				e.printStackTrace();
@@ -271,7 +275,7 @@ public class Session implements Runnable {
 		int section = Integer.parseInt(readString());
 		if (clientCourse != null) {
 			Registration newReg = new Registration();
-			newReg.completeRegistration(studentUser, clientCourse.getCourseOfferingAt(section));
+			newReg.completeRegistration(studentUser, clientCourse.getCourseOfferingAt(section-1));
 			updateStudent(true);
 			return true;
 		}
