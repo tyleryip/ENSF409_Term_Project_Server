@@ -293,6 +293,8 @@ public class ClientCommunicationController {
 				toServer.writeObject(co);
 				toServer.flush();
 			}
+			toServer.writeObject(null);
+			toServer.flush();
 
 			message = readString();
 		} catch (IOException e) {
