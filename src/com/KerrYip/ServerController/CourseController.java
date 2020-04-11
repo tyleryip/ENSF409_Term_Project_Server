@@ -95,10 +95,6 @@ public class CourseController {
 	 * @return the course you added, or null if course already exists
 	 */
 	public Course addCourse(String nameNum) {
-		if (nameNum == null) {
-			System.err.println("Error: Invalid input!");
-			return null;
-		}
 		String[] split = nameNum.split(" ");
 		if (searchCat(split[0], Integer.parseInt(split[1])) == null) {
 			Course newCourse = new Course(split[0], Integer.parseInt(split[1]));
@@ -128,7 +124,7 @@ public class CourseController {
 		// prerequisite
 		for (Course c : myCourseList) {
 			for (Course p : c.getPreReq()) {
-				if (p.getNameNum() == nameNum) {
+				if (p.getNameNum().contentEquals(nameNum)) {
 					c.getPreReq().remove(p);
 				}
 			}

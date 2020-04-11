@@ -183,7 +183,7 @@ public class Session implements Runnable {
 			return false;
 		}
 	}
-	
+
 	public void syncData() {
 		studentController.syncData();
 		courseController.syncData();
@@ -432,11 +432,35 @@ public class Session implements Runnable {
 			writeString("new course not added");
 			return false;
 		}
-		// The following method already does error checking by looking to see if the
-		// course already exists in the catalog
-		courseController.addCourse(toAdd.getCourseName() + " " + toAdd.getCourseNum());
-		writeString("new course added");
-		return true;
+		if (courseController.searchCat(toAdd.getCourseName(), toAdd.getCourseNum()) == null) {
+			courseController.addCourse(toAdd.getCourseName() + " " + toAdd.getCourseNum());
+			CourseOffering newCourseOffering = null;
+			do {
+				try {
+					newCourseOffering = (CourseOffering) fromClient.readObject();
+					courseController.createCourseOffering(toAdd, newCourseOffering.getSecNum(), newCourseOffering.getSecCap());
+				} catch (ClassNotFoundException e) {
+					System.err.println("Error: class not  found, unable to cast");
+					e.printStackTrace();
+				} catch (IOException e) {
+					System.err.println("Error: problem with I/O");
+					e.printStackTrace();
+				}
+			} while (newCourseOffering != null);
+			writeString("Course added");
+			return true;
+		} 
+		else {
+			try {
+				fromClient.readAllBytes();
+			} catch (IOException e) {
+				System.err.println("Error: problem clearing out the stream");
+				e.printStackTrace();
+			}
+			writeString("Course already exists");
+			return false;
+		}
+
 	}
 
 	/**
