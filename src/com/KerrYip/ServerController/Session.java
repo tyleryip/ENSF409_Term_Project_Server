@@ -567,10 +567,12 @@ public class Session implements Runnable {
 		else {
 			writeString("student found");
 			try {
-				toClient.writeObject(theStudent.getStudentRegList());
+				for (Registration r : theStudent.getStudentRegList()) {
+					toClient.writeObject(r);
+				}
+				toClient.writeObject(null);
 				return true;
 			} catch (IOException e) {
-				System.err.println("Error: unable to write registration array list to client");
 				e.printStackTrace();
 				return false;
 			}
