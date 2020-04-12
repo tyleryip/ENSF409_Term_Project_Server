@@ -18,6 +18,10 @@ public class RegistrationController {
         this.databaseController = db;
         setMyRegistrationList(databaseController.getRegistrationList());
     }
+    
+    public void removeRegistration(Registration toRemove) {
+    	databaseController.getRegistrationList().remove(toRemove);
+    }
 
     /**
      * Makes new registration, adds it to databaseController and returns it
