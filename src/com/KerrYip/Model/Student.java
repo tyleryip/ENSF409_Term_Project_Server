@@ -69,6 +69,10 @@ public class Student implements Serializable {
 		return st;
 	}
 
+	public String toData(){
+		return getStudentId() + ";" + getStudentName();
+	}
+
 	// GETTERS and SETTERS
 	public String getStudentName() {
 		return studentName;

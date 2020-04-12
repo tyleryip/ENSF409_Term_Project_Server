@@ -117,6 +117,14 @@ public class Course implements Serializable {
 		return st;
 	}
 
+	public String toData(){
+		String st = getCourseID() + ";" + getCourseName() + ";" + getCourseNum();
+		for(CourseOffering co: getOfferingList()){
+			st += ";" + co.getCourseOfferingID();
+		}
+		return st;
+	}
+
 	// GETTERS and SETTERS
 	public ArrayList<CourseOffering> getOfferingList() {
 		return offeringList;
@@ -153,5 +161,9 @@ public class Course implements Serializable {
 	public String getNameNum() {
 		return this.courseName + " " + this.getCourseNum();
 	}
+
+	public int getCourseID() { return courseID; }
+
+	public void setCourseID(int courseID) { this.courseID = courseID; }
 
 }

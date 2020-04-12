@@ -56,7 +56,10 @@ public class Registration implements Serializable {
 		st += "Grade: " + getGrade();
 		st += "\n-----------\n";
 		return st;
+	}
 
+	public String toData(){
+		return getRegistrationID() +";"+ getTheStudent().getStudentId() +";"+ getTheOffering().getCourseOfferingID() +";"+ getGrade();
 	}
 
 	// GETTERS and SETTERS
@@ -83,5 +86,9 @@ public class Registration implements Serializable {
 	public void setGrade(char grade) {
 		this.grade = grade;
 	}
+
+	public int getRegistrationID() { return registrationID; }
+
+	public void setRegistrationID(int registrationID) { this.registrationID = registrationID; }
 
 }

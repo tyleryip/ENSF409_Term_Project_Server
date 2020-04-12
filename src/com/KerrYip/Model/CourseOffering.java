@@ -70,6 +70,10 @@ public class CourseOffering implements Serializable {
 		return st;
 	}
 
+	public String toData(){
+		return getCourseOfferingID() +";"+ getTheCourse().getCourseID() +";"+ getSecNum() +";"+ getSecCap();
+	}
+
 	// GETTERS and SETTERS
 	public int getSecNum() {
 		return secNum;
@@ -102,5 +106,9 @@ public class CourseOffering implements Serializable {
 	public void setOfferingRegList(ArrayList<Registration> offeringRegList) {
 		this.offeringRegList = offeringRegList;
 	}
+
+	public int getCourseOfferingID() { return courseOfferingID; }
+
+	public void setCourseOfferingID(int courseOfferingID) { this.courseOfferingID = courseOfferingID; }
 
 }
