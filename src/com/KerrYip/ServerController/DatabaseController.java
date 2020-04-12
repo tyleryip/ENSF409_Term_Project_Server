@@ -65,24 +65,24 @@ public class DatabaseController {
 
 	private void readCoursesFromDatabase() {
 		// Simulating courses
-		courseList.add(new Course("ENGG", 233));
-		courseList.get(0).addOffering(new CourseOffering(1, 100));
+		courseList.add(new Course("ENGG", 233,getIncrementCourseID()));
+		courseList.get(0).addOffering(new CourseOffering(1, 100,getIncrementCourseOfferingID()));
 
-		courseList.add(new Course("ENSF", 409));
-		courseList.get(1).addOffering(new CourseOffering(1, 100));
-		courseList.get(1).addOffering(new CourseOffering(2, 200));
+		courseList.add(new Course("ENSF", 409,getIncrementCourseID()));
+		courseList.get(1).addOffering(new CourseOffering(1, 100,getIncrementCourseOfferingID()));
+		courseList.get(1).addOffering(new CourseOffering(2, 200,getIncrementCourseOfferingID()));
 
-		courseList.add(new Course("PHYS", 259));
-		courseList.get(2).addOffering(new CourseOffering(1, 100));
-		courseList.get(2).addOffering(new CourseOffering(2, 320));
+		courseList.add(new Course("PHYS", 259,getIncrementCourseID()));
+		courseList.get(2).addOffering(new CourseOffering(1, 100,getIncrementCourseOfferingID()));
+		courseList.get(2).addOffering(new CourseOffering(2, 320,getIncrementCourseOfferingID()));
 
-		courseList.add(new Course("MATH", 211));
-		courseList.get(3).addOffering(new CourseOffering(1, 150));
-		courseList.get(3).addOffering(new CourseOffering(2, 250));
-		courseList.get(3).addOffering(new CourseOffering(3, 270));
+		courseList.add(new Course("MATH", 211,getIncrementCourseID()));
+		courseList.get(3).addOffering(new CourseOffering(1, 150,getIncrementCourseOfferingID()));
+		courseList.get(3).addOffering(new CourseOffering(2, 250,getIncrementCourseOfferingID()));
+		courseList.get(3).addOffering(new CourseOffering(3, 270,getIncrementCourseOfferingID()));
 
-		courseList.add(new Course("ENGG", 202));
-		courseList.get(4).addOffering(new CourseOffering(1, 120));
+		courseList.add(new Course("ENGG", 202,getIncrementCourseID()));
+		courseList.get(4).addOffering(new CourseOffering(1, 120,getIncrementCourseOfferingID()));
 
 		// Added prerequisites
 		courseList.get(1).addPreReq(courseList.get(4));
@@ -135,7 +135,7 @@ public class DatabaseController {
 		return studentID++;
 	}
 
-	public int getIncrementClassID(){
+	public int getIncrementCourseID(){
 		return courseID++;
 	}
 

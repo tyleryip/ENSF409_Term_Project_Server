@@ -21,6 +21,7 @@ public class CourseOffering implements Serializable {
 	private int secCap;
 	private Course theCourse;
 	private ArrayList<Registration> offeringRegList;
+	private int courseOfferingID;
 
 	/**
 	 * The constructor for class CourseOffering
@@ -33,6 +34,21 @@ public class CourseOffering implements Serializable {
 		this.setSecCap(secCap);
 		offeringRegList = new ArrayList<Registration>();
 	}
+
+	/**
+	 * The constructor for class CourseOffering
+	 * @param courseOfferingID ID number used to store in the SQL database
+	 * @param secNum the section number
+	 * @param secCap the capacity of the course offering
+	 */
+	public CourseOffering(int secNum, int secCap, int courseOfferingID) {
+		this.courseOfferingID = courseOfferingID;
+		this.setSecNum(secNum);
+		this.setSecCap(secCap);
+		offeringRegList = new ArrayList<Registration>();
+	}
+
+
 
 	/**
 	 * Adds a registration to the course offering's registration list

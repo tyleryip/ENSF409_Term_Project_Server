@@ -20,9 +20,8 @@ public class Registration implements Serializable {
 	private Student theStudent;
 	private CourseOffering theOffering;
 	private char grade;
-	
-	//This id number is used to store in the SQL database
-	private int id;
+
+	private int registrationID;
 
 	/**
 	 * Links a student and course offering together via a registration
