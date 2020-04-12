@@ -21,9 +21,11 @@ public class Course implements Serializable {
 
 	private String courseName;
 	private int courseNum;
+	
+	//This id number is used to store in the SQL database
+	private int id;
 	private ArrayList<Course> preReq;
 	private ArrayList<CourseOffering> offeringList;
-	private int courseID;
 
 	/**
 	 * Constructor for the class Course
@@ -46,7 +48,7 @@ public class Course implements Serializable {
 	 * @param courseNum  the number of the course
 	 */
 	public Course(String courseName, int courseNum, int courseID) {
-		this.courseID = courseID;
+		this.id = courseID;
 		this.setCourseName(courseName);
 		this.setCourseNum(courseNum);
 		// Both of the following are only association
@@ -118,9 +120,9 @@ public class Course implements Serializable {
 	}
 
 	public String toData(){
-		String st = getCourseID() + ";" + getCourseName() + ";" + getCourseNum();
+		String st = getID() + ";" + getCourseName() + ";" + getCourseNum();
 		for(CourseOffering co: getOfferingList()){
-			st += ";" + co.getCourseOfferingID();
+			st += ";" + co.getID();
 		}
 		return st;
 	}
@@ -162,8 +164,8 @@ public class Course implements Serializable {
 		return this.courseName + " " + this.getCourseNum();
 	}
 
-	public int getCourseID() { return courseID; }
+	public int getID() { return id; }
 
-	public void setCourseID(int courseID) { this.courseID = courseID; }
+	public void setID(int courseID) { this.id = courseID; }
 
 }

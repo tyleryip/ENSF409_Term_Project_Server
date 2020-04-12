@@ -20,7 +20,7 @@ public class Registration implements Serializable {
 	private Student theStudent;
 	private CourseOffering theOffering;
 	private char grade;
-	private int registrationID;
+	private int id;
 
 	/**
 	 * Links a student and course offering together via a registration
@@ -59,7 +59,7 @@ public class Registration implements Serializable {
 	}
 
 	public String toData(){
-		return getRegistrationID() +";"+ getTheStudent().getStudentId() +";"+ getTheOffering().getCourseOfferingID() +";"+ getGrade();
+		return getID() +";"+ getTheStudent().getStudentId() +";"+ getTheOffering().getID() +";"+ getGrade();
 	}
 
 	// GETTERS and SETTERS
@@ -87,8 +87,11 @@ public class Registration implements Serializable {
 		this.grade = grade;
 	}
 
-	public int getRegistrationID() { return registrationID; }
+	public int getID() {
+		return id;
+	}
 
-	public void setRegistrationID(int registrationID) { this.registrationID = registrationID; }
-
+	public void setID(int id) {
+		this.id = id;
+	}
 }
