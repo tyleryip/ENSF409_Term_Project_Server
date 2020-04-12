@@ -84,13 +84,16 @@ public class DatabaseController {
 
 	private void registerStudentsInCourses() {
 		Registration r = new Registration();
-		r.completeRegistration(studentList.get(0), courseList.get(0).getCourseOfferingAt(0));
-
-		r = new Registration();
 		r.completeRegistration(studentList.get(1), courseList.get(2).getCourseOfferingAt(1));
 
 		r = new Registration();
 		r.completeRegistration(studentList.get(2), courseList.get(3).getCourseOfferingAt(1));
+		
+		//We register everyone in MATH 211 because we want to drink the tears of depressed engineers (aka we need to test if running course works)
+		for(int i = 0; i<studentList.size(); i++) {
+			r = new Registration();
+			r.completeRegistration(studentList.get(i), courseList.get(3).getCourseOfferingAt(0));
+		}
 	}
 
 	// GETTERS and SETTERS
