@@ -22,7 +22,7 @@ public class StudentController {
 	private ArrayList<Student> myStudentList;
 
 	/**
-	 * Constructor for the class StudentManager
+	 * Constructor for the class StudentController
 	 * 
 	 * @param db the DatabaseController for the student manager to use
 	 */
