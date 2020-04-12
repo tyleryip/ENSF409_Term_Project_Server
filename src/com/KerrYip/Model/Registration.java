@@ -85,12 +85,4 @@ public class Registration implements Serializable {
 		this.grade = grade;
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
 }
