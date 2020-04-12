@@ -154,6 +154,8 @@ public class Session implements Runnable {
 	public void syncData() {
 		studentController.syncData();
 		courseController.syncData();
+		registrationController.syncData();
+		courseOfferingController.syncData();
 	}
 
 	/**
@@ -520,6 +522,8 @@ public class Session implements Runnable {
 		// We need to remove the course from any student that may be registered in it
 		studentController.removeCourseFromAll(toRemove);
 		courseController.removeCourse(toRemove.getCourseName() + " " + toRemove.getCourseNum());
+		courseOfferingController.removeAllCourseOfferings(toRemove);
+		registrationController.removeAllRegistrations(toRemove);
 		writeString("course removed");
 		return true;
 	}

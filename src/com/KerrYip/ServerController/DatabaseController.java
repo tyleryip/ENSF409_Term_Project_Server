@@ -374,8 +374,12 @@ public class DatabaseController {
 	public synchronized void setCourseList(ArrayList<Course> courseList) { this.courseList = courseList; }
 
 	public synchronized ArrayList<Registration> getRegistrationList() { return registrationList; }
+	
+	public synchronized void setRegistrationList(ArrayList<Registration> registrationList) {this.registrationList = registrationList; }
 
 	public synchronized ArrayList<CourseOffering> getCourseOfferingList() { return courseOfferingList; }
+	
+	public synchronized void setCourseOfferingList(ArrayList<CourseOffering> courseOfferingList)  {this.courseOfferingList = courseOfferingList; }
 
 	public ArrayList<Student> loadStudents() { return studentList; }
 
