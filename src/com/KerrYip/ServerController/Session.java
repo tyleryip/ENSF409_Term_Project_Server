@@ -336,7 +336,7 @@ public class Session implements Runnable {
 		clientCourse = courseController.searchCat(clientCourse.getCourseName(), clientCourse.getCourseNum());
 		int section = Integer.parseInt(readString());
 		if (clientCourse != null) {
-			Registration newReg = new Registration();
+			Registration newReg = 
 			for (CourseOffering offer : clientCourse.getOfferingList()) {
 				if (section == offer.getSecNum()) {
 					writeString("enroll successful");
