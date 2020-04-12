@@ -171,6 +171,9 @@ public class Session implements Runnable {
 			
 		case "run courses":
 			return runCourses();
+			
+		case "admin view student courses":
+			return searchForStudent();
 
 		case "QUIT":
 			return true;
@@ -545,6 +548,34 @@ public class Session implements Runnable {
 			return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * Searches for a student as an admin and returns their registration
+	 * @return true if successful, false if failed
+	 */
+	private boolean searchForStudent() {
+		if (!adminLoggedIn()) {
+			return false;
+		}
+		int checkID = Integer.parseInt(readString());
+		Student theStudent = studentController.searchStudent(checkID);
+		if(theStudent == null) {
+			writeString("could not find student");
+			return false;
+		}
+		else {
+			writeString("student found");
+			try {
+				toClient.writeObject(theStudent.getStudentRegList());
+				return true;
+			} catch (IOException e) {
+				System.err.println("Error: unable to write registration array list to client");
+				e.printStackTrace();
+				return false;
+			}
+
+		}
 	}
 
 	/**
