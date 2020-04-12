@@ -247,13 +247,15 @@ public class DatabaseController {
 	public void dataToRegistration(String data){
 		String[] variables = data.split(";");
 		try {
-			Student s = searchStudent(Integer.parseInt(variables[1]));
-			CourseOffering co = searchCourseOffering(Integer.parseInt(variables[2]));
-			if(co == null || s == null){
+			int s = searchStudent(Integer.parseInt(variables[1]));
+			int co = searchCourseOffering(Integer.parseInt(variables[2]));
+			if(co == -1 || s == -1){
 				System.err.println("Couldn't find data");
 				return;
 			}
-			getRegistrationList().add(new Registration(Integer.parseInt(variables[0]),s,co,variables[3].charAt(0)));
+			getRegistrationList().add(new Registration(Integer.parseInt(variables[0]),getStudentList().get(s),getCourseOfferingList().get(co),variables[3].charAt(0)));
+			getStudentList().get(s).getStudentRegList().add(getRegistrationList().get(getRegistrationList().size()-1));
+			getCourseOfferingList().get(co).getOfferingRegList().add(getRegistrationList().get(getRegistrationList().size()-1));
 		}catch(NumberFormatException e){
 			e.printStackTrace();
 		}catch(ArrayIndexOutOfBoundsException e){
@@ -268,12 +270,13 @@ public class DatabaseController {
 	public void dataToCourseOffering(String data){
 		String[] variables = data.split(";");
 		try {
-			Course c = searchCourse(Integer.parseInt(variables[1]));
-			if(c == null){
+			int c = searchCourse(Integer.parseInt(variables[1]));
+			if(c == -1){
 				System.err.println("Couldn't find data");
 				return;
 			}
-			getCourseOfferingList().add(new CourseOffering(Integer.parseInt(variables[0]),c,Integer.parseInt(variables[2]),Integer.parseInt(variables[3])));
+			getCourseOfferingList().add(new CourseOffering(Integer.parseInt(variables[0]),getCourseList().get(c),Integer.parseInt(variables[2]),Integer.parseInt(variables[3])));
+			getCourseList().get(c).getOfferingList().add(getCourseOfferingList().get(getCourseOfferingList().size()-1));
 		}catch(NumberFormatException e){
 			e.printStackTrace();
 		}catch(ArrayIndexOutOfBoundsException e){
@@ -287,18 +290,37 @@ public class DatabaseController {
 	 */
 	public void dataToCourse(String data){
 		String[] variables = data.split(";");
-		ArrayList<CourseOffering> courseOfferings = new ArrayList<CourseOffering>();
-		CourseOffering co;
+		try{
+			getCourseList().add(new Course(variables[1], Integer.parseInt(variables[2]), Integer.parseInt(variables[0])));
+		}catch(NumberFormatException e){
+			e.printStackTrace();
+		}catch(ArrayIndexOutOfBoundsException e){
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Adds Prereqs to all the courses that have been added
+	 * @param data Data from the database used to make the Prereqs for Course
+	 */
+	public void dataToCoursePreReqs(String data) {
+		String[] variables = data.split(";");
+		ArrayList<Course> prereqList = new ArrayList<Course>();
+		Course tempCourse;
 		try {
-			for(int i = 3; i < variables.length; i++){
-				co = searchCourseOffering(Integer.parseInt(variables[i]));
-				if(co == null){
+			for (int i = 3; i < variables.length; i++) {
+				tempCourse = getCourseList().get(searchCourse(Integer.parseInt(variables[i])));
+				if (tempCourse == null) {
 					System.err.println("Couldn't find data");
 					return;
 				}
-				courseOfferings.add(co);
+				prereqList.add(tempCourse);
 			}
-			getCourseList().add(new Course(variables[1], Integer.parseInt(variables[2]),Integer.parseInt(variables[0]),courseOfferings));
+			int i = (searchCourse(Integer.parseInt(variables[0])));
+			if(i != -1){
+				return;
+			}
+			getCourseList().get(i).setPreReq(prereqList);
 		}catch(NumberFormatException e){
 			e.printStackTrace();
 		}catch(ArrayIndexOutOfBoundsException e){
@@ -310,57 +332,57 @@ public class DatabaseController {
 	/**
 	 * Searches for the Student with the matching ID
 	 * @param id The ID of the student we are searching for
-	 * @return Returns the student if found, null if not
+	 * @return Returns the index that the student is found if found, -1 if not found
 	 */
-	public Student searchStudent(int id){
-		for(Student s: getStudentList()){
-			if(s.getStudentId() == id){
-				return s;
+	public int searchStudent(int id){
+		for(int i = 0; i < getStudentList().size(); i++){
+			if(id == getStudentList().get(i).getStudentId()){
+				return i;
 			}
 		}
-		return null;
+		return -1;
 	}
 
 	/**
 	 * Searches for the Registration with the matching ID
 	 * @param id The ID of the registration we are searching for
-	 * @return Returns the registration if found, null if not
+	 * @return Returns the index that the registration is found if found, -1 if not found
 	 */
-	public Registration searchRegistration(int id){
-		for(Registration r: getRegistrationList()){
-			if(r.getID() == id){
-				return r;
+	public int searchRegistration(int id){
+		for(int i = 0; i < getRegistrationList().size(); i++){
+			if(id == getRegistrationList().get(i).getID()){
+				return i;
 			}
 		}
-		return null;
+		return -1;
 	}
 
 	/**
 	 * Searches for the Course with the matching ID
 	 * @param id The ID of the Course we are searching for
-	 * @return Returns the Course if found, null if not
+	 * @return Returns the index that the Course is found if found, -1 if not found
 	 */
-	public Course searchCourse(int id){
-		for(Course c: getCourseList()){
-			if(c.getID() == id){
-				return c;
+	public int searchCourse(int id){
+		for(int i = 0; i < getCourseList().size(); i++){
+			if(id == getCourseList().get(i).getID()){
+				return i;
 			}
 		}
-		return null;
+		return -1;
 	}
 
 	/**
 	 * Searches for the CourseOffering with the matching ID
 	 * @param id The ID of the CourseOffering we are searching for
-	 * @return Returns the CourseOffering if found, null if not
+	 * @return Returns the index that the CourseOffering is found if found, -1 if not found
 	 */
-	public CourseOffering searchCourseOffering(int id){
-		for(CourseOffering co: getCourseOfferingList()){
-			if(co.getID() == id){
-				return co;
+	public int searchCourseOffering(int id){
+		for(int i = 0; i < getCourseOfferingList().size(); i++){
+			if(id == getCourseOfferingList().get(i).getID()){
+				return i;
 			}
 		}
-		return null;
+		return -1;
 	}
 
 
