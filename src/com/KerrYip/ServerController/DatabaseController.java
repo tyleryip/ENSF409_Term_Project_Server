@@ -157,27 +157,6 @@ public class DatabaseController {
 	}
 
 	/**
-	 * Test method for reading the Students from a file
-	 * @param filename the filename
-	 */
-	public void readStudentsFromFile(String filename) {
-		File input = new File(filename);
-		try {
-			Scanner scan = new Scanner(input);
-			String s;
-			while (scan.hasNext()) {
-				s = scan.nextLine();
-				dataToStudent(s);
-			}
-			scan.close();
-		} catch (IOException e) {
-			System.err.println("Error: Could not read file with filename " + filename);
-			e.printStackTrace();
-		}
-	}
-
-
-	/**
 	 * Test method for writing the courses to a file
 	 * @param filename the filename
 	 */
@@ -198,6 +177,76 @@ public class DatabaseController {
 			writer.close();
 		} catch (IOException e) {
 			System.err.println("Error: unknown I/O error");
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Test method for writing the course offerings to a file
+	 * @param filename the filename
+	 */
+	public void writeCourseOfferingsToFile(String filename) {
+		File output = new File(filename);
+		try {
+			output.createNewFile();
+		} catch(IOException e) {
+			System.err.println("Error: Could not create file with filename " + filename);
+			e.printStackTrace();
+		}
+		
+		try {
+			FileWriter writer = new FileWriter(output);
+			for(CourseOffering co: courseOfferingList) {
+				writer.write(co.toData() + "\n");
+			}
+			writer.close();
+		} catch (IOException e) {
+			System.err.println("Error: unknown I/O error");
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Test method for writing the registrations to a file
+	 * @param filename the filename
+	 */
+	public void writeRegistrationsToFile(String filename) {
+		File output = new File(filename);
+		try {
+			output.createNewFile();
+		} catch(IOException e) {
+			System.err.println("Error: Could not create file with filename " + filename);
+			e.printStackTrace();
+		}
+		
+		try {
+			FileWriter writer = new FileWriter(output);
+			for(Registration r: registrationList) {
+				writer.write(r.toData() + "\n");
+			}
+			writer.close();
+		} catch (IOException e) {
+			System.err.println("Error: unknown I/O error");
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Test method for reading the Students from a file
+	 * @param filename the filename
+	 */
+	public void readStudentsFromFile(String filename) {
+		File input = new File(filename);
+		try {
+			Scanner scan = new Scanner(input);
+			String s;
+			while (scan.hasNext()) {
+				s = scan.nextLine();
+				dataToStudent(s);
+			}
+			scan.close();
+		} catch (IOException e) {
+			System.err.println("Error: Could not read file with filename " + filename);
 			e.printStackTrace();
 		}
 	}
@@ -236,31 +285,6 @@ public class DatabaseController {
 	}
 
 	/**
-	 * Test method for writing the course offerings to a file
-	 * @param filename the filename
-	 */
-	public void writeCourseOfferingsToFile(String filename) {
-		File output = new File(filename);
-		try {
-			output.createNewFile();
-		} catch(IOException e) {
-			System.err.println("Error: Could not create file with filename " + filename);
-			e.printStackTrace();
-		}
-		
-		try {
-			FileWriter writer = new FileWriter(output);
-			for(CourseOffering co: courseOfferingList) {
-				writer.write(co.toData() + "\n");
-			}
-			writer.close();
-		} catch (IOException e) {
-			System.err.println("Error: unknown I/O error");
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * Test method for reading the Course Offerings from a file
 	 * @param filename the filename
 	 */
@@ -276,31 +300,6 @@ public class DatabaseController {
 			scan.close();
 		} catch (IOException e) {
 			System.err.println("Error: Could not read file with filename " + filename);
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Test method for writing the registrations to a file
-	 * @param filename the filename
-	 */
-	public void writeRegistrationsToFile(String filename) {
-		File output = new File(filename);
-		try {
-			output.createNewFile();
-		} catch(IOException e) {
-			System.err.println("Error: Could not create file with filename " + filename);
-			e.printStackTrace();
-		}
-		
-		try {
-			FileWriter writer = new FileWriter(output);
-			for(Registration r: registrationList) {
-				writer.write(r.toData() + "\n");
-			}
-			writer.close();
-		} catch (IOException e) {
-			System.err.println("Error: unknown I/O error");
 			e.printStackTrace();
 		}
 	}
