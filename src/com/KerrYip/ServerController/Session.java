@@ -605,7 +605,7 @@ public class Session implements Runnable {
 			return false;
 		}
 		studentController.addStudent(newName);
-		writeString("" + (studentController.getMyStudentList().get(studentController.getMyStudentList().size()-1)));
+		writeString("" + (studentController.getMyStudentList().get(studentController.getMyStudentList().size()-1).getStudentId()));
 		return true;
 	}
 	
