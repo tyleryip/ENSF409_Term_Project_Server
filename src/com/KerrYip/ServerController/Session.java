@@ -376,6 +376,7 @@ public class Session implements Runnable {
 		removeReg = studentUser.searchStudentReg(clientCourse);
 		if (removeReg != null) {
 			studentUser.getStudentRegList().remove(removeReg);
+			registrationController.removeRegistration(removeReg);
 			writeString("drop successful");
 			try {
 				for (Registration r : studentUser.getStudentRegList()) {
