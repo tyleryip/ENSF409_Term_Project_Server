@@ -104,17 +104,6 @@ public class StudentController {
 	public void syncData() {
 		databaseController.setStudentList(myStudentList);
 	}
-
-	/**
-	 * Adds a student to the student list
-	 * 
-	 * @param name the name of the student
-	 */
-	public void addStudent(String name, int id) {
-		Student newStudent = new Student(name, id);
-		databaseController.getStudentList().add(newStudent);
-		System.out.println("[Server] New student " + name + " created successfully with an id of: " + id);
-	}
 	
 	/**
 	 * Adds a student to the student list and automatically assigns ID
@@ -122,7 +111,7 @@ public class StudentController {
 	 * @param name the name of the student
 	 */
 	public void addStudent(String name) {
-		int newID = myStudentList.size() + 1;
+		int newID = databaseController.getIncrementStudentID();
 		Student newStudent = new Student(name, newID);
 		databaseController.getStudentList().add(newStudent);
 		System.out.println("[Server] New student " + name + " created successfully with an id of: " + newID);
@@ -146,6 +135,7 @@ public class StudentController {
 		return true;
 	}
 
+	//GETTERS and SETTERS
 	public DatabaseController getDatabaseController() {
 		return databaseController;
 	}

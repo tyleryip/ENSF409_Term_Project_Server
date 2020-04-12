@@ -349,7 +349,7 @@ public class Session implements Runnable {
 		clientCourse = courseController.searchCat(clientCourse.getCourseName(), clientCourse.getCourseNum());
 		int section = Integer.parseInt(readString());
 		if (clientCourse != null) {
-			Registration newReg = registrationController.makeRegistration();
+			Registration newReg = registrationController.addRegistration();
 			for (CourseOffering offer : clientCourse.getOfferingList()) {
 				if (section == offer.getSecNum()) {
 					writeString("enroll successful");
@@ -478,12 +478,7 @@ public class Session implements Runnable {
 		if (!adminLoggedIn()) {
 			return false;
 		}
-		Course temp = readCourseFromClient();
-		int toAddIndex = courseController.makeCourse(temp);
-		if (!(temp.getNameNum().equals(getCourseController().getDatabaseController().getCourseList().get(toAddIndex).getNameNum()))) {
-			writeString("new course not added");
-			return false;
-		}
+		Course toAdd = readCourseFromClient();
 
 		if (courseController.searchCat(toAdd.getNameNum()) == null) {
 			courseController.addCourse(toAdd.getNameNum());
@@ -491,7 +486,7 @@ public class Session implements Runnable {
 			do {
 				try {
 					newCourseOffering = (CourseOffering) fromClient.readObject();
-					courseOfferingController.addCourseOffering(newCourseOffering);
+					courseOfferingController.addCourseOffering(newCourseOffering, courseController.searchCat(toAdd.getNameNum()));
 					courseController.searchCat(toAdd.getNameNum()).addOffering(newCourseOffering);
 				} catch (ClassNotFoundException e) {
 					serverError("Class not found, unable to cast");

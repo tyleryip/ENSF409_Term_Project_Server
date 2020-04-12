@@ -57,9 +57,9 @@ public class DatabaseController {
 		readRegistrationsFromFile("registrations.txt");
 		
 		// Load the simulated data in
-		//readCoursesFromDatabase();
-		//readStudentsFromDatabase();
-		//registerStudentsInCourses();
+//		readCoursesFromDatabase();
+//		readStudentsFromDatabase();
+//		registerStudentsInCourses();
 	}
 
 	// The following methods create and add the simulated data, in the future we

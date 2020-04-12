@@ -95,9 +95,10 @@ public class CourseController {
 	 * @return the course you added, or null if course already exists
 	 */
 	public Course addCourse(String nameNum) {
+		int newID = databaseController.getIncrementCourseID();
 		String[] split = nameNum.split(" ");
 		if (searchCat(split[0], Integer.parseInt(split[1])) == null) {
-			Course newCourse = new Course(split[0], Integer.parseInt(split[1]));
+			Course newCourse = new Course(split[0], Integer.parseInt(split[1]), newID);
 			myCourseList.add(newCourse);
 			return newCourse;
 		}
@@ -177,17 +178,6 @@ public class CourseController {
 		}
 		displayCourseNotFoundError();
 		return;
-	}
-
-	/**
-	 * Makes new Course, adds it to databaseController and returns it
-	 * @param c The course the course offering is for
-	 * @return Returns the new index of the Course
-	 */
-	public int makeCourse(Course c){
-		Course temp = new Course(c.getCourseName(),c.getCourseNum());
-		databaseController.getCourseList().add(temp);
-		return (databaseController.getCourseList().size())-1;
 	}
 
 	@Override

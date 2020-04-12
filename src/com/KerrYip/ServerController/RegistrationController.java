@@ -40,9 +40,9 @@ public class RegistrationController {
      * Makes new registration, adds it to databaseController and returns it
      * @return Returns the new registration
      */
-    public Registration makeRegistration(){
+    public Registration addRegistration(){
         Registration r = new Registration(databaseController.getIncrementRegistrationID());
-        databaseController.getRegistrationList().add(r);
+        myRegistrationList.add(r);
         return r;
     }
 
