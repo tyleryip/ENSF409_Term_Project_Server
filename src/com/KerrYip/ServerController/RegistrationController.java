@@ -1,8 +1,9 @@
 package com.KerrYip.ServerController;
 
-import com.KerrYip.Model.Registration;
-
 import java.util.ArrayList;
+
+import com.KerrYip.Model.Course;
+import com.KerrYip.Model.Registration;
 
 public class RegistrationController {
 
@@ -21,6 +22,18 @@ public class RegistrationController {
     
     public void removeRegistration(Registration toRemove) {
     	databaseController.getRegistrationList().remove(toRemove);
+    }
+    
+    public void removeAllRegistrations(Course c) {
+    	for(int i = 0; i<myRegistrationList.size(); i++) {
+    		if(myRegistrationList.get(i).getTheOffering().getTheCourse().getNameNum().equalsIgnoreCase(c.getNameNum())) {
+    			myRegistrationList.remove(i);
+    		}
+    	}
+    }
+    
+    public void syncData() {
+    	databaseController.setRegistrationList(myRegistrationList);
     }
 
     /**

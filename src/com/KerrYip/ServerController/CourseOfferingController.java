@@ -1,8 +1,9 @@
 package com.KerrYip.ServerController;
 
-import com.KerrYip.Model.CourseOffering;
-
 import java.util.ArrayList;
+
+import com.KerrYip.Model.Course;
+import com.KerrYip.Model.CourseOffering;
 
 public class CourseOfferingController {
 
@@ -17,6 +18,18 @@ public class CourseOfferingController {
     public CourseOfferingController(DatabaseController db) {
         this.databaseController = db;
         setMyCourseOfferingList(databaseController.getCourseOfferingList());
+    }
+    
+    public void removeAllCourseOfferings(Course c) {
+    	for(int i = 0; i<myCourseOfferingList.size(); i++) {
+    		if(myCourseOfferingList.get(i).getTheCourse().getNameNum().equalsIgnoreCase(c.getNameNum())){
+    			myCourseOfferingList.remove(i);
+    		}
+    	}
+    }
+    
+    public void syncData() {
+    	databaseController.setCourseOfferingList(myCourseOfferingList);
     }
 
     /**
