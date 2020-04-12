@@ -174,6 +174,9 @@ public class Session implements Runnable {
 
 		case "admin view student courses":
 			return searchForStudent();
+			
+		case "add new student":
+			return addNewStudent();
 
 		case "QUIT":
 			return true;
@@ -585,6 +588,37 @@ public class Session implements Runnable {
 
 		}
 	}
+	
+	/**
+	 * Adds a new student into the student list
+	 * @return true if successful, false otherwise
+	 */
+	private boolean addNewStudent() {
+		if (!adminLoggedIn()) {
+			return false;
+		}
+		
+		Student newStudent = null;
+		try {
+			newStudent = (Student)fromClient.readObject();
+		} catch (ClassNotFoundException e) {
+			System.err.println("Error: could not read object into a student object");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("Error: unknown I/O error");
+			e.printStackTrace();
+		}
+		
+		//We need to check if the proposed ID is unique
+		if(studentController.isUniqueID(newStudent.getStudentId())) {
+			studentController.addStudent(newStudent.getStudentName(), newStudent.getStudentId());
+			writeString("");
+			return true;
+		}
+		writeString("");
+		return false;
+	}
+	
 
 	/**
 	 * A helper function to check read course objects from the client socket
