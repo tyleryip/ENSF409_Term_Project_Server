@@ -175,7 +175,7 @@ public class Session implements Runnable {
 		case "admin view student courses":
 			return searchForStudent();
 			
-		case "add new student":
+		case "add student":
 			return addNewStudent();
 
 		case "QUIT":
@@ -604,18 +604,22 @@ public class Session implements Runnable {
 		} catch (ClassNotFoundException e) {
 			System.err.println("Error: could not read object into a student object");
 			e.printStackTrace();
+			writeString("failed to add");
+			return false;
 		} catch (IOException e) {
 			System.err.println("Error: unknown I/O error");
 			e.printStackTrace();
+			writeString("failed to add");
+			return false;
 		}
 		
 		//We need to check if the proposed ID is unique
 		if(studentController.isUniqueID(newStudent.getStudentId())) {
 			studentController.addStudent(newStudent.getStudentName(), newStudent.getStudentId());
-			writeString("");
+			writeString("add successful");
 			return true;
 		}
-		writeString("");
+		writeString("failed to add");
 		return false;
 	}
 	
