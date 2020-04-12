@@ -2,6 +2,7 @@ package com.KerrYip.ServerController;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.KerrYip.Model.Course;
@@ -22,11 +23,6 @@ import com.mysql.jdbc.Statement;
  *
  */
 public class DatabaseController {
-
-	private Driver driver;
-	private Statement stmt;
-	private ResultSet rs;
-	private Connection conn;
 	
 	private ArrayList<Student> studentList;
 	private ArrayList<Course> courseList;
@@ -102,13 +98,6 @@ public class DatabaseController {
 		courseList.get(4).addPreReq(courseList.get(3));
 		courseList.get(2).addPreReq(courseList.get(3));
 	}
-	
-	private void initializeConnection() {
-		try {
-			driver = new oracle.jdbc.OracleDriver();
-			DriverManager.registerDriver(driver);
-		}
-	}
 
 	private void registerStudentsInCourses() {
 		Registration r = new Registration();
@@ -123,19 +112,6 @@ public class DatabaseController {
 			r.completeRegistration(studentList.get(i), courseList.get(3).getCourseOfferingAt(0));
 		}
 	}
-	
-//	public void saveStudentsPreparedStatement() {
-//		try {
-//			for(Student s: studentList) {
-//			String query = "INSERT INTO students (id, name) values (?,?)";
-//			PreparedStatement pStat = conn.prepareStatement(query);
-//			pStat.setString(s.getStudentId() + "", s.getStudentName());
-//			}
-//		} catch(SQLException e) {
-//			
-//		}
-//	}
-	
 
 	// GETTERS and SETTERS
 	public synchronized ArrayList<Student> getStudentList() {
