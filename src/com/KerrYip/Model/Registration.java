@@ -20,6 +20,7 @@ public class Registration implements Serializable {
 	private Student theStudent;
 	private CourseOffering theOffering;
 	private char grade;
+	private int registrationID;
 
 	/**
 	 * Links a student and course offering together via a registration

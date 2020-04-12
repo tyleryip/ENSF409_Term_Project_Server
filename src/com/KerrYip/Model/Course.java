@@ -23,6 +23,7 @@ public class Course implements Serializable {
 	private int courseNum;
 	private ArrayList<Course> preReq;
 	private ArrayList<CourseOffering> offeringList;
+	private int courseID;
 
 	/**
 	 * Constructor for the class Course
@@ -31,6 +32,21 @@ public class Course implements Serializable {
 	 * @param courseNum  the number of the course
 	 */
 	public Course(String courseName, int courseNum) {
+		this.setCourseName(courseName);
+		this.setCourseNum(courseNum);
+		// Both of the following are only association
+		preReq = new ArrayList<Course>();
+		offeringList = new ArrayList<CourseOffering>();
+	}
+
+	/**
+	 * Constructor for the class Course
+	 * @param courseID ID number used to store in the SQL database
+	 * @param courseName the name of the course
+	 * @param courseNum  the number of the course
+	 */
+	public Course(String courseName, int courseNum, int courseID) {
+		this.courseID = courseID;
 		this.setCourseName(courseName);
 		this.setCourseNum(courseNum);
 		// Both of the following are only association
