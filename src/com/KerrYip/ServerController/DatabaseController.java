@@ -25,6 +25,14 @@ public class DatabaseController {
 	private ArrayList<Registration> registrationList;
 	private ArrayList<CourseOffering> courseOfferingList;
 
+	/*
+	IDs for all variable types for SQL integration
+	 */
+	int studentID = 1;
+	int courseID = 10000;
+	int courseOfferingID = 20000;
+	int registrationID = 30000;
+
 	/**
 	 * Constructor for class DatabaseController creates ArrayLists and populates
 	 * them with simulated data, this data will be replaced with data from the SQL
@@ -43,16 +51,16 @@ public class DatabaseController {
 	// The following methods create and add the simulated data, in the future we
 	// will have to put the SQL data here
 	private void readStudentsFromDatabase() {
-		studentList.add(new Student("Sara", 1));
-		studentList.add(new Student("Sam", 2));
-		studentList.add(new Student("Tom", 3));
-		studentList.add(new Student("David", 4));
-		studentList.add(new Student("John", 5));
-		studentList.add(new Student("Jenny", 6));
-		studentList.add(new Student("Alex", 7));
-		studentList.add(new Student("Megan", 8));
-		studentList.add(new Student("Mike", 9));
-		studentList.add(new Student("Sugar Tits", 10));
+		studentList.add(new Student("Sara", getIncrementStudentID()));
+		studentList.add(new Student("Sam", getIncrementStudentID()));
+		studentList.add(new Student("Tom", getIncrementStudentID()));
+		studentList.add(new Student("David", getIncrementStudentID()));
+		studentList.add(new Student("John", getIncrementStudentID()));
+		studentList.add(new Student("Jenny", getIncrementStudentID()));
+		studentList.add(new Student("Alex", getIncrementStudentID()));
+		studentList.add(new Student("Megan", getIncrementStudentID()));
+		studentList.add(new Student("Mike", getIncrementStudentID()));
+		studentList.add(new Student("Sugar Tits", getIncrementStudentID()));
 	}
 
 	private void readCoursesFromDatabase() {
@@ -119,6 +127,24 @@ public class DatabaseController {
 
 	public ArrayList<Course> loadCourses() {
 		return courseList;
+	}
+
+
+	// GETTERS AND SETTERS FOR CLASS IDs
+	public int getIncrementStudentID(){
+		return studentID++;
+	}
+
+	public int getIncrementClassID(){
+		return courseID++;
+	}
+
+	public int getIncrementCourseOfferingID(){
+		return courseOfferingID++;
+	}
+
+	public int getIncrementRegistrationID(){
+		return registrationID++;
 	}
 
 }
