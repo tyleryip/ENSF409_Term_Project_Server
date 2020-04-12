@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import com.KerrYip.Model.Course;
 import com.KerrYip.Model.CourseOffering;
@@ -151,6 +152,27 @@ public class DatabaseController {
 	}
 
 	/**
+	 * Test method for reading the Students from a file
+	 * @param filename the filename
+	 */
+	public void readStudentsFromFile(String filename) {
+		File input = new File(filename);
+		try {
+			Scanner scan = new Scanner(input);
+			String s;
+			while (scan.hasNext()) {
+				s = scan.nextLine();
+				dataToStudent(s);
+			}
+			scan.close();
+		} catch (IOException e) {
+			System.err.println("Error: Could not read file with filename " + filename);
+			e.printStackTrace();
+		}
+	}
+
+
+	/**
 	 * Test method for writing the courses to a file
 	 * @param filename the filename
 	 */
@@ -171,6 +193,39 @@ public class DatabaseController {
 			writer.close();
 		} catch (IOException e) {
 			System.err.println("Error: unknown I/O error");
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Test method for reading the Courses from a file
+	 * @param filename the filename
+	 */
+	public void readCoursesFromFile(String filename) {
+		File input = new File(filename);
+		try {
+			Scanner scan = new Scanner(input);
+			String s;
+			while (scan.hasNext()) {
+				s = scan.nextLine();
+				dataToCourse(s);
+			}
+			scan.close();
+		} catch (IOException e) {
+			System.err.println("Error: Could not read file with filename " + filename);
+			e.printStackTrace();
+		}
+		input = new File(filename);
+		try {
+			Scanner scan = new Scanner(input);
+			String s;
+			while (scan.hasNext()) {
+				s = scan.nextLine();
+				dataToCoursePreReqs(s);
+			}
+			scan.close();
+		} catch (IOException e) {
+			System.err.println("Error: Could not read file with filename " + filename);
 			e.printStackTrace();
 		}
 	}
@@ -201,6 +256,26 @@ public class DatabaseController {
 	}
 
 	/**
+	 * Test method for reading the Course Offerings from a file
+	 * @param filename the filename
+	 */
+	public void readCourseOfferingsFromFile(String filename) {
+		File input = new File(filename);
+		try {
+			Scanner scan = new Scanner(input);
+			String s;
+			while (scan.hasNext()) {
+				s = scan.nextLine();
+				dataToCourseOffering(s);
+			}
+			scan.close();
+		} catch (IOException e) {
+			System.err.println("Error: Could not read file with filename " + filename);
+			e.printStackTrace();
+		}
+	}
+
+	/**
 	 * Test method for writing the registrations to a file
 	 * @param filename the filename
 	 */
@@ -221,6 +296,26 @@ public class DatabaseController {
 			writer.close();
 		} catch (IOException e) {
 			System.err.println("Error: unknown I/O error");
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Test method for reading the registrations from a file
+	 * @param filename the filename
+	 */
+	public void readRegistrationsFromFile(String filename) {
+		File input = new File(filename);
+		try {
+			Scanner scan = new Scanner(input);
+			String s;
+			while (scan.hasNext()) {
+				s = scan.nextLine();
+				dataToRegistration(s);
+			}
+			scan.close();
+		} catch (IOException e) {
+			System.err.println("Error: Could not read file with filename " + filename);
 			e.printStackTrace();
 		}
 	}
