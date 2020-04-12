@@ -72,23 +72,32 @@ public class DatabaseController {
 	private void readCoursesFromDatabase() {
 		// Simulating courses
 		courseList.add(new Course("ENGG", 233,getIncrementCourseID()));
-		courseList.get(0).addOffering(new CourseOffering(1, 100,getIncrementCourseOfferingID()));
+		courseOfferingList.add(new CourseOffering(1, 100,getIncrementCourseOfferingID()));
+		courseList.get(0).addOffering(courseOfferingList.get(0));
 
 		courseList.add(new Course("ENSF", 409,getIncrementCourseID()));
-		courseList.get(1).addOffering(new CourseOffering(1, 100,getIncrementCourseOfferingID()));
-		courseList.get(1).addOffering(new CourseOffering(2, 200,getIncrementCourseOfferingID()));
+		courseOfferingList.add(new CourseOffering(1, 100,getIncrementCourseOfferingID()));
+		courseList.get(1).addOffering(courseOfferingList.get(1));
+		courseOfferingList.add(new CourseOffering(2, 200,getIncrementCourseOfferingID()));
+		courseList.get(1).addOffering(courseOfferingList.get(2));
 
 		courseList.add(new Course("PHYS", 259,getIncrementCourseID()));
-		courseList.get(2).addOffering(new CourseOffering(1, 100,getIncrementCourseOfferingID()));
-		courseList.get(2).addOffering(new CourseOffering(2, 320,getIncrementCourseOfferingID()));
+		courseOfferingList.add(new CourseOffering(1, 100,getIncrementCourseOfferingID()));
+		courseList.get(2).addOffering(courseOfferingList.get(3));
+		courseOfferingList.add(new CourseOffering(2, 320,getIncrementCourseOfferingID()));
+		courseList.get(2).addOffering(courseOfferingList.get(4));
 
 		courseList.add(new Course("MATH", 211,getIncrementCourseID()));
-		courseList.get(3).addOffering(new CourseOffering(1, 150,getIncrementCourseOfferingID()));
-		courseList.get(3).addOffering(new CourseOffering(2, 250,getIncrementCourseOfferingID()));
-		courseList.get(3).addOffering(new CourseOffering(3, 270,getIncrementCourseOfferingID()));
+		courseOfferingList.add(new CourseOffering(1, 150,getIncrementCourseOfferingID()));
+		courseList.get(3).addOffering(courseOfferingList.get(5));
+		courseOfferingList.add(new CourseOffering(2, 250,getIncrementCourseOfferingID()));
+		courseList.get(3).addOffering(courseOfferingList.get(6));
+		courseOfferingList.add(new CourseOffering(3, 270,getIncrementCourseOfferingID()));
+		courseList.get(3).addOffering(courseOfferingList.get(7));
 
 		courseList.add(new Course("ENGG", 202,getIncrementCourseID()));
-		courseList.get(4).addOffering(new CourseOffering(1, 120,getIncrementCourseOfferingID()));
+		courseOfferingList.add(new CourseOffering(1, 120,getIncrementCourseOfferingID()));
+		courseList.get(4).addOffering(courseOfferingList.get(8));
 
 		// Added prerequisites
 		courseList.get(1).addPreReq(courseList.get(4));
@@ -97,17 +106,21 @@ public class DatabaseController {
 	}
 
 	private void registerStudentsInCourses() {
-		Registration r = new Registration();
-		r.completeRegistration(studentList.get(1), courseList.get(2).getCourseOfferingAt(1));
-
-		r = new Registration();
-		r.completeRegistration(studentList.get(2), courseList.get(3).getCourseOfferingAt(1));
-		
 		//We register everyone in MATH 211 because we want to drink the tears of depressed engineers (aka we need to test if running course works)
+		Registration r;
 		for(int i = 0; i<studentList.size(); i++) {
 			r = new Registration();
 			r.completeRegistration(studentList.get(i), courseList.get(3).getCourseOfferingAt(0));
+			registrationList.add(r);
 		}
+
+		r = new Registration();
+		r.completeRegistration(studentList.get(1), courseList.get(2).getCourseOfferingAt(1));
+		registrationList.add(r);
+
+		r = new Registration();
+		r.completeRegistration(studentList.get(2), courseList.get(3).getCourseOfferingAt(1));
+		registrationList.add(r);
 	}
 	
 	public void writeStudentsToFile(String filename) {
@@ -271,54 +284,30 @@ public class DatabaseController {
 
 
 	// GETTERS and SETTERS
-	public synchronized ArrayList<Student> getStudentList() {
-		return studentList;
-	}
+	public synchronized ArrayList<Student> getStudentList() { return studentList; }
 
-	public synchronized void setStudentList(ArrayList<Student> studentList) {
-		this.studentList = studentList;
-	}
+	public synchronized void setStudentList(ArrayList<Student> studentList) { this.studentList = studentList; }
 
-	public synchronized ArrayList<Course> getCourseList() {
-		return courseList;
-	}
+	public synchronized ArrayList<Course> getCourseList() { return courseList; }
 
-	public synchronized void setCourseList(ArrayList<Course> courseList) {
-		this.courseList = courseList;
-	}
+	public synchronized void setCourseList(ArrayList<Course> courseList) { this.courseList = courseList; }
 
-	public synchronized ArrayList<Registration> getRegistrationList() {
-		return registrationList;
-	}
+	public synchronized ArrayList<Registration> getRegistrationList() { return registrationList; }
 
-	public synchronized ArrayList<CourseOffering> getCourseOfferingList() {
-		return courseOfferingList;
-	}
+	public synchronized ArrayList<CourseOffering> getCourseOfferingList() { return courseOfferingList; }
 
-	public ArrayList<Student> loadStudents() {
-		return studentList;
-	}
+	public ArrayList<Student> loadStudents() { return studentList; }
 
-	public ArrayList<Course> loadCourses() {
-		return courseList;
-	}
+	public ArrayList<Course> loadCourses() { return courseList; }
 
 
 	// GETTERS AND SETTERS FOR CLASS IDs
-	public int getIncrementStudentID(){
-		return studentID++;
-	}
+	public int getIncrementStudentID(){ return studentID++; }
 
-	public int getIncrementCourseID(){
-		return courseID++;
-	}
+	public int getIncrementCourseID(){ return courseID++; }
 
-	public int getIncrementCourseOfferingID(){
-		return courseOfferingID++;
-	}
+	public int getIncrementCourseOfferingID(){ return courseOfferingID++; }
 
-	public int getIncrementRegistrationID(){
-		return registrationID++;
-	}
+	public int getIncrementRegistrationID(){ return registrationID++; }
 
 }
