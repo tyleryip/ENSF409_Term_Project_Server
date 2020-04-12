@@ -104,6 +104,145 @@ public class DatabaseController {
 		}
 	}
 
+	/**
+	 * Creates Student from the data provided. Will not make the Student if data is missing or not found
+	 * @param data Data from the database used to make student
+	 */
+	public void dataToStudent(String data){
+		String[] variables = data.split(";");
+		try {
+			getStudentList().add(new Student(variables[1], Integer.parseInt(variables[0])));
+		}catch(NumberFormatException e){
+			e.printStackTrace();
+		}catch(ArrayIndexOutOfBoundsException e){
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Creates Registration from the data provided. Will not make the Registration if data is missing or not found
+	 * @param data Data from the database used to make student
+	 */
+	public void dataToRegistration(String data){
+		String[] variables = data.split(";");
+		try {
+			Student s = searchStudent(Integer.parseInt(variables[1]));
+			CourseOffering co = searchCourseOffering(Integer.parseInt(variables[2]));
+			if(co == null || s == null){
+				System.err.println("Couldn't find data");
+				return;
+			}
+			getRegistrationList().add(new Registration(Integer.parseInt(variables[0]),s,co,variables[3].charAt(0)));
+		}catch(NumberFormatException e){
+			e.printStackTrace();
+		}catch(ArrayIndexOutOfBoundsException e){
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Creates CourseOffering from the data provided. Will not make the CourseOffering if data is missing or not found
+	 * @param data Data from the database used to make student
+	 */
+	public void dataToCourseOffering(String data){
+		String[] variables = data.split(";");
+		try {
+			Course c = searchCourse(Integer.parseInt(variables[1]));
+			if(c == null){
+				System.err.println("Couldn't find data");
+				return;
+			}
+			getCourseOfferingList().add(new CourseOffering(Integer.parseInt(variables[0]),c,Integer.parseInt(variables[2]),Integer.parseInt(variables[3])));
+		}catch(NumberFormatException e){
+			e.printStackTrace();
+		}catch(ArrayIndexOutOfBoundsException e){
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Creates Course from the data provided. Will not make the Course if data is missing or not found
+	 * @param data Data from the database used to make Course
+	 */
+	public void dataToCourse(String data){
+		String[] variables = data.split(";");
+		ArrayList<CourseOffering> courseOfferings = new ArrayList<CourseOffering>();
+		CourseOffering co;
+		try {
+			for(int i = 3; i < variables.length; i++){
+				co = searchCourseOffering(Integer.parseInt(variables[i]));
+				if(co == null){
+					System.err.println("Couldn't find data");
+					return;
+				}
+				courseOfferings.add(co);
+			}
+			getCourseList().add(new Course(variables[1], Integer.parseInt(variables[2]),Integer.parseInt(variables[0]),courseOfferings));
+		}catch(NumberFormatException e){
+			e.printStackTrace();
+		}catch(ArrayIndexOutOfBoundsException e){
+			e.printStackTrace();
+		}
+	}
+
+	//Searches for data type with matching ID
+	/**
+	 * Searches for the Student with the matching ID
+	 * @param id The ID of the student we are searching for
+	 * @return Returns the student if found, null if not
+	 */
+	public Student searchStudent(int id){
+		for(Student s: getStudentList()){
+			if(s.getStudentId() == id){
+				return s;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Searches for the Registration with the matching ID
+	 * @param id The ID of the registration we are searching for
+	 * @return Returns the registration if found, null if not
+	 */
+	public Registration searchRegistration(int id){
+		for(Registration r: getRegistrationList()){
+			if(r.getID() == id){
+				return r;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Searches for the Course with the matching ID
+	 * @param id The ID of the Course we are searching for
+	 * @return Returns the Course if found, null if not
+	 */
+	public Course searchCourse(int id){
+		for(Course c: getCourseList()){
+			if(c.getID() == id){
+				return c;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Searches for the CourseOffering with the matching ID
+	 * @param id The ID of the CourseOffering we are searching for
+	 * @return Returns the CourseOffering if found, null if not
+	 */
+	public CourseOffering searchCourseOffering(int id){
+		for(CourseOffering co: getCourseOfferingList()){
+			if(co.getID() == id){
+				return co;
+			}
+		}
+		return null;
+	}
+
+
 	// GETTERS and SETTERS
 	public synchronized ArrayList<Student> getStudentList() {
 		return studentList;
@@ -119,6 +258,14 @@ public class DatabaseController {
 
 	public synchronized void setCourseList(ArrayList<Course> courseList) {
 		this.courseList = courseList;
+	}
+
+	public synchronized ArrayList<Registration> getRegistrationList() {
+		return registrationList;
+	}
+
+	public synchronized ArrayList<CourseOffering> getCourseOfferingList() {
+		return courseOfferingList;
 	}
 
 	public ArrayList<Student> loadStudents() {
