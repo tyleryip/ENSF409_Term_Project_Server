@@ -31,6 +31,8 @@ public class ServerCommunicationController {
 	// These are the other controllers for the server side
 	private CourseController courseController;
 	private StudentController studentController;
+	private CourseOfferingController courseOfferingController;
+	private RegistrationController registrationController;
 	
 	private SimpleDateFormat formatter;
 
@@ -57,6 +59,8 @@ public class ServerCommunicationController {
 		
 		courseController = new CourseController(databaseController);
 		studentController = new StudentController(databaseController);
+		courseOfferingController = new CourseOfferingController(databaseController);
+		registrationController = new RegistrationController(databaseController);
 	}
 
 	/**
@@ -72,7 +76,7 @@ public class ServerCommunicationController {
 						"[Server @" + formatter.format(new Date()) + "] Client connection accepted by server! New connection running on thread #" + ++connections);
 
 				// Create a new session for the new client that joined
-				Session Session = new Session(aSocket, courseController, studentController);
+				Session Session = new Session(aSocket, courseController, studentController, courseOfferingController, registrationController);
 
 				// Add client to the thread pool and execute
 				pool.execute(Session);
