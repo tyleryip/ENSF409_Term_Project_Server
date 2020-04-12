@@ -117,6 +117,18 @@ public class StudentController {
 	}
 	
 	/**
+	 * Adds a student to the student list and automatically assigns ID
+	 * 
+	 * @param name the name of the student
+	 */
+	public void addStudent(String name) {
+		int newID = myStudentList.size() + 1;
+		Student newStudent = new Student(name, newID);
+		databaseController.getStudentList().add(newStudent);
+		System.out.println("[Server] New student " + name + " created successfully with an id of: " + newID);
+	}
+	
+	/**
 	 * Checks to see if the proposed ID is available for use
 	 * @param newID the ID to check
 	 * @return true if the ID is not in use, false otherwise

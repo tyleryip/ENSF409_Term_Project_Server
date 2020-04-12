@@ -597,30 +597,16 @@ public class Session implements Runnable {
 		if (!adminLoggedIn()) {
 			return false;
 		}
+		String newName = null;
+		newName = readString();
 		
-		Student newStudent = null;
-		try {
-			newStudent = (Student)fromClient.readObject();
-		} catch (ClassNotFoundException e) {
-			System.err.println("Error: could not read object into a student object");
-			e.printStackTrace();
-			writeString("failed to add");
-			return false;
-		} catch (IOException e) {
-			System.err.println("Error: unknown I/O error");
-			e.printStackTrace();
+		if(newName == null) {
 			writeString("failed to add");
 			return false;
 		}
-		
-		//We need to check if the proposed ID is unique
-		if(studentController.isUniqueID(newStudent.getStudentId())) {
-			studentController.addStudent(newStudent.getStudentName(), newStudent.getStudentId());
-			writeString("add successful");
-			return true;
-		}
-		writeString("failed to add");
-		return false;
+		studentController.addStudent(newName);
+		writeString("add successful");
+		return true;
 	}
 	
 
