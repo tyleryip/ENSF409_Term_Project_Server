@@ -56,10 +56,10 @@ public class DatabaseController {
 		readCourseOfferingsFromFile("courseofferings.txt");
 		readRegistrationsFromFile("registrations.txt");
 		
-		// Load the simulated data in
-//		readCoursesFromDatabase();
-//		readStudentsFromDatabase();
-//		registerStudentsInCourses();
+		//Load the simulated data in
+		//readCoursesFromDatabase();
+		//readStudentsFromDatabase();
+		//registerStudentsInCourses();
 	}
 
 	// The following methods create and add the simulated data, in the future we
@@ -348,8 +348,12 @@ public class DatabaseController {
 		try {
 			int s = searchStudent(Integer.parseInt(variables[1]));
 			int co = searchCourseOffering(Integer.parseInt(variables[2]));
-			if(co == -1 || s == -1){
-				System.err.println("Couldn't find data");
+			if(s == -1){
+				System.err.println("Couldn't find Student for Registration");
+				return;
+			}
+			if(co == -1){
+				System.err.println("Couldn't find CourseOffering for Registration");
 				return;
 			}
 			getRegistrationList().add(new Registration(Integer.parseInt(variables[0]),getStudentList().get(s),getCourseOfferingList().get(co),variables[3].charAt(0)));
@@ -371,7 +375,7 @@ public class DatabaseController {
 		try {
 			int c = searchCourse(Integer.parseInt(variables[1]));
 			if(c == -1){
-				System.err.println("Couldn't find data");
+				System.err.println("Couldn't find Course for Course Offering");
 				return;
 			}
 			getCourseOfferingList().add(new CourseOffering(Integer.parseInt(variables[0]),getCourseList().get(c),Integer.parseInt(variables[2]),Integer.parseInt(variables[3])));
