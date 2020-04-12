@@ -156,6 +156,17 @@ public class Session implements Runnable {
 		courseController.syncData();
 		registrationController.syncData();
 		courseOfferingController.syncData();
+		saveAll();
+	}
+	
+	/**
+	 * Saves everything in the master array lists in database to a text file
+	 */
+	private void saveAll() {
+		studentController.getDatabaseController().writeStudentsToFile("students.txt");
+		courseController.getDatabaseController().writeCoursesToFile("courses.txt");
+		courseOfferingController.getDatabaseController().writeCourseOfferingsToFile("courseofferings.txt");
+		registrationController.getDatabaseController().writeRegistrationsToFile("registrations.txt");
 	}
 
 	/**

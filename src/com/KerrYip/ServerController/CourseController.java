@@ -201,5 +201,13 @@ public class CourseController {
 	public void setMyCourseList(ArrayList<Course> myCourseList) {
 		this.myCourseList = myCourseList;
 	}
+	
+	public DatabaseController getDatabaseController() {
+		return databaseController;
+	}
+
+	public void setDatabaseController(DatabaseController databaseController) {
+		this.databaseController = databaseController;
+	}
 
 }
