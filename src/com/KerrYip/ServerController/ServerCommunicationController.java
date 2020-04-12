@@ -3,6 +3,8 @@ package com.KerrYip.ServerController;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -29,6 +31,8 @@ public class ServerCommunicationController {
 	// These are the other controllers for the server side
 	private CourseController courseController;
 	private StudentController studentController;
+	
+	private SimpleDateFormat formatter;
 
 	/**
 	 * The constructor for class ServerCommunicationsController opens up a port and
@@ -37,6 +41,8 @@ public class ServerCommunicationController {
 	 * @param port the port to open the server connection on
 	 */
 	public ServerCommunicationController(int port) {
+		formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		
 		try {
 			serverSocket = new ServerSocket(port);
 		} catch (IOException e) {
@@ -57,13 +63,13 @@ public class ServerCommunicationController {
 	 * Accept connections from clients and start threads when they connect
 	 */
 	public void listen() {
-		System.out.println("[Server] Server is active: waiting for client connections...");
+		System.out.println("[Server @" + formatter.format(new Date()) + "] Server is now active and accepting new connections");
 		int connections = 0;
 		while (true) {
 			try {
 				aSocket = serverSocket.accept();
 				System.out.println(
-						"[Server] Connection accepted by server! New connection running on thread " + ++connections);
+						"[Server @" + formatter.format(new Date()) + "] Client connection accepted by server! New connection running on thread #" + ++connections);
 
 				// Create a new session for the new client that joined
 				Session Session = new Session(aSocket, courseController, studentController);

@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.KerrYip.Model.Administrator;
 import com.KerrYip.Model.Course;
@@ -35,6 +36,8 @@ public class Session implements Runnable {
 
 	private Student studentUser;
 	private Administrator adminUser;
+	
+	private SimpleDateFormat formatter;
 
 	/**
 	 * Constructor for session connects I/O
@@ -44,7 +47,7 @@ public class Session implements Runnable {
 	 * @param studentController a controller to manipulate students
 	 */
 	public Session(Socket aSocket, CourseController courseController, StudentController studentController) {
-		// Set up instruction I/O
+		formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		/*
 		 * stringIn = new BufferedReader(new
 		 * InputStreamReader(aSocket.getInputStream())); stringOut = new
@@ -71,6 +74,7 @@ public class Session implements Runnable {
 		this.adminUser = new Administrator();
 	}
 
+	// THE FOLLOWING METHODS DEAL WITH CLIENT/SERVER I/O
 	/**
 	 * The following method is a helper to read the next object in the input stream
 	 * as a string, used for commands
@@ -98,11 +102,64 @@ public class Session implements Runnable {
 	 */
 	private void writeString(String toSend) {
 		try {
+			toClient.reset();
 			toClient.writeObject(toSend);
 		} catch (IOException e) {
 			System.err.println("Error: unable to write string to an object");
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Reads an integer from the client
+	 * 
+	 * @return the integer read from the client
+	 */
+	private int readInt() {
+		return Integer.parseInt(readString());
+	}
+
+	/**
+	 * A helper function to check read course objects from the client socket
+	 * 
+	 * @return a Course if the course exists, null otherwise
+	 */
+	private Course readCourseFromClient() {
+		Course clientCourse = null;
+		try {
+			clientCourse = (Course) fromClient.readObject();
+		} catch (ClassNotFoundException e) {
+			System.err.println("Error: the class of this object was not found");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("Error: I/O error");
+			e.printStackTrace();
+		}
+		return clientCourse;
+	}
+
+	/**
+	 * Syncs data with the database controller
+	 */
+	public void syncData() {
+		studentController.syncData();
+		courseController.syncData();
+	}
+	
+	/**
+	 * Used to log events on the server's console
+	 * @param message the message to log
+	 */
+	private void serverLog(String message) {
+		System.out.println("[Server @" + formatter.format(new Date()) + "] " + message);
+	}
+	
+	/**
+	 * Used to log errors on the server's console
+	 * @param error
+	 */
+	private void serverError(String error) {
+		System.err.println("[Server @" + formatter.format(new Date()) + "] Error: " + error);
 	}
 
 	@Override
@@ -114,23 +171,24 @@ public class Session implements Runnable {
 		while (!command.contentEquals("QUIT")) {
 			syncData();
 			command = readString();
-			boolean successful = executeCommand(command);
 
-			if (successful)
-				System.out.println("[Server] Command: " + command + ", executed successfully");
+			if (executeCommand(command))
+				serverLog("Command: " + command + ", executed successfully");
 			else
-				System.out.println("[Server] Command: " + command + ", failed to execute");
+				serverLog("Command: " + command + ", failed to execute");
 		}
+		// Save data one last time
 		syncData();
+
 		// Now we have to close all connections to the client
 		try {
 			fromClient.close();
 			toClient.close();
 		} catch (IOException e) {
-			System.err.println("Error: problem closing the sockets");
+			serverError("problem closing the sockets");
 			e.printStackTrace();
 		}
-		System.out.println("[Server] User disconnected");
+		serverLog("User disconnected");
 	}
 
 	/**
@@ -174,7 +232,7 @@ public class Session implements Runnable {
 
 		case "admin view student courses":
 			return searchForStudent();
-			
+
 		case "add student":
 			return addNewStudent();
 
@@ -185,17 +243,9 @@ public class Session implements Runnable {
 			return logout();
 
 		default:
-			System.err.println("No option available that matched: " + command);
+			serverLog("No option available that matched: " + command);
 			return false;
 		}
-	}
-
-	/**
-	 * Syncs data with the database controller
-	 */
-	public void syncData() {
-		studentController.syncData();
-		courseController.syncData();
 	}
 
 	/**
@@ -204,12 +254,12 @@ public class Session implements Runnable {
 	 */
 	private boolean studentLogin() {
 		int checkID = -1;
-		checkID = Integer.parseInt(readString());
+		checkID = readInt();
 		studentUser = studentController.searchStudent(checkID);
 		if (studentUser != null) {
 			if (!studentUser.isActive()) { // Check to make sure that this student is not already logged in to the
 											// system
-				System.out.println("[Sever] User logged in using id: " + checkID);
+				serverLog("User logged in using id: " + checkID);
 				writeString(studentUser.getStudentName());
 				try {
 					for (Registration r : studentUser.getStudentRegList()) {
@@ -221,7 +271,7 @@ public class Session implements Runnable {
 					e.printStackTrace();
 				}
 			}
-			System.err.println("User " + checkID + " is already logged in to the system");
+			serverError("User " + checkID + " is already logged in to the system");
 		}
 		// If search fails write null to the client
 		writeString("login failed");
@@ -348,7 +398,7 @@ public class Session implements Runnable {
 			try {
 				toClient.writeObject(studentUser.getStudentRegList().get(i));
 			} catch (IOException e) {
-				System.err.println("Error: couse not write this course to output stream");
+				serverLog("Could not write this course to output stream");
 				e.printStackTrace();
 				return false;
 			}
@@ -402,20 +452,12 @@ public class Session implements Runnable {
 		if (!adminLoggedIn()) {
 			return false;
 		}
-		Course toAdd = null;
-		try {
-			toAdd = (Course) fromClient.readObject();
-		} catch (ClassNotFoundException e) {
-			System.err.println("Error: problem reading course from the input stream");
-			e.printStackTrace();
-			writeString("new course not added");
-			return false;
-		} catch (IOException e) {
-			System.err.println("Error: unknown I/O exception");
-			e.printStackTrace();
+		Course toAdd = readCourseFromClient();
+		if (toAdd == null) {
 			writeString("new course not added");
 			return false;
 		}
+
 		if (courseController.searchCat(toAdd.getNameNum()) == null) {
 			courseController.addCourse(toAdd.getNameNum());
 			CourseOffering newCourseOffering = null;
@@ -424,10 +466,10 @@ public class Session implements Runnable {
 					newCourseOffering = (CourseOffering) fromClient.readObject();
 					courseController.searchCat(toAdd.getNameNum()).addOffering(newCourseOffering);
 				} catch (ClassNotFoundException e) {
-					System.err.println("Error: class not found, unable to cast");
+					serverError("Class not found, unable to cast");
 					e.printStackTrace();
 				} catch (IOException e) {
-					System.err.println("Error: problem with I/O");
+					serverError("Problem with I/O");
 					e.printStackTrace();
 				}
 			} while (newCourseOffering != null);
@@ -437,7 +479,7 @@ public class Session implements Runnable {
 			try {
 				fromClient.readAllBytes();
 			} catch (IOException e) {
-				System.err.println("Error: problem clearing out the stream");
+				serverError("problem clearing out the stream");
 				e.printStackTrace();
 			}
 			writeString("Course already exists");
@@ -455,17 +497,9 @@ public class Session implements Runnable {
 		if (!adminLoggedIn()) {
 			return false;
 		}
-		Course toRemove = null;
-		try {
-			toRemove = (Course) fromClient.readObject();
-		} catch (ClassNotFoundException e) {
-			System.err.println("Error: problem reading course from the input stream");
-			e.printStackTrace();
-			writeString("course not removed");
-			return false;
-		} catch (IOException e) {
-			System.err.println("Error: unknown I/O exception");
-			e.printStackTrace();
+		Course toRemove = readCourseFromClient();
+
+		if (toRemove == null) {
 			writeString("course not removed");
 			return false;
 		}
@@ -520,7 +554,7 @@ public class Session implements Runnable {
 				toClient.writeObject(clientCourse);
 				return true;
 			} catch (IOException e) {
-				System.err.println("Error: unable to write course to output stream");
+				serverError("Unable to write course to output stream");
 				e.printStackTrace();
 			}
 		}
@@ -531,6 +565,7 @@ public class Session implements Runnable {
 
 	/**
 	 * Browses all courses in the course catalog
+	 * 
 	 * @return true if successful, false if failed
 	 */
 	private boolean browseCourses() {
@@ -542,7 +577,7 @@ public class Session implements Runnable {
 			try {
 				toClient.writeObject(c);
 			} catch (IOException e) {
-				System.err.println("Error: could not write the course to the output strean");
+				serverError("Could not write the course to the output strean");
 				e.printStackTrace();
 				return false;
 			}
@@ -552,7 +587,7 @@ public class Session implements Runnable {
 		try {
 			toClient.writeObject(null);
 		} catch (IOException e) {
-			System.err.println("Error: could not write the course to the output strean");
+			serverError("Could not write the course to the output strean");
 			e.printStackTrace();
 			return false;
 		}
@@ -568,7 +603,7 @@ public class Session implements Runnable {
 		if (!adminLoggedIn()) {
 			return false;
 		}
-		int checkID = Integer.parseInt(readString());
+		int checkID = readInt();
 		Student theStudent = studentController.searchStudent(checkID);
 		if (theStudent == null) {
 			writeString("could not find student");
@@ -588,45 +623,26 @@ public class Session implements Runnable {
 
 		}
 	}
-	
+
 	/**
 	 * Adds a new student into the student list
+	 * 
 	 * @return true if successful, false otherwise
 	 */
 	private boolean addNewStudent() {
 		if (!adminLoggedIn()) {
 			return false;
 		}
-		String newName = null;
-		newName = readString();
-		
-		if(newName == null) {
+		String newName = readString();
+
+		if (newName.contentEquals("")) {
 			writeString("failed to add");
 			return false;
 		}
 		studentController.addStudent(newName);
-		writeString("" + (studentController.getMyStudentList().get(studentController.getMyStudentList().size()-1).getStudentId()));
+		writeString("" + (studentController.getMyStudentList().get(studentController.getMyStudentList().size() - 1)
+				.getStudentId()));
 		return true;
-	}
-	
-
-	/**
-	 * A helper function to check read course objects from the client socket
-	 * 
-	 * @return a Course if the course exists, null otherwise
-	 */
-	private Course readCourseFromClient() {
-		Course clientCourse = null;
-		try {
-			clientCourse = (Course) fromClient.readObject();
-		} catch (ClassNotFoundException e) {
-			System.err.println("Error: the class of this object was not found");
-			e.printStackTrace();
-		} catch (IOException e) {
-			System.err.println("Error: I/O error");
-			e.printStackTrace();
-		}
-		return clientCourse;
 	}
 
 	// GETTERS and SETTERS
