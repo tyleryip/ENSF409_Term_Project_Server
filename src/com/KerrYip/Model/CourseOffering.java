@@ -21,7 +21,7 @@ public class CourseOffering implements Serializable {
 	private int secCap;
 	private Course theCourse;
 	private ArrayList<Registration> offeringRegList;
-	private int courseOfferingID;
+	private int id;
 
 	/**
 	 * The constructor for class CourseOffering
@@ -42,7 +42,7 @@ public class CourseOffering implements Serializable {
 	 * @param secCap the capacity of the course offering
 	 */
 	public CourseOffering(int secNum, int secCap, int courseOfferingID) {
-		this.courseOfferingID = courseOfferingID;
+		this.id = courseOfferingID;
 		this.setSecNum(secNum);
 		this.setSecCap(secCap);
 		offeringRegList = new ArrayList<Registration>();
@@ -68,6 +68,10 @@ public class CourseOffering implements Serializable {
 		st += "Section Num: " + getSecNum() + ", section cap: " + getSecCap() + "\n";
 		// We also want to print the names of all students in the section
 		return st;
+	}
+
+	public String toData(){
+		return getID() +";"+ getTheCourse().getID() +";"+ getSecNum() +";"+ getSecCap();
 	}
 
 	// GETTERS and SETTERS
@@ -102,5 +106,9 @@ public class CourseOffering implements Serializable {
 	public void setOfferingRegList(ArrayList<Registration> offeringRegList) {
 		this.offeringRegList = offeringRegList;
 	}
+
+	public int getID() { return id; }
+
+	public void setID(int courseOfferingID) { this.id = courseOfferingID; }
 
 }

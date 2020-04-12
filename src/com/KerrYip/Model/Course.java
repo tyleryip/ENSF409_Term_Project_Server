@@ -26,7 +26,6 @@ public class Course implements Serializable {
 	private int id;
 	private ArrayList<Course> preReq;
 	private ArrayList<CourseOffering> offeringList;
-	private int courseID;
 
 	/**
 	 * Constructor for the class Course
@@ -49,7 +48,7 @@ public class Course implements Serializable {
 	 * @param courseNum  the number of the course
 	 */
 	public Course(String courseName, int courseNum, int courseID) {
-		this.courseID = courseID;
+		this.id = courseID;
 		this.setCourseName(courseName);
 		this.setCourseNum(courseNum);
 		// Both of the following are only association
@@ -120,6 +119,14 @@ public class Course implements Serializable {
 		return st;
 	}
 
+	public String toData(){
+		String st = getID() + ";" + getCourseName() + ";" + getCourseNum();
+		for(CourseOffering co: getOfferingList()){
+			st += ";" + co.getID();
+		}
+		return st;
+	}
+
 	// GETTERS and SETTERS
 	public ArrayList<CourseOffering> getOfferingList() {
 		return offeringList;
@@ -157,12 +164,8 @@ public class Course implements Serializable {
 		return this.courseName + " " + this.getCourseNum();
 	}
 
-	public int getId() {
-		return id;
-	}
+	public int getID() { return id; }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+	public void setID(int courseID) { this.id = courseID; }
 
 }
