@@ -111,20 +111,24 @@ public class DatabaseController {
 		//We register everyone in MATH 211 because we want to drink the tears of depressed engineers (aka we need to test if running course works)
 		Registration r;
 		for(int i = 0; i<studentList.size(); i++) {
-			r = new Registration();
+			r = new Registration(getIncrementRegistrationID());
 			r.completeRegistration(studentList.get(i), courseList.get(3).getCourseOfferingAt(0));
 			registrationList.add(r);
 		}
 
-		r = new Registration();
+		r = new Registration(getIncrementRegistrationID());
 		r.completeRegistration(studentList.get(1), courseList.get(2).getCourseOfferingAt(1));
 		registrationList.add(r);
 
-		r = new Registration();
+		r = new Registration(getIncrementRegistrationID());
 		r.completeRegistration(studentList.get(2), courseList.get(3).getCourseOfferingAt(1));
 		registrationList.add(r);
 	}
-	
+
+	/**
+	 * Test method for writing the students to a file
+	 * @param filename the filename
+	 */
 	public void writeStudentsToFile(String filename) {
 		File output = new File(filename);
 		try {
@@ -145,7 +149,11 @@ public class DatabaseController {
 			e.printStackTrace();
 		}
 	}
-	
+
+	/**
+	 * Test method for writing the courses to a file
+	 * @param filename the filename
+	 */
 	public void writeCoursesToFile(String filename) {
 		File output = new File(filename);
 		try {
@@ -166,7 +174,11 @@ public class DatabaseController {
 			e.printStackTrace();
 		}
 	}
-	
+
+	/**
+	 * Test method for writing the course offerings to a file
+	 * @param filename the filename
+	 */
 	public void writeCourseOfferingsToFile(String filename) {
 		File output = new File(filename);
 		try {
@@ -187,7 +199,11 @@ public class DatabaseController {
 			e.printStackTrace();
 		}
 	}
-	
+
+	/**
+	 * Test method for writing the registrations to a file
+	 * @param filename the filename
+	 */
 	public void writeRegistrationsToFile(String filename) {
 		File output = new File(filename);
 		try {

@@ -25,9 +25,10 @@ public class Registration implements Serializable {
 	/**
 	 * Constructor for Registration
 	 */
-	public Registration(){
+	public Registration(int id){
 		this.theStudent = null;
 		this.theOffering = null;
+		this.id = id;
 	}
 
 	/**
