@@ -363,10 +363,6 @@ public class DatabaseController {
 		return null;
 	}
 
-	public Registration makeRegistration(){
-
-	}
-
 
 	// GETTERS and SETTERS
 	public synchronized ArrayList<Student> getStudentList() { return studentList; }
