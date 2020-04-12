@@ -3,6 +3,8 @@ package com.KerrYip.ServerController;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.KerrYip.Model.Course;
+import com.KerrYip.Model.Registration;
 import com.KerrYip.Model.Student;
 
 /**
@@ -65,6 +67,20 @@ public class StudentController {
 		System.err.println("Could not find student with id: " + id);
 		return null;
 
+	}
+	
+	/**
+	 * Removes a specific course from any student that is currently registered in the course
+	 * @param c the course to remove
+	 */
+	public void removeCourseFromAll(Course c) {
+		for(Student s: myStudentList) {
+			for(int i = 0; i<s.getStudentRegList().size(); i++) {
+				if(s.getStudentRegList().get(i).getTheOffering().getTheCourse().getNameNum().equalsIgnoreCase(c.getNameNum())) {
+					s.getStudentRegList().remove(i);
+				}
+			}
+		}
 	}
 	
 	public int searchStudentIndex(int id) {

@@ -155,12 +155,9 @@ public class Session implements Runnable {
 			return showStudentCourses();
 
 		case "add course":
-			// TODO modify this method to allow the addition of sections
 			return addCourse();
 
 		case "remove course":
-			// TODO implement this method for admin, modify this method in courseController
-			// to remove the course as a prereq from exisiting courses
 			return removeCourse();
 
 		case "browse courses":
@@ -171,6 +168,12 @@ public class Session implements Runnable {
 
 		case "admin login":
 			return adminLogin();
+			
+		case "run courses":
+			return runCourses();
+			
+		case "admin view student courses":
+			return searchForStudent();
 
 		case "QUIT":
 			return true;
@@ -250,31 +253,6 @@ public class Session implements Runnable {
 			adminUser.setActive(false);
 		}
 		return true;
-	}
-
-	/**
-	 * Updates the student in the client, returns null if the operation to change
-	 * was unsuccessful
-	 * 
-	 * @param successful determines whether or not to send an updated student or
-	 *                   null
-	 */
-	private void updateStudent(boolean successful) {
-		if (successful) {
-			try {
-				toClient.writeObject(getStudentUser());
-			} catch (IOException e) {
-				System.err.println("Error: could not write student to output stream");
-				e.printStackTrace();
-			}
-		} else {
-			try {
-				toClient.writeObject(null);
-			} catch (IOException e) {
-				System.err.println("Error: could not write null to output stream");
-				e.printStackTrace();
-			}
-		}
 	}
 
 	/**
@@ -440,7 +418,7 @@ public class Session implements Runnable {
 					newCourseOffering = (CourseOffering) fromClient.readObject();
 					courseController.searchCat(toAdd.getNameNum()).addOffering(newCourseOffering);
 				} catch (ClassNotFoundException e) {
-					System.err.println("Error: class not  found, unable to cast");
+					System.err.println("Error: class not found, unable to cast");
 					e.printStackTrace();
 				} catch (IOException e) {
 					System.err.println("Error: problem with I/O");
@@ -486,9 +464,33 @@ public class Session implements Runnable {
 			writeString("course not removed");
 			return false;
 		}
-
+		//We need to remove the course from any student that may be registered in it
+		studentController.removeCourseFromAll(toRemove);
 		courseController.removeCourse(toRemove.getCourseName() + " " + toRemove.getCourseNum());
 		writeString("course removed");
+		return true;
+	}
+	
+	/**
+	 * Tries to start the semester by checking every course offering of every course to ensure that at least 8 students are registered in courses
+	 * @return true if successful, false otherwise
+	 */
+	private boolean runCourses() {
+		if (!adminLoggedIn()) {
+			return false;
+		}
+		String result = "";
+		for(Course c: courseController.getCourseList()) {
+			for(CourseOffering o: c.getOfferingList()) {
+				if(o.getOfferingRegList().size() >= 8) {
+					result += "\n" + o.getTheCourse().getNameNum() + " section #" + o.getSecNum() + " started successfully, at least 8 students are registered";
+				}
+				else {
+					result += "\n" + o.getTheCourse().getNameNum() + " section #" + o.getSecNum() + " failed to run, less than 8 students registered in the section.";
+				}
+			}
+		}
+		writeString(result);
 		return true;
 	}
 
@@ -546,6 +548,34 @@ public class Session implements Runnable {
 			return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * Searches for a student as an admin and returns their registration
+	 * @return true if successful, false if failed
+	 */
+	private boolean searchForStudent() {
+		if (!adminLoggedIn()) {
+			return false;
+		}
+		int checkID = Integer.parseInt(readString());
+		Student theStudent = studentController.searchStudent(checkID);
+		if(theStudent == null) {
+			writeString("could not find student");
+			return false;
+		}
+		else {
+			writeString("student found");
+			try {
+				toClient.writeObject(theStudent.getStudentRegList());
+				return true;
+			} catch (IOException e) {
+				System.err.println("Error: unable to write registration array list to client");
+				e.printStackTrace();
+				return false;
+			}
+
+		}
 	}
 
 	/**
