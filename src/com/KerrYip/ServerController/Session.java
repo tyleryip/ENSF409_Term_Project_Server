@@ -116,7 +116,13 @@ public class Session implements Runnable {
 	 * @return the integer read from the client
 	 */
 	private int readInt() {
-		return Integer.parseInt(readString());
+		int i;
+		try {
+			i = Integer.parseInt(readString());
+		} catch(NumberFormatException e) {
+			return -1;
+		}
+		return i;
 	}
 
 	/**
