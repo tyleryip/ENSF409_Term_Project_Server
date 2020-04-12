@@ -33,11 +33,15 @@ public class CourseOfferingController {
     }
 
     /**
-     * Makes new registration, adds it to databaseController and returns it
-     * @return Returns the new registration
+     * Makes new course offering, adds it to databaseController and returns it
+     * @param co the course offering with data for the new one to be added to the system
+     * @param c The course the course offering is for
+     * @return Returns the new Course Offering
      */
-    public void addCourseOffering(CourseOffering co){
-        databaseController.getCourseOfferingList().add(co);
+    public CourseOffering makeCourseOffering(CourseOffering co, int c){
+        CourseOffering temp = new CourseOffering(databaseController.getIncrementCourseOfferingID(),getDatabaseController().getCourseList().get(c),co.getSecNum(),co.getSecCap());
+        databaseController.getCourseOfferingList().add(temp);
+        return temp;
     }
 
     public DatabaseController getDatabaseController() { return databaseController; }

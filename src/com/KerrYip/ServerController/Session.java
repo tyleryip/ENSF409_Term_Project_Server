@@ -478,8 +478,9 @@ public class Session implements Runnable {
 		if (!adminLoggedIn()) {
 			return false;
 		}
-		Course toAdd = readCourseFromClient();
-		if (toAdd == null) {
+		Course temp = readCourseFromClient();
+		int toAddIndex = courseController.makeCourse(temp);
+		if (!(temp.getNameNum().equals(getCourseController().getDatabaseController().getCourseList().get(toAddIndex).getNameNum()))) {
 			writeString("new course not added");
 			return false;
 		}
@@ -512,7 +513,6 @@ public class Session implements Runnable {
 			writeString("Course already exists");
 			return false;
 		}
-
 	}
 
 	/**

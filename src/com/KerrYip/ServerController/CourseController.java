@@ -179,6 +179,17 @@ public class CourseController {
 		return;
 	}
 
+	/**
+	 * Makes new Course, adds it to databaseController and returns it
+	 * @param c The course the course offering is for
+	 * @return Returns the new index of the Course
+	 */
+	public int makeCourse(Course c){
+		Course temp = new Course(c.getCourseName(),c.getCourseNum());
+		databaseController.getCourseList().add(temp);
+		return (databaseController.getCourseList().size())-1;
+	}
+
 	@Override
 	public String toString() {
 		String st = "All courses in the catalogue: \n";
