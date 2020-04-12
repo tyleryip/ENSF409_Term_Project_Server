@@ -21,6 +21,9 @@ public class Course implements Serializable {
 
 	private String courseName;
 	private int courseNum;
+	
+	//This id number is used to store in the SQL database
+	private int id;
 	private ArrayList<Course> preReq;
 	private ArrayList<CourseOffering> offeringList;
 
@@ -136,6 +139,14 @@ public class Course implements Serializable {
 
 	public String getNameNum() {
 		return this.courseName + " " + this.getCourseNum();
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }

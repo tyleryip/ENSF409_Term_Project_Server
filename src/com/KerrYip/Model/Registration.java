@@ -20,6 +20,9 @@ public class Registration implements Serializable {
 	private Student theStudent;
 	private CourseOffering theOffering;
 	private char grade;
+	
+	//This id number is used to store in the SQL database
+	private int id;
 
 	/**
 	 * Links a student and course offering together via a registration
@@ -81,6 +84,14 @@ public class Registration implements Serializable {
 
 	public void setGrade(char grade) {
 		this.grade = grade;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }
