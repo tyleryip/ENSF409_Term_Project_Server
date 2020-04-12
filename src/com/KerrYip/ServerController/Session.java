@@ -36,7 +36,7 @@ public class Session implements Runnable {
 
 	private Student studentUser;
 	private Administrator adminUser;
-	
+
 	private SimpleDateFormat formatter;
 
 	/**
@@ -145,17 +145,19 @@ public class Session implements Runnable {
 		studentController.syncData();
 		courseController.syncData();
 	}
-	
+
 	/**
 	 * Used to log events on the server's console
+	 * 
 	 * @param message the message to log
 	 */
 	private void serverLog(String message) {
 		System.out.println("[Server @" + formatter.format(new Date()) + "] " + message);
 	}
-	
+
 	/**
 	 * Used to log errors on the server's console
+	 * 
 	 * @param error
 	 */
 	private void serverError(String error) {
@@ -176,9 +178,8 @@ public class Session implements Runnable {
 				serverLog("Command: " + command + ", executed successfully");
 			else
 				serverLog("Command: " + command + ", failed to execute");
+			syncData();
 		}
-		// Save data one last time
-		syncData();
 
 		// Now we have to close all connections to the client
 		try {
@@ -259,6 +260,7 @@ public class Session implements Runnable {
 		if (studentUser != null) {
 			if (!studentUser.isActive()) { // Check to make sure that this student is not already logged in to the
 											// system
+				studentUser.setActive(true);
 				serverLog("User logged in using id: " + checkID);
 				writeString(studentUser.getStudentName());
 				try {
