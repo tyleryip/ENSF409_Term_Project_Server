@@ -382,7 +382,7 @@ public class DatabaseController {
 	public ArrayList<Course> loadCourses() { return courseList; }
 
 
-	// GETTERS AND SETTERS FOR CLASS IDs
+	// GETTERS AND SETTERS FOR CLASS IDS
 	public int getIncrementStudentID(){ return studentID++; }
 
 	public int getIncrementCourseID(){ return courseID++; }
