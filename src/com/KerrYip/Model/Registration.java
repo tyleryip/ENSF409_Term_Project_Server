@@ -116,4 +116,5 @@ public class Registration implements Serializable {
 	public void setID(int id) {
 		this.id = id;
 	}
+
 }

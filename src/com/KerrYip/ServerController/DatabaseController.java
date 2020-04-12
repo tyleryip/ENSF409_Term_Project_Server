@@ -1,8 +1,14 @@
 package com.KerrYip.ServerController;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
-import com.KerrYip.Model.*;
+import com.KerrYip.Model.Course;
+import com.KerrYip.Model.CourseOffering;
+import com.KerrYip.Model.Registration;
+import com.KerrYip.Model.Student;
 
 /**
  * This class manages our database, including loading and saving data on
@@ -14,7 +20,7 @@ import com.KerrYip.Model.*;
  *
  */
 public class DatabaseController {
-
+	
 	private ArrayList<Student> studentList;
 	private ArrayList<Course> courseList;
 
@@ -101,6 +107,27 @@ public class DatabaseController {
 		for(int i = 0; i<studentList.size(); i++) {
 			r = new Registration();
 			r.completeRegistration(studentList.get(i), courseList.get(3).getCourseOfferingAt(0));
+		}
+	}
+	
+	public void writeStudentsToFile(String filename) {
+		File output = new File(filename);
+		try {
+			output.createNewFile();
+		} catch(IOException e) {
+			System.err.println("Error: Could not create file with filename " + filename);
+			e.printStackTrace();
+		}
+		
+		try {
+			FileWriter writer = new FileWriter(output);
+			for(Student s: studentList) {
+				writer.write(s.getStudentId() + ";" + s.getStudentName() + "\n");
+			}
+			writer.close();
+		} catch (IOException e) {
+			System.err.println("Error: unknown I/O error");
+			e.printStackTrace();
 		}
 	}
 

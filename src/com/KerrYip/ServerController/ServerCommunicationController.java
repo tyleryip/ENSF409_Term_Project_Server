@@ -54,7 +54,7 @@ public class ServerCommunicationController {
 		// Create the database first so we can let course controller and student
 		// controller use it
 		DatabaseController databaseController = new DatabaseController();
-
+		
 		courseController = new CourseController(databaseController);
 		studentController = new StudentController(databaseController);
 	}
