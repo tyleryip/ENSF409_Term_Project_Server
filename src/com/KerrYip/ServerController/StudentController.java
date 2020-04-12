@@ -18,7 +18,7 @@ import com.KerrYip.Model.Student;
 public class StudentController {
 
 	private DatabaseController databaseController;
-	
+
 	private ArrayList<Student> myStudentList;
 
 	/**
@@ -68,21 +68,24 @@ public class StudentController {
 		return null;
 
 	}
-	
+
 	/**
-	 * Removes a specific course from any student that is currently registered in the course
+	 * Removes a specific course from any student that is currently registered in
+	 * the course
+	 * 
 	 * @param c the course to remove
 	 */
 	public void removeCourseFromAll(Course c) {
-		for(Student s: myStudentList) {
-			for(int i = 0; i<s.getStudentRegList().size(); i++) {
-				if(s.getStudentRegList().get(i).getTheOffering().getTheCourse().getNameNum().equalsIgnoreCase(c.getNameNum())) {
+		for (Student s : myStudentList) {
+			for (int i = 0; i < s.getStudentRegList().size(); i++) {
+				if (s.getStudentRegList().get(i).getTheOffering().getTheCourse().getNameNum()
+						.equalsIgnoreCase(c.getNameNum())) {
 					s.getStudentRegList().remove(i);
 				}
 			}
 		}
 	}
-	
+
 	public int searchStudentIndex(int id) {
 		Iterator<Student> itr = myStudentList.iterator();
 		int i = 0;
@@ -97,7 +100,7 @@ public class StudentController {
 		return -1;
 
 	}
-	
+
 	public void syncData() {
 		databaseController.setStudentList(myStudentList);
 	}

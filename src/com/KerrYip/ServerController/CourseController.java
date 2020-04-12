@@ -15,7 +15,7 @@ import com.KerrYip.Model.CourseOffering;
 public class CourseController {
 
 	private DatabaseController databaseController;
-	
+
 	private ArrayList<Course> myCourseList;
 
 	/**
@@ -28,7 +28,7 @@ public class CourseController {
 		this.databaseController = db;
 		setMyCourseList(databaseController.getCourseList());
 	}
-	
+
 	public void syncData() {
 		databaseController.setCourseList(myCourseList);
 	}

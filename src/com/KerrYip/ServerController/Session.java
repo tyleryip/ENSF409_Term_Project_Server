@@ -168,10 +168,10 @@ public class Session implements Runnable {
 
 		case "admin login":
 			return adminLogin();
-			
+
 		case "run courses":
 			return runCourses();
-			
+
 		case "admin view student courses":
 			return searchForStudent();
 
@@ -187,6 +187,9 @@ public class Session implements Runnable {
 		}
 	}
 
+	/**
+	 * Syncs data with the database controller
+	 */
 	public void syncData() {
 		studentController.syncData();
 		courseController.syncData();
@@ -427,8 +430,7 @@ public class Session implements Runnable {
 			} while (newCourseOffering != null);
 			writeString("Course added");
 			return true;
-		} 
-		else {
+		} else {
 			try {
 				fromClient.readAllBytes();
 			} catch (IOException e) {
@@ -464,15 +466,17 @@ public class Session implements Runnable {
 			writeString("course not removed");
 			return false;
 		}
-		//We need to remove the course from any student that may be registered in it
+		// We need to remove the course from any student that may be registered in it
 		studentController.removeCourseFromAll(toRemove);
 		courseController.removeCourse(toRemove.getCourseName() + " " + toRemove.getCourseNum());
 		writeString("course removed");
 		return true;
 	}
-	
+
 	/**
-	 * Tries to start the semester by checking every course offering of every course to ensure that at least 8 students are registered in courses
+	 * Tries to start the semester by checking every course offering of every course
+	 * to ensure that at least 8 students are registered in courses
+	 * 
 	 * @return true if successful, false otherwise
 	 */
 	private boolean runCourses() {
@@ -480,13 +484,14 @@ public class Session implements Runnable {
 			return false;
 		}
 		String result = "";
-		for(Course c: courseController.getCourseList()) {
-			for(CourseOffering o: c.getOfferingList()) {
-				if(o.getOfferingRegList().size() >= 8) {
-					result += "\n" + o.getTheCourse().getNameNum() + " section #" + o.getSecNum() + " started successfully, at least 8 students are registered";
-				}
-				else {
-					result += "\n" + o.getTheCourse().getNameNum() + " section #" + o.getSecNum() + " failed to run, less than 8 students registered in the section.";
+		for (Course c : courseController.getCourseList()) {
+			for (CourseOffering o : c.getOfferingList()) {
+				if (o.getOfferingRegList().size() >= 8) {
+					result += "\n" + o.getTheCourse().getNameNum() + " section #" + o.getSecNum()
+							+ " started successfully, at least 8 students are registered";
+				} else {
+					result += "\n" + o.getTheCourse().getNameNum() + " section #" + o.getSecNum()
+							+ " failed to run, less than 8 students registered in the section.";
 				}
 			}
 		}
@@ -522,7 +527,8 @@ public class Session implements Runnable {
 	}
 
 	/**
-	 * Sends each course in the catalog back to the user
+	 * Browses all courses in the course catalog
+	 * @return true if successful, false if failed
 	 */
 	private boolean browseCourses() {
 		if (!studentLoggedIn() && !adminLoggedIn()) {
@@ -549,9 +555,10 @@ public class Session implements Runnable {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Searches for a student as an admin and returns their registration
+	 * 
 	 * @return true if successful, false if failed
 	 */
 	private boolean searchForStudent() {
@@ -560,11 +567,10 @@ public class Session implements Runnable {
 		}
 		int checkID = Integer.parseInt(readString());
 		Student theStudent = studentController.searchStudent(checkID);
-		if(theStudent == null) {
+		if (theStudent == null) {
 			writeString("could not find student");
 			return false;
-		}
-		else {
+		} else {
 			writeString("student found");
 			try {
 				for (Registration r : theStudent.getStudentRegList()) {
