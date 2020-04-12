@@ -52,7 +52,7 @@ public class Student implements Serializable {
 		System.out.println("Error: Could not find the registration matching that course!");
 		return null;
 	}
-
+	
 	/**
 	 * Adds a registration to the student's list of registrations
 	 * 

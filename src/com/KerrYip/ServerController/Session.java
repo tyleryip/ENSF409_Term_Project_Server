@@ -461,7 +461,8 @@ public class Session implements Runnable {
 			writeString("course not removed");
 			return false;
 		}
-
+		//We need to remove the course from any student that may be registered in it
+		studentController.removeCourseFromAll(toRemove);
 		courseController.removeCourse(toRemove.getCourseName() + " " + toRemove.getCourseNum());
 		writeString("course removed");
 		return true;
@@ -478,11 +479,11 @@ public class Session implements Runnable {
 		String result = "";
 		for(Course c: courseController.getCourseList()) {
 			for(CourseOffering o: c.getOfferingList()) {
-				if(o.getOfferingRegList().size() < 8) {
-					result += "\n" + o.getTheCourse().getNameNum() + " started successfully.";
+				if(o.getOfferingRegList().size() >= 8) {
+					result += "\n" + o.getTheCourse().getNameNum() + " section #" + o.getSecNum() + " started successfully, at least 8 students are registered";
 				}
 				else {
-					result += "\n" + o.getTheCourse().getNameNum() + " failed to run.";
+					result += "\n" + o.getTheCourse().getNameNum() + " section #" + o.getSecNum() + " failed to run, less than 8 students registered in the section.";
 				}
 			}
 		}
