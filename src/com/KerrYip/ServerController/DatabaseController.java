@@ -47,6 +47,8 @@ public class DatabaseController {
 	public DatabaseController() {
 		courseList = new ArrayList<Course>();
 		studentList = new ArrayList<Student>();
+		registrationList = new ArrayList<Registration>();
+		courseOfferingList = new ArrayList<CourseOffering>();
 
 		// Load the simulated data in
 		readCoursesFromDatabase();
@@ -135,7 +137,70 @@ public class DatabaseController {
 		try {
 			FileWriter writer = new FileWriter(output);
 			for(Student s: studentList) {
-				writer.write(s.getStudentId() + ";" + s.getStudentName() + "\n");
+				writer.write(s.toData() + "\n");
+			}
+			writer.close();
+		} catch (IOException e) {
+			System.err.println("Error: unknown I/O error");
+			e.printStackTrace();
+		}
+	}
+	
+	public void writeCoursesToFile(String filename) {
+		File output = new File(filename);
+		try {
+			output.createNewFile();
+		} catch(IOException e) {
+			System.err.println("Error: Could not create file with filename " + filename);
+			e.printStackTrace();
+		}
+		
+		try {
+			FileWriter writer = new FileWriter(output);
+			for(Course c: courseList) {
+				writer.write(c.toData() + "\n");
+			}
+			writer.close();
+		} catch (IOException e) {
+			System.err.println("Error: unknown I/O error");
+			e.printStackTrace();
+		}
+	}
+	
+	public void writeCourseOfferingsToFile(String filename) {
+		File output = new File(filename);
+		try {
+			output.createNewFile();
+		} catch(IOException e) {
+			System.err.println("Error: Could not create file with filename " + filename);
+			e.printStackTrace();
+		}
+		
+		try {
+			FileWriter writer = new FileWriter(output);
+			for(CourseOffering co: courseOfferingList) {
+				writer.write(co.toData() + "\n");
+			}
+			writer.close();
+		} catch (IOException e) {
+			System.err.println("Error: unknown I/O error");
+			e.printStackTrace();
+		}
+	}
+	
+	public void writeRegistrationsToFile(String filename) {
+		File output = new File(filename);
+		try {
+			output.createNewFile();
+		} catch(IOException e) {
+			System.err.println("Error: Could not create file with filename " + filename);
+			e.printStackTrace();
+		}
+		
+		try {
+			FileWriter writer = new FileWriter(output);
+			for(Registration r: registrationList) {
+				writer.write(r.toData() + "\n");
 			}
 			writer.close();
 		} catch (IOException e) {
@@ -310,4 +375,12 @@ public class DatabaseController {
 
 	public int getIncrementRegistrationID(){ return registrationID++; }
 
+	public static void main(String [] args) {
+		DatabaseController dbc = new DatabaseController();
+		dbc.writeStudentsToFile("students.txt");
+		dbc.writeCoursesToFile("courses.txt");
+		dbc.writeCourseOfferingsToFile("courseofferings.txt");
+		dbc.writeRegistrationsToFile("regsitrations.txt");
+	}
+	
 }
