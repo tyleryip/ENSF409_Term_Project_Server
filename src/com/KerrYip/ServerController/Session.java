@@ -599,6 +599,7 @@ public class Session implements Runnable {
 		// Write each course into the output stream
 		for (Course c : courseController.getCourseList()) {
 			try {
+				System.out.println(c.getCourseOfferingAt(0));
 				toClient.writeObject(c);
 			} catch (IOException e) {
 				serverError("Could not write the course to the output strean");
