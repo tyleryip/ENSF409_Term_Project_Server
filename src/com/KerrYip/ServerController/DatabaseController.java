@@ -56,6 +56,15 @@ public class DatabaseController {
 		readCourseOfferingsFromFile("courseofferings.txt");
 		readRegistrationsFromFile("registrations.txt");
 		readPreReqFromFile("prerequisites.txt");
+
+		updateIDs();
+	}
+
+	public void updateIDs(){
+		studentID = studentList.get(studentList.size()-1).getStudentId();
+		courseID = courseList.get(courseList.size()-1).getID();
+		courseOfferingID = courseOfferingList.get(courseOfferingList.size()-1).getID();
+		registrationID = registrationList.get(registrationList.size()-1).getID();
 	}
 
 	// The following methods create and add the simulated data, in the future we
