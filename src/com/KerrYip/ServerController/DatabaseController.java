@@ -227,6 +227,31 @@ public class DatabaseController {
 	}
 
 	/**
+	 * Test method for writing the prerequisites to a file
+	 * @param filename the filename
+	 */
+	public void writePreReqsToFile(String filename) {
+		File output = new File(filename);
+		try {
+			output.createNewFile();
+		} catch(IOException e) {
+			System.err.println("Error: Could not create file with filename " + filename);
+			e.printStackTrace();
+		}
+		
+		try {
+			FileWriter writer = new FileWriter(output, false);
+			for(Course c: courseList) {
+				writer.write(c.toPreReqData() + "\n");
+			}
+			writer.close();
+		} catch (IOException e) {
+			System.err.println("Error: unknown I/O error");
+			e.printStackTrace();
+		}
+	}
+	
+	/**
 	 * Test method for reading the Students from a file
 	 * @param filename the filename
 	 */
