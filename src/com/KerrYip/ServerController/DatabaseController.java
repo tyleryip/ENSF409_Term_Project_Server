@@ -3,10 +3,12 @@ package com.KerrYip.ServerController;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Scanner;
@@ -48,6 +50,7 @@ public class DatabaseController {
 	
 	private Connection myConn;
 	private Properties properties;
+	private PreparedStatement pStat;
 	private ResultSet myRs;
 	
 
@@ -72,6 +75,7 @@ public class DatabaseController {
 			myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/registration_app_database", properties);
 			System.out.println("[Database Controller] Connection with SQL Database was successfully established!");
 		} catch(SQLException e){
+			System.err.println("Error: Unknown SQL error has occured");
 			e.printStackTrace();
 		}
 		
