@@ -61,10 +61,10 @@ public class DatabaseController {
 	}
 
 	public void updateIDs(){
-		studentID = studentList.get(studentList.size()-1).getStudentId();
-		courseID = courseList.get(courseList.size()-1).getID();
-		courseOfferingID = courseOfferingList.get(courseOfferingList.size()-1).getID();
-		registrationID = registrationList.get(registrationList.size()-1).getID();
+		studentID = studentList.get(studentList.size()-1).getStudentId() + 1;
+		courseID = courseList.get(courseList.size()-1).getID() + 1;
+		courseOfferingID = courseOfferingList.get(courseOfferingList.size()-1).getID() + 1;
+		registrationID = registrationList.get(registrationList.size()-1).getID() + 1;
 	}
 
 	// The following methods create and add the simulated data, in the future we
