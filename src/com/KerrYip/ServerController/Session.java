@@ -298,6 +298,7 @@ public class Session implements Runnable {
 				}
 			}
 			serverError("User " + checkID + " is already logged in to the system");
+			writeString("User already logged in");
 		}
 		// If search fails write null to the client
 		writeString("login failed");
@@ -448,10 +449,16 @@ public class Session implements Runnable {
 	private boolean adminLogin() {
 		String credentials = "";
 		credentials = readString();
-		if (credentials.contentEquals(adminUser.getPassword())) { // Check to see if the password matches
-			adminUser.setActive(true);
-			writeString("login successful");
-			return true;
+		if(credentials != null) {
+			if (credentials.contentEquals(adminUser.getPassword())) { // Check to see if the password matches
+				adminUser.setActive(true);
+				writeString("login successful");
+				return true;
+			}
+			else {
+				writeString("User already logged in");
+				return false;
+			}
 		}
 		writeString("login failed");
 		return false;
@@ -485,21 +492,12 @@ public class Session implements Runnable {
 		if (courseController.searchCat(toAdd.getNameNum()) == null) {
 			courseController.addCourse(toAdd.getNameNum());
 			
-			//We need to add all the sections
-			CourseOffering newCourseOffering = null;
-			do {
-			try {
-				newCourseOffering = (CourseOffering) fromClient.readObject();
-				courseOfferingController.addCourseOffering(newCourseOffering, toAdd);
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			//We need to know how many sections
+			String input = readString();
+			String [] sections = input.split(";");
+			for(int i = 0; i<sections.length; i++) {
+				courseOfferingController.addCourseOffering(toAdd, i+1, Integer.parseInt(sections[i]));
 			}
-			} while(newCourseOffering != null);
-			
 			writeString("Course added");
 			return true;
 		} else {

@@ -32,8 +32,8 @@ public class CourseOfferingController {
     	databaseController.setCourseOfferingList(myCourseOfferingList);
     }
 
-    public void addCourseOffering(CourseOffering co, Course c) {
-    	CourseOffering updatedCourseOffering = new CourseOffering(databaseController.getIncrementCourseOfferingID(), c, co.getSecNum(), co.getSecCap());
+    public void addCourseOffering(Course c, int secNum, int secCap) {
+    	CourseOffering updatedCourseOffering = new CourseOffering(databaseController.getIncrementCourseOfferingID(), c, secNum, secCap);
     	myCourseOfferingList.add(updatedCourseOffering);
     }
 
