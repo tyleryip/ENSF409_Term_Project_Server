@@ -201,7 +201,7 @@ public class Session implements Runnable {
 				serverLog("Command: " + command + ", executed successfully");
 			else
 				serverLog("Command: " + command + ", failed to execute");
-			syncData();
+			//syncData();
 		}
 
 		// Now we have to close all connections to the client
