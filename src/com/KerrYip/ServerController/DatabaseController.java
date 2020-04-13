@@ -164,6 +164,16 @@ public class DatabaseController {
 		r.completeRegistration(studentList.get(2), courseList.get(3).getCourseOfferingAt(1));
 		registrationList.add(r);
 	}
+	
+	public void writeStudentsToDatabase() {
+		try {
+			String query = "DELETE FROM student";
+			pStat = myConn.prepareStatement(query);
+			
+		} catch(Exception e) {
+			
+		}
+	}
 
 	/**
 	 * Test method for writing the students to a file
