@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 /**
  * This class represents a student
- * 
- * @author tyleryip
+ * @author Tyler Yip
+ * @author Will Kerr
  * @version 2.0
  * @since 04/07/20
  *

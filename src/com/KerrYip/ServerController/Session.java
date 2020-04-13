@@ -16,8 +16,8 @@ import com.KerrYip.Model.Student;
 /**
  * This class implements the runnable interface so that user can interact with
  * the application during runtime
- * 
- * @author tyleryip
+ * @author Tyler Yip
+ * @author Will Kerr
  * @version 2.0
  * @since 04/09/20
  *

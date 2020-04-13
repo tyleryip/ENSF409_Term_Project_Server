@@ -7,8 +7,8 @@ import com.KerrYip.Model.CourseOffering;
 
 /**
  * This class manages everything to do with courses
- * 
- * @author tyleryip
+ * @author Tyler Yip
+ * @author Will Kerr
  * @version 1.0
  * @since 04/07/20
  */

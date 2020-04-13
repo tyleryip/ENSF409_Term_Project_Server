@@ -5,6 +5,14 @@ import java.util.ArrayList;
 import com.KerrYip.Model.Course;
 import com.KerrYip.Model.CourseOffering;
 
+/**
+ * This class manages everything to do with course offerings
+ * @author Tyler Yip
+ * @author Will Kerr
+ * @version 1.0
+ * @since 04/07/20
+ *
+ */
 public class CourseOfferingController {
 
     private DatabaseController databaseController;
@@ -12,7 +20,6 @@ public class CourseOfferingController {
 
     /**
      * Constructor for the class RegistrationController
-     *
      * @param db the DatabaseController for the student manager to use
      */
     public CourseOfferingController(DatabaseController db) {

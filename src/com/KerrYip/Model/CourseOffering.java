@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 /**
  * This class represents a section or offering of a specific course
- * 
- * @author tyleryip
+ * @author Tyler Yip
+ * @author Will Kerr
  * @version 2.0
  * @since 04/07/20
  */

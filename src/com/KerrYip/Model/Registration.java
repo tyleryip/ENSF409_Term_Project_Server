@@ -5,8 +5,8 @@ import java.io.Serializable;
 /**
  * This class represents a registration for a course between a course offering
  * and a student; it also tracks a student's grade in the course
- * 
- * @author tyleryip
+ * @author Tyler Yip
+ * @author Will Kerr
  * @version 2.0
  * @since 04/07/20
  */

@@ -11,8 +11,8 @@ import java.util.concurrent.Executors;
 /**
  * This class is primarily used to communicate with clients and handle
  * multi-threading tasks
- * 
- * @author tyleryip
+ * @author Tyler Yip
+ * @author Will Kerr
  * @version 1.0
  * @since 04/07/20
  *

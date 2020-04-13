@@ -4,8 +4,8 @@ package com.KerrYip.Model;
  * This class will be used to store administrator information and will have
  * access to methods that will allow them to add or remove courses from the
  * catalog
- * 
- * @author tyleryip
+ * @author Tyler Yip
+ * @author Will Kerr
  * @version 1.0
  * @since 04/09/20
  */

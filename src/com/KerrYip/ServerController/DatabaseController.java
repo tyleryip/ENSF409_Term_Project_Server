@@ -14,8 +14,8 @@ import com.KerrYip.Model.Student;
 /**
  * This class manages our database, including loading and saving data on
  * students and courses
- * 
- * @author tyleryip
+ * @author Tyler Yip
+ * @author Will Kerr
  * @version 1.0
  * @since 04/07/20
  *

@@ -9,8 +9,8 @@ import com.KerrYip.Model.Student;
 
 /**
  * This class manages everything to do with students
- * 
- * @author tyleryip
+ * @author Tyler Yip
+ * @author Will Kerr
  * @version 1.0
  * @since 04/07/20
  *

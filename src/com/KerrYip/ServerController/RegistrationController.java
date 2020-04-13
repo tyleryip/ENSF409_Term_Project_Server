@@ -5,6 +5,14 @@ import java.util.ArrayList;
 import com.KerrYip.Model.Course;
 import com.KerrYip.Model.Registration;
 
+/**
+ * This class manages everything to do with registrations
+ * @author Tyler Yip
+ * @author Will Kerr
+ * @version 1.0
+ * @since 04/07/20
+ *
+ */
 public class RegistrationController {
 
     private DatabaseController databaseController;
