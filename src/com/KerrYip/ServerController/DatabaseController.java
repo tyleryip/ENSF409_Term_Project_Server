@@ -3,16 +3,12 @@ package com.KerrYip.ServerController;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-<<<<<<< HEAD
-import java.sql.*;
-=======
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
->>>>>>> 58ce7d727dd35c73ea8c1135ef4de1d653fcc26e
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Scanner;
