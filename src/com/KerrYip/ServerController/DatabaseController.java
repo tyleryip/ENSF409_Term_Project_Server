@@ -79,11 +79,11 @@ public class DatabaseController {
 			e.printStackTrace();
 		}
 		
-		readStudentsFromFile("students.txt");
-		readCoursesFromFile("courses.txt");
-		readCourseOfferingsFromFile("courseofferings.txt");
-		readRegistrationsFromFile("registrations.txt");
-		readPreReqFromFile("prerequisites.txt");
+		readStudentsFromFile();
+		readCoursesFromFile();
+		readCourseOfferingsFromFile();
+		readRegistrationsFromFile();
+		readPreReqFromFile();
 
 		updateIDs();
 	}
@@ -306,101 +306,91 @@ public class DatabaseController {
 	}
 
 	/**
-	 * Test method for reading the Students from a file
-	 * 
-	 * @param filename the filename
+	 * Method for reading the Students from the database
 	 */
-	public void readStudentsFromFile(String filename) {
-		File input = new File(filename);
+	public void readStudentsFromFile() {
 		try {
-			Scanner scan = new Scanner(input);
-			String s;
-			while (scan.hasNext()) {
-				s = scan.nextLine();
-				dataToStudent(s);
+			String query = "SELECT * FROM student";
+			PreparedStatement pStat = myConn.prepareStatement(query);
+			myRs = pStat.executeQuery();
+			while(myRs.next()){
+				dataToStudent(myRs.getInt("id"),myRs.getString("name"));
 			}
-			scan.close();
-		} catch (IOException e) {
-			System.err.println("Error: Could not read file with filename " + filename);
+			pStat.close();
+		} catch (SQLException e) {
+			System.err.println("Error: Could not read Student from database");
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Test method for reading the Courses from a file
-	 * 
-	 * @param filename the filename
+	 * Method for reading the Courses from the database
 	 */
-	public void readCoursesFromFile(String filename) {
-		File input = new File(filename);
+	public void readCoursesFromFile() {
 		try {
-			Scanner scan = new Scanner(input);
-			String s;
-			while (scan.hasNext()) {
-				s = scan.nextLine();
-				dataToCourse(s);
+			String query = "SELECT * FROM course";
+			PreparedStatement pStat = myConn.prepareStatement(query);
+			myRs = pStat.executeQuery();
+			while(myRs.next()){
+				dataToCourse(myRs.getInt("id"),myRs.getString("name"),myRs.getInt("num"));
 			}
-			scan.close();
-		} catch (IOException e) {
-			System.err.println("Error: Could not read file with filename " + filename);
-			e.printStackTrace();
-		}
-	}
-
-	public void readPreReqFromFile(String filename) {
-		File input = new File(filename);
-		try {
-			Scanner scan = new Scanner(input);
-			String s;
-			while (scan.hasNext()) {
-				s = scan.nextLine();
-				dataToPreReqs(s);
-			}
-			scan.close();
-		} catch (IOException e) {
-			System.err.println("Error: Could not read file with filename " + filename);
+			pStat.close();
+		} catch (SQLException e) {
+			System.err.println("Error: Could not read Student from database");
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Test method for reading the Course Offerings from a file
-	 * 
-	 * @param filename the filename
+	 * Method for reading the Prereqs for courses from the database
 	 */
-	public void readCourseOfferingsFromFile(String filename) {
-		File input = new File(filename);
+	public void readPreReqFromFile() {
 		try {
-			Scanner scan = new Scanner(input);
-			String s;
-			while (scan.hasNext()) {
-				s = scan.nextLine();
-				dataToCourseOffering(s);
+			String query = "SELECT * FROM prereq";
+			PreparedStatement pStat = myConn.prepareStatement(query);
+			myRs = pStat.executeQuery();
+			while(myRs.next()){
+				dataToPreReqs(myRs.getInt("parent_course_id"),myRs.getInt("prereq_course_id"));
 			}
-			scan.close();
-		} catch (IOException e) {
-			System.err.println("Error: Could not read file with filename " + filename);
+			pStat.close();
+		} catch (SQLException e) {
+			System.err.println("Error: Could not read Student from database");
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Test method for reading the registrations from a file
-	 * 
-	 * @param filename the filename
+	 * Method for reading the course offerings from the database
 	 */
-	public void readRegistrationsFromFile(String filename) {
-		File input = new File(filename);
+	public void readCourseOfferingsFromFile() {
 		try {
-			Scanner scan = new Scanner(input);
-			String s;
-			while (scan.hasNext()) {
-				s = scan.nextLine();
-				dataToRegistration(s);
+			String query = "SELECT * FROM course_offering";
+			PreparedStatement pStat = myConn.prepareStatement(query);
+			myRs = pStat.executeQuery();
+			while(myRs.next()){
+				dataToCourseOffering(myRs.getInt("id"),myRs.getInt("course_id"),myRs.getInt("sec_num"),myRs.getInt("sec_cap"));
 			}
-			scan.close();
-		} catch (IOException e) {
-			System.err.println("Error: Could not read file with filename " + filename);
+			pStat.close();
+		} catch (SQLException e) {
+			System.err.println("Error: Could not read Student from database");
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Method for reading the registrations from the database
+	 */
+	public void readRegistrationsFromFile() {
+		try {
+			String query = "SELECT * FROM registration";
+			PreparedStatement pStat = myConn.prepareStatement(query);
+			myRs = pStat.executeQuery();
+			while(myRs.next()){
+				dataToRegistration(myRs.getInt("id"),myRs.getInt("student_id"),myRs.getInt("course_offering_id"),myRs.getString("grade"));
+			}
+			pStat.close();
+		} catch (SQLException e) {
+			System.err.println("Error: Could not read Student from database");
 			e.printStackTrace();
 		}
 	}
@@ -408,31 +398,29 @@ public class DatabaseController {
 	/**
 	 * Creates Student from the data provided. Will not make the Student if data is
 	 * missing or not found
-	 * 
-	 * @param data Data from the database used to make student
+	 * @param name The name of the student
+	 * @param id The ID of the student
 	 */
-	public void dataToStudent(String data) {
-		String[] variables = data.split(";");
+	public void dataToStudent(int id, String name) {
 		try {
-			getStudentList().add(new Student(variables[1], Integer.parseInt(variables[0])));
+			getStudentList().add(new Student(name,id));
 		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (ArrayIndexOutOfBoundsException e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
 	 * Creates Registration from the data provided. Will not make the Registration
-	 * if data is missing or not found
-	 * 
-	 * @param data Data from the database used to make student
+	 * 	 * if data is missing or not found
+	 * @param id ID of registration
+	 * @param studentID ID of student that is registerijg
+	 * @param courseOfferingID ID of courseOffering that is being registered
+	 * @param grade grade of the registration
 	 */
-	public void dataToRegistration(String data) {
-		String[] variables = data.split(";");
+	public void dataToRegistration(int id, int studentID, int courseOfferingID, String grade) {
 		try {
-			int s = searchStudent(Integer.parseInt(variables[1]));
-			int co = searchCourseOffering(Integer.parseInt(variables[2]));
+			int s = searchStudent(studentID);
+			int co = searchCourseOffering(courseOfferingID);
 			if (s == -1) {
 				System.err.println("Couldn't find Student for Registration");
 				return;
@@ -441,15 +429,13 @@ public class DatabaseController {
 				System.err.println("Couldn't find CourseOffering for Registration");
 				return;
 			}
-			getRegistrationList().add(new Registration(Integer.parseInt(variables[0]), getStudentList().get(s),
-					getCourseOfferingList().get(co), variables[3].charAt(0)));
+			getRegistrationList().add(new Registration(id, getStudentList().get(s),
+					getCourseOfferingList().get(co), grade.charAt(0)));
 			getStudentList().get(s).getStudentRegList()
 					.add(getRegistrationList().get(getRegistrationList().size() - 1));
 			getCourseOfferingList().get(co).getOfferingRegList()
 					.add(getRegistrationList().get(getRegistrationList().size() - 1));
 		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (ArrayIndexOutOfBoundsException e) {
 			e.printStackTrace();
 		}
 	}
@@ -457,56 +443,50 @@ public class DatabaseController {
 	/**
 	 * Creates CourseOffering from the data provided. Will not make the
 	 * CourseOffering if data is missing or not found
-	 * 
-	 * @param data Data from the database used to make student
+	 * @param id ID of the course offering
+	 * @param courseID ID of the course the offering is for
+	 * @param num Number of offering
+	 * @param cap Maximum capacity of offering
 	 */
-	public void dataToCourseOffering(String data) {
-		String[] variables = data.split(";");
+	public void dataToCourseOffering(int id, int courseID, int num, int cap) {
 		try {
-			int c = searchCourse(Integer.parseInt(variables[1]));
+			int c = searchCourse(courseID);
 			if (c == -1) {
 				System.err.println("Couldn't find Course for Course Offering");
 				return;
 			}
-			getCourseOfferingList().add(new CourseOffering(Integer.parseInt(variables[0]), getCourseList().get(c),
-					Integer.parseInt(variables[2]), Integer.parseInt(variables[3])));
+			getCourseOfferingList().add(new CourseOffering(id, getCourseList().get(c), num, cap));
 			getCourseList().get(c).getOfferingList()
 					.add(getCourseOfferingList().get(getCourseOfferingList().size() - 1));
 		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (ArrayIndexOutOfBoundsException e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
 	 * Creates Course from the data provided. Will not make the Course if data is
-	 * missing or not found
-	 * 
-	 * @param data Data from the database used to make Course
+	 * 	 * missing or not found
+	 * @param id Id of course
+	 * @param name name of course
+	 * @param num number of course
 	 */
-	public void dataToCourse(String data) {
-		String[] variables = data.split(";");
+	public void dataToCourse(int id, String name, int num) {
 		try {
-			getCourseList()
-					.add(new Course(variables[1], Integer.parseInt(variables[2]), Integer.parseInt(variables[0])));
+			getCourseList().add(new Course(name,num,id));
 		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (ArrayIndexOutOfBoundsException e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
 	 * Adds Prereqs to all the courses that have been added
-	 * 
-	 * @param data Data from the database used to make the Prereqs for Course
+	 * @param parentId ID of the course that will has a pre requisite
+	 * @param prereqId ID of the course that will be the pre requisite
 	 */
-	public void dataToPreReqs(String data) {
-		String[] variables = data.split(";");
+	public void dataToPreReqs(int parentId, int prereqId) {
 		try {
-			int parent = searchCourse(Integer.parseInt(variables[0]));
-			int preReq = searchCourse(Integer.parseInt(variables[1]));
+			int parent = searchCourse(parentId);
+			int preReq = searchCourse(prereqId);
 			if (parent == -1) {
 				System.err.println("Parent not found for preReq");
 			}
@@ -515,8 +495,6 @@ public class DatabaseController {
 			}
 			getCourseList().get(parent).getPreReq().add(getCourseList().get(preReq));
 		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (ArrayIndexOutOfBoundsException e) {
 			e.printStackTrace();
 		}
 	}
