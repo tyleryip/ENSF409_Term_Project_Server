@@ -376,7 +376,7 @@ public class DatabaseController {
 			PreparedStatement pStat = myConn.prepareStatement(query);
 			myRs = pStat.executeQuery();
 			while(myRs.next()){
-				dataToStudent(myRs.getInt("id"),myRs.getString("name"));
+				dataToRegistration(myRs.getInt("id"),myRs.getInt("student_id"),myRs.getInt("course_offering_id"),myRs.getString("grade"));
 			}
 			pStat.close();
 		} catch (SQLException e) {
@@ -401,15 +401,16 @@ public class DatabaseController {
 
 	/**
 	 * Creates Registration from the data provided. Will not make the Registration
-	 * if data is missing or not found
-	 * 
-	 * @param data Data from the database used to make student
+	 * 	 * if data is missing or not found
+	 * @param id ID of registration
+	 * @param studentID ID of student that is registerijg
+	 * @param courseOfferingID ID of courseOffering that is being registered
+	 * @param grade grade of the registration
 	 */
-	public void dataToRegistration(String data) {
-		String[] variables = data.split(";");
+	public void dataToRegistration(int id, int studentID, int courseOfferingID, String grade) {
 		try {
-			int s = searchStudent(Integer.parseInt(variables[1]));
-			int co = searchCourseOffering(Integer.parseInt(variables[2]));
+			int s = searchStudent(studentID);
+			int co = searchCourseOffering(courseOfferingID);
 			if (s == -1) {
 				System.err.println("Couldn't find Student for Registration");
 				return;
@@ -418,15 +419,13 @@ public class DatabaseController {
 				System.err.println("Couldn't find CourseOffering for Registration");
 				return;
 			}
-			getRegistrationList().add(new Registration(Integer.parseInt(variables[0]), getStudentList().get(s),
-					getCourseOfferingList().get(co), variables[3].charAt(0)));
+			getRegistrationList().add(new Registration(id, getStudentList().get(s),
+					getCourseOfferingList().get(co), grade.charAt(0)));
 			getStudentList().get(s).getStudentRegList()
 					.add(getRegistrationList().get(getRegistrationList().size() - 1));
 			getCourseOfferingList().get(co).getOfferingRegList()
 					.add(getRegistrationList().get(getRegistrationList().size() - 1));
 		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (ArrayIndexOutOfBoundsException e) {
 			e.printStackTrace();
 		}
 	}
@@ -450,8 +449,6 @@ public class DatabaseController {
 			getCourseList().get(c).getOfferingList()
 					.add(getCourseOfferingList().get(getCourseOfferingList().size() - 1));
 		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (ArrayIndexOutOfBoundsException e) {
 			e.printStackTrace();
 		}
 	}
@@ -488,8 +485,6 @@ public class DatabaseController {
 			}
 			getCourseList().get(parent).getPreReq().add(getCourseList().get(preReq));
 		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (ArrayIndexOutOfBoundsException e) {
 			e.printStackTrace();
 		}
 	}
