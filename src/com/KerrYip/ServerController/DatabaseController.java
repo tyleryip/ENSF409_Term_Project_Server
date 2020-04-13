@@ -243,7 +243,7 @@ public class DatabaseController {
 		try {
 			FileWriter writer = new FileWriter(output, false);
 			for(Course c: courseList) {
-				writer.write(c.toPreReqData() + "\n");
+				writer.write(c.toPreReqData());
 			}
 			writer.close();
 		} catch (IOException e) {
