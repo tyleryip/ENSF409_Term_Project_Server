@@ -113,9 +113,6 @@ public class Course implements Serializable {
 
 	public String toData(){
 		String st = getID() + ";" + getCourseName() + ";" + getCourseNum();
-		for(Course c: getPreReq()){
-			st += ";" + c.getID();
-		}
 		return st;
 	}
 	
