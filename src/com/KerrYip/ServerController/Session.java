@@ -481,22 +481,25 @@ public class Session implements Runnable {
 		}
 		Course toAdd = readCourseFromClient();
 
+		//Check to see if the coruse already exists, if not, we can add it
 		if (courseController.searchCat(toAdd.getNameNum()) == null) {
 			courseController.addCourse(toAdd.getNameNum());
+			
+			//We need to add all the sections
 			CourseOffering newCourseOffering = null;
 			do {
-				try {
-					newCourseOffering = (CourseOffering) fromClient.readObject();
-					courseOfferingController.addCourseOffering(newCourseOffering, courseController.searchCat(toAdd.getNameNum()));
-					courseController.searchCat(toAdd.getNameNum()).addOffering(newCourseOffering);
-				} catch (ClassNotFoundException e) {
-					serverError("Class not found, unable to cast");
-					e.printStackTrace();
-				} catch (IOException e) {
-					serverError("Problem with I/O");
-					e.printStackTrace();
-				}
-			} while (newCourseOffering != null);
+			try {
+				newCourseOffering = (CourseOffering) fromClient.readObject();
+				courseOfferingController.addCourseOffering(newCourseOffering, toAdd);
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			} while(newCourseOffering != null);
+			
 			writeString("Course added");
 			return true;
 		} else {

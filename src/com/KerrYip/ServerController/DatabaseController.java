@@ -548,6 +548,7 @@ public class DatabaseController {
 		dbc.writeCoursesToFile("courses.txt");
 		dbc.writeCourseOfferingsToFile("courseofferings.txt");
 		dbc.writeRegistrationsToFile("registrations.txt");
+		dbc.writePreReqsToFile("prerequisites");
 	}
 	
 }
