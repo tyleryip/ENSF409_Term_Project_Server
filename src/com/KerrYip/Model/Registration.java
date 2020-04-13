@@ -29,6 +29,7 @@ public class Registration implements Serializable {
 		this.theStudent = null;
 		this.theOffering = null;
 		this.id = id;
+		this.grade = '-';
 	}
 
 	/**
