@@ -55,7 +55,7 @@ public class DatabaseController {
 		readCoursesFromFile("courses.txt");
 		readCourseOfferingsFromFile("courseofferings.txt");
 		readRegistrationsFromFile("registrations.txt");
-		readPreReqFromFile("prequisites.txt");
+		readPreReqFromFile("prerequisites.txt");
 	}
 
 	// The following methods create and add the simulated data, in the future we
