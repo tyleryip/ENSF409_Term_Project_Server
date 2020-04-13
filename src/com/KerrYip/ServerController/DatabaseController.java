@@ -3,7 +3,12 @@ package com.KerrYip.ServerController;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.Scanner;
 
 import com.KerrYip.Model.Course;
@@ -40,6 +45,11 @@ public class DatabaseController {
 	int courseID = 10000;
 	int courseOfferingID = 20000;
 	int registrationID = 30000;
+	
+	private Connection myConn;
+	private Properties properties;
+	private ResultSet myRs;
+	
 
 	/**
 	 * Constructor for class DatabaseController creates ArrayLists and populates
@@ -52,6 +62,18 @@ public class DatabaseController {
 		registrationList = new ArrayList<Registration>();
 		courseOfferingList = new ArrayList<CourseOffering>();
 
+		properties = new Properties();
+		properties.setProperty("user", "ENSF409");
+		properties.setProperty("password", "ENSF_409");
+		properties.setProperty("useSSL", "false");
+		properties.setProperty("allowsPublicKeyRetrieval", "true");
+		
+		try {
+			myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/registration_app_database", properties);
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+		
 		readStudentsFromFile("students.txt");
 		readCoursesFromFile("courses.txt");
 		readCourseOfferingsFromFile("courseofferings.txt");
