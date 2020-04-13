@@ -9,6 +9,7 @@ import com.KerrYip.Model.Student;
 
 /**
  * This class manages everything to do with students
+ * 
  * @author Tyler Yip
  * @author Will Kerr
  * @version 1.0
@@ -104,7 +105,7 @@ public class StudentController {
 	public void syncData() {
 		databaseController.setStudentList(myStudentList);
 	}
-	
+
 	/**
 	 * Adds a student to the student list and automatically assigns ID
 	 * 
@@ -116,26 +117,27 @@ public class StudentController {
 		databaseController.getStudentList().add(newStudent);
 		System.out.println("[Server] New student " + name + " created successfully with an id of: " + newID);
 	}
-	
+
 	/**
 	 * Checks to see if the proposed ID is available for use
+	 * 
 	 * @param newID the ID to check
 	 * @return true if the ID is not in use, false otherwise
 	 */
 	public boolean isUniqueID(int newID) {
-		if(newID < 0) {
+		if (newID < 0) {
 			System.err.println("Error: ID numbers cannot be negative");
 			return false;
 		}
-		for(Student s: myStudentList) {
-			if(s.getStudentId() == newID) {
+		for (Student s : myStudentList) {
+			if (s.getStudentId() == newID) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	//GETTERS and SETTERS
+	// GETTERS and SETTERS
 	public DatabaseController getDatabaseController() {
 		return databaseController;
 	}

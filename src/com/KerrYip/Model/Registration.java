@@ -5,6 +5,7 @@ import java.io.Serializable;
 /**
  * This class represents a registration for a course between a course offering
  * and a student; it also tracks a student's grade in the course
+ * 
  * @author Tyler Yip
  * @author Will Kerr
  * @version 2.0
@@ -25,7 +26,7 @@ public class Registration implements Serializable {
 	/**
 	 * Constructor for Registration
 	 */
-	public Registration(int id){
+	public Registration(int id) {
 		this.theStudent = null;
 		this.theOffering = null;
 		this.id = id;
@@ -34,12 +35,13 @@ public class Registration implements Serializable {
 
 	/**
 	 * Constructor for Registration
-	 * @param id the registration ID for the database
-	 * @param theStudent the student
+	 * 
+	 * @param id          the registration ID for the database
+	 * @param theStudent  the student
 	 * @param theOffering the course offering
-	 * @param grade the grade
+	 * @param grade       the grade
 	 */
-	public Registration(int id, Student theStudent, CourseOffering theOffering, char grade){
+	public Registration(int id, Student theStudent, CourseOffering theOffering, char grade) {
 		this.id = id;
 		this.theStudent = theStudent;
 		this.theOffering = theOffering;
@@ -82,8 +84,8 @@ public class Registration implements Serializable {
 		return st;
 	}
 
-	public String toData(){
-		return getID() +";"+ getTheStudent().getStudentId() +";"+ getTheOffering().getID() +";"+ getGrade();
+	public String toData() {
+		return getID() + ";" + getTheStudent().getStudentId() + ";" + getTheOffering().getID() + ";" + getGrade();
 	}
 
 	// GETTERS and SETTERS

@@ -14,6 +14,7 @@ import com.KerrYip.Model.Student;
 /**
  * This class manages our database, including loading and saving data on
  * students and courses
+ * 
  * @author Tyler Yip
  * @author Will Kerr
  * @version 1.0
@@ -21,7 +22,7 @@ import com.KerrYip.Model.Student;
  *
  */
 public class DatabaseController {
-	
+
 	private ArrayList<Student> studentList;
 	private ArrayList<Course> courseList;
 
@@ -33,7 +34,7 @@ public class DatabaseController {
 	private ArrayList<CourseOffering> courseOfferingList;
 
 	/*
-	IDs for all variable types for SQL integration
+	 * IDs for all variable types for SQL integration
 	 */
 	int studentID = 1;
 	int courseID = 10000;
@@ -60,11 +61,11 @@ public class DatabaseController {
 		updateIDs();
 	}
 
-	public void updateIDs(){
-		studentID = studentList.get(studentList.size()-1).getStudentId() + 1;
-		courseID = courseList.get(courseList.size()-1).getID() + 1;
-		courseOfferingID = courseOfferingList.get(courseOfferingList.size()-1).getID() + 1;
-		registrationID = registrationList.get(registrationList.size()-1).getID() + 1;
+	public void updateIDs() {
+		studentID = studentList.get(studentList.size() - 1).getStudentId() + 1;
+		courseID = courseList.get(courseList.size() - 1).getID() + 1;
+		courseOfferingID = courseOfferingList.get(courseOfferingList.size() - 1).getID() + 1;
+		registrationID = registrationList.get(registrationList.size() - 1).getID() + 1;
 	}
 
 	// The following methods create and add the simulated data, in the future we
@@ -84,32 +85,32 @@ public class DatabaseController {
 
 	private void readCoursesFromDatabase() {
 		// Simulating courses
-		courseList.add(new Course("ENGG", 233,getIncrementCourseID()));
-		courseOfferingList.add(new CourseOffering(1, 100,getIncrementCourseOfferingID()));
+		courseList.add(new Course("ENGG", 233, getIncrementCourseID()));
+		courseOfferingList.add(new CourseOffering(1, 100, getIncrementCourseOfferingID()));
 		courseList.get(0).addOffering(courseOfferingList.get(0));
 
-		courseList.add(new Course("ENSF", 409,getIncrementCourseID()));
-		courseOfferingList.add(new CourseOffering(1, 100,getIncrementCourseOfferingID()));
+		courseList.add(new Course("ENSF", 409, getIncrementCourseID()));
+		courseOfferingList.add(new CourseOffering(1, 100, getIncrementCourseOfferingID()));
 		courseList.get(1).addOffering(courseOfferingList.get(1));
-		courseOfferingList.add(new CourseOffering(2, 200,getIncrementCourseOfferingID()));
+		courseOfferingList.add(new CourseOffering(2, 200, getIncrementCourseOfferingID()));
 		courseList.get(1).addOffering(courseOfferingList.get(2));
 
-		courseList.add(new Course("PHYS", 259,getIncrementCourseID()));
-		courseOfferingList.add(new CourseOffering(1, 100,getIncrementCourseOfferingID()));
+		courseList.add(new Course("PHYS", 259, getIncrementCourseID()));
+		courseOfferingList.add(new CourseOffering(1, 100, getIncrementCourseOfferingID()));
 		courseList.get(2).addOffering(courseOfferingList.get(3));
-		courseOfferingList.add(new CourseOffering(2, 320,getIncrementCourseOfferingID()));
+		courseOfferingList.add(new CourseOffering(2, 320, getIncrementCourseOfferingID()));
 		courseList.get(2).addOffering(courseOfferingList.get(4));
 
-		courseList.add(new Course("MATH", 211,getIncrementCourseID()));
-		courseOfferingList.add(new CourseOffering(1, 150,getIncrementCourseOfferingID()));
+		courseList.add(new Course("MATH", 211, getIncrementCourseID()));
+		courseOfferingList.add(new CourseOffering(1, 150, getIncrementCourseOfferingID()));
 		courseList.get(3).addOffering(courseOfferingList.get(5));
-		courseOfferingList.add(new CourseOffering(2, 250,getIncrementCourseOfferingID()));
+		courseOfferingList.add(new CourseOffering(2, 250, getIncrementCourseOfferingID()));
 		courseList.get(3).addOffering(courseOfferingList.get(6));
-		courseOfferingList.add(new CourseOffering(3, 270,getIncrementCourseOfferingID()));
+		courseOfferingList.add(new CourseOffering(3, 270, getIncrementCourseOfferingID()));
 		courseList.get(3).addOffering(courseOfferingList.get(7));
 
-		courseList.add(new Course("ENGG", 202,getIncrementCourseID()));
-		courseOfferingList.add(new CourseOffering(1, 120,getIncrementCourseOfferingID()));
+		courseList.add(new Course("ENGG", 202, getIncrementCourseID()));
+		courseOfferingList.add(new CourseOffering(1, 120, getIncrementCourseOfferingID()));
 		courseList.get(4).addOffering(courseOfferingList.get(8));
 
 		// Added prerequisites
@@ -119,9 +120,10 @@ public class DatabaseController {
 	}
 
 	private void registerStudentsInCourses() {
-		//We register everyone in MATH 211 because we want to drink the tears of depressed engineers (aka we need to test if running course works)
+		// We register everyone in MATH 211 because we want to drink the tears of
+		// depressed engineers (aka we need to test if running course works)
 		Registration r;
-		for(int i = 0; i<studentList.size(); i++) {
+		for (int i = 0; i < studentList.size(); i++) {
 			r = new Registration(getIncrementRegistrationID());
 			r.completeRegistration(studentList.get(i), courseList.get(3).getCourseOfferingAt(0));
 			registrationList.add(r);
@@ -138,20 +140,21 @@ public class DatabaseController {
 
 	/**
 	 * Test method for writing the students to a file
+	 * 
 	 * @param filename the filename
 	 */
 	public void writeStudentsToFile(String filename) {
 		File output = new File(filename);
 		try {
 			output.createNewFile();
-		} catch(IOException e) {
+		} catch (IOException e) {
 			System.err.println("Error: Could not create file with filename " + filename);
 			e.printStackTrace();
 		}
-		
+
 		try {
 			FileWriter writer = new FileWriter(output, false);
-			for(Student s: studentList) {
+			for (Student s : studentList) {
 				writer.write(s.toData() + "\n");
 			}
 			writer.close();
@@ -163,20 +166,21 @@ public class DatabaseController {
 
 	/**
 	 * Test method for writing the courses to a file
+	 * 
 	 * @param filename the filename
 	 */
 	public void writeCoursesToFile(String filename) {
 		File output = new File(filename);
 		try {
 			output.createNewFile();
-		} catch(IOException e) {
+		} catch (IOException e) {
 			System.err.println("Error: Could not create file with filename " + filename);
 			e.printStackTrace();
 		}
-		
+
 		try {
 			FileWriter writer = new FileWriter(output, false);
-			for(Course c: courseList) {
+			for (Course c : courseList) {
 				writer.write(c.toData() + "\n");
 			}
 			writer.close();
@@ -188,20 +192,21 @@ public class DatabaseController {
 
 	/**
 	 * Test method for writing the course offerings to a file
+	 * 
 	 * @param filename the filename
 	 */
 	public void writeCourseOfferingsToFile(String filename) {
 		File output = new File(filename);
 		try {
 			output.createNewFile();
-		} catch(IOException e) {
+		} catch (IOException e) {
 			System.err.println("Error: Could not create file with filename " + filename);
 			e.printStackTrace();
 		}
-		
+
 		try {
 			FileWriter writer = new FileWriter(output, false);
-			for(CourseOffering co: courseOfferingList) {
+			for (CourseOffering co : courseOfferingList) {
 				writer.write(co.toData() + "\n");
 			}
 			writer.close();
@@ -213,20 +218,21 @@ public class DatabaseController {
 
 	/**
 	 * Test method for writing the registrations to a file
+	 * 
 	 * @param filename the filename
 	 */
 	public void writeRegistrationsToFile(String filename) {
 		File output = new File(filename);
 		try {
 			output.createNewFile();
-		} catch(IOException e) {
+		} catch (IOException e) {
 			System.err.println("Error: Could not create file with filename " + filename);
 			e.printStackTrace();
 		}
-		
+
 		try {
 			FileWriter writer = new FileWriter(output, false);
-			for(Registration r: registrationList) {
+			for (Registration r : registrationList) {
 				writer.write(r.toData() + "\n");
 			}
 			writer.close();
@@ -238,20 +244,21 @@ public class DatabaseController {
 
 	/**
 	 * Test method for writing the prerequisites to a file
+	 * 
 	 * @param filename the filename
 	 */
 	public void writePreReqsToFile(String filename) {
 		File output = new File(filename);
 		try {
 			output.createNewFile();
-		} catch(IOException e) {
+		} catch (IOException e) {
 			System.err.println("Error: Could not create file with filename " + filename);
 			e.printStackTrace();
 		}
-		
+
 		try {
 			FileWriter writer = new FileWriter(output, false);
-			for(Course c: courseList) {
+			for (Course c : courseList) {
 				writer.write(c.toPreReqData());
 			}
 			writer.close();
@@ -260,9 +267,10 @@ public class DatabaseController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Test method for reading the Students from a file
+	 * 
 	 * @param filename the filename
 	 */
 	public void readStudentsFromFile(String filename) {
@@ -283,6 +291,7 @@ public class DatabaseController {
 
 	/**
 	 * Test method for reading the Courses from a file
+	 * 
 	 * @param filename the filename
 	 */
 	public void readCoursesFromFile(String filename) {
@@ -301,7 +310,7 @@ public class DatabaseController {
 		}
 	}
 
-	public void readPreReqFromFile(String filename){
+	public void readPreReqFromFile(String filename) {
 		File input = new File(filename);
 		try {
 			Scanner scan = new Scanner(input);
@@ -319,6 +328,7 @@ public class DatabaseController {
 
 	/**
 	 * Test method for reading the Course Offerings from a file
+	 * 
 	 * @param filename the filename
 	 */
 	public void readCourseOfferingsFromFile(String filename) {
@@ -339,6 +349,7 @@ public class DatabaseController {
 
 	/**
 	 * Test method for reading the registrations from a file
+	 * 
 	 * @param filename the filename
 	 */
 	public void readRegistrationsFromFile(String filename) {
@@ -358,115 +369,131 @@ public class DatabaseController {
 	}
 
 	/**
-	 * Creates Student from the data provided. Will not make the Student if data is missing or not found
+	 * Creates Student from the data provided. Will not make the Student if data is
+	 * missing or not found
+	 * 
 	 * @param data Data from the database used to make student
 	 */
-	public void dataToStudent(String data){
+	public void dataToStudent(String data) {
 		String[] variables = data.split(";");
 		try {
 			getStudentList().add(new Student(variables[1], Integer.parseInt(variables[0])));
-		}catch(NumberFormatException e){
+		} catch (NumberFormatException e) {
 			e.printStackTrace();
-		}catch(ArrayIndexOutOfBoundsException e){
+		} catch (ArrayIndexOutOfBoundsException e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Creates Registration from the data provided. Will not make the Registration if data is missing or not found
+	 * Creates Registration from the data provided. Will not make the Registration
+	 * if data is missing or not found
+	 * 
 	 * @param data Data from the database used to make student
 	 */
-	public void dataToRegistration(String data){
+	public void dataToRegistration(String data) {
 		String[] variables = data.split(";");
 		try {
 			int s = searchStudent(Integer.parseInt(variables[1]));
 			int co = searchCourseOffering(Integer.parseInt(variables[2]));
-			if(s == -1){
+			if (s == -1) {
 				System.err.println("Couldn't find Student for Registration");
 				return;
 			}
-			if(co == -1){
+			if (co == -1) {
 				System.err.println("Couldn't find CourseOffering for Registration");
 				return;
 			}
-			getRegistrationList().add(new Registration(Integer.parseInt(variables[0]),getStudentList().get(s),getCourseOfferingList().get(co),variables[3].charAt(0)));
-			getStudentList().get(s).getStudentRegList().add(getRegistrationList().get(getRegistrationList().size()-1));
-			getCourseOfferingList().get(co).getOfferingRegList().add(getRegistrationList().get(getRegistrationList().size()-1));
-		}catch(NumberFormatException e){
+			getRegistrationList().add(new Registration(Integer.parseInt(variables[0]), getStudentList().get(s),
+					getCourseOfferingList().get(co), variables[3].charAt(0)));
+			getStudentList().get(s).getStudentRegList()
+					.add(getRegistrationList().get(getRegistrationList().size() - 1));
+			getCourseOfferingList().get(co).getOfferingRegList()
+					.add(getRegistrationList().get(getRegistrationList().size() - 1));
+		} catch (NumberFormatException e) {
 			e.printStackTrace();
-		}catch(ArrayIndexOutOfBoundsException e){
+		} catch (ArrayIndexOutOfBoundsException e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Creates CourseOffering from the data provided. Will not make the CourseOffering if data is missing or not found
+	 * Creates CourseOffering from the data provided. Will not make the
+	 * CourseOffering if data is missing or not found
+	 * 
 	 * @param data Data from the database used to make student
 	 */
-	public void dataToCourseOffering(String data){
+	public void dataToCourseOffering(String data) {
 		String[] variables = data.split(";");
 		try {
 			int c = searchCourse(Integer.parseInt(variables[1]));
-			if(c == -1){
+			if (c == -1) {
 				System.err.println("Couldn't find Course for Course Offering");
 				return;
 			}
-			getCourseOfferingList().add(new CourseOffering(Integer.parseInt(variables[0]),getCourseList().get(c),Integer.parseInt(variables[2]),Integer.parseInt(variables[3])));
-			getCourseList().get(c).getOfferingList().add(getCourseOfferingList().get(getCourseOfferingList().size()-1));
-		}catch(NumberFormatException e){
+			getCourseOfferingList().add(new CourseOffering(Integer.parseInt(variables[0]), getCourseList().get(c),
+					Integer.parseInt(variables[2]), Integer.parseInt(variables[3])));
+			getCourseList().get(c).getOfferingList()
+					.add(getCourseOfferingList().get(getCourseOfferingList().size() - 1));
+		} catch (NumberFormatException e) {
 			e.printStackTrace();
-		}catch(ArrayIndexOutOfBoundsException e){
+		} catch (ArrayIndexOutOfBoundsException e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Creates Course from the data provided. Will not make the Course if data is missing or not found
+	 * Creates Course from the data provided. Will not make the Course if data is
+	 * missing or not found
+	 * 
 	 * @param data Data from the database used to make Course
 	 */
-	public void dataToCourse(String data){
+	public void dataToCourse(String data) {
 		String[] variables = data.split(";");
-		try{
-			getCourseList().add(new Course(variables[1], Integer.parseInt(variables[2]), Integer.parseInt(variables[0])));
-		}catch(NumberFormatException e){
+		try {
+			getCourseList()
+					.add(new Course(variables[1], Integer.parseInt(variables[2]), Integer.parseInt(variables[0])));
+		} catch (NumberFormatException e) {
 			e.printStackTrace();
-		}catch(ArrayIndexOutOfBoundsException e){
+		} catch (ArrayIndexOutOfBoundsException e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
 	 * Adds Prereqs to all the courses that have been added
+	 * 
 	 * @param data Data from the database used to make the Prereqs for Course
 	 */
 	public void dataToPreReqs(String data) {
 		String[] variables = data.split(";");
 		try {
-		int parent = searchCourse(Integer.parseInt(variables[0]));
-		int preReq = searchCourse(Integer.parseInt(variables[1]));
-		if(parent == -1){
-			System.err.println("Parent not found for preReq");
-		}
-		if(preReq == -1){
-			System.err.println("PreReq not found for preReq");
-		}
-		getCourseList().get(parent).getPreReq().add(getCourseList().get(preReq));
-		}catch(NumberFormatException e){
+			int parent = searchCourse(Integer.parseInt(variables[0]));
+			int preReq = searchCourse(Integer.parseInt(variables[1]));
+			if (parent == -1) {
+				System.err.println("Parent not found for preReq");
+			}
+			if (preReq == -1) {
+				System.err.println("PreReq not found for preReq");
+			}
+			getCourseList().get(parent).getPreReq().add(getCourseList().get(preReq));
+		} catch (NumberFormatException e) {
 			e.printStackTrace();
-		}catch(ArrayIndexOutOfBoundsException e){
+		} catch (ArrayIndexOutOfBoundsException e) {
 			e.printStackTrace();
 		}
 	}
 
-	//Searches for data type with matching ID
+	// Searches for data type with matching ID
 	/**
 	 * Searches for the Student with the matching ID
+	 * 
 	 * @param id The ID of the student we are searching for
 	 * @return Returns the index that the student is found if found, -1 if not found
 	 */
-	public int searchStudent(int id){
-		for(int i = 0; i < getStudentList().size(); i++){
-			if(id == getStudentList().get(i).getStudentId()){
+	public int searchStudent(int id) {
+		for (int i = 0; i < getStudentList().size(); i++) {
+			if (id == getStudentList().get(i).getStudentId()) {
 				return i;
 			}
 		}
@@ -475,12 +502,14 @@ public class DatabaseController {
 
 	/**
 	 * Searches for the Registration with the matching ID
+	 * 
 	 * @param id The ID of the registration we are searching for
-	 * @return Returns the index that the registration is found if found, -1 if not found
+	 * @return Returns the index that the registration is found if found, -1 if not
+	 *         found
 	 */
-	public int searchRegistration(int id){
-		for(int i = 0; i < getRegistrationList().size(); i++){
-			if(id == getRegistrationList().get(i).getID()){
+	public int searchRegistration(int id) {
+		for (int i = 0; i < getRegistrationList().size(); i++) {
+			if (id == getRegistrationList().get(i).getID()) {
 				return i;
 			}
 		}
@@ -489,12 +518,13 @@ public class DatabaseController {
 
 	/**
 	 * Searches for the Course with the matching ID
+	 * 
 	 * @param id The ID of the Course we are searching for
 	 * @return Returns the index that the Course is found if found, -1 if not found
 	 */
-	public int searchCourse(int id){
-		for(int i = 0; i < getCourseList().size(); i++){
-			if(id == getCourseList().get(i).getID()){
+	public int searchCourse(int id) {
+		for (int i = 0; i < getCourseList().size(); i++) {
+			if (id == getCourseList().get(i).getID()) {
 				return i;
 			}
 		}
@@ -503,61 +533,89 @@ public class DatabaseController {
 
 	/**
 	 * Searches for the CourseOffering with the matching ID
+	 * 
 	 * @param id The ID of the CourseOffering we are searching for
-	 * @return Returns the index that the CourseOffering is found if found, -1 if not found
+	 * @return Returns the index that the CourseOffering is found if found, -1 if
+	 *         not found
 	 */
-	public int searchCourseOffering(int id){
-		for(int i = 0; i < getCourseOfferingList().size(); i++){
-			if(id == getCourseOfferingList().get(i).getID()){
+	public int searchCourseOffering(int id) {
+		for (int i = 0; i < getCourseOfferingList().size(); i++) {
+			if (id == getCourseOfferingList().get(i).getID()) {
 				return i;
 			}
 		}
 		return -1;
 	}
 
-
 	// GETTERS and SETTERS
-	public synchronized ArrayList<Student> getStudentList() { return studentList; }
+	public synchronized ArrayList<Student> getStudentList() {
+		return studentList;
+	}
 
-	public synchronized void setStudentList(ArrayList<Student> studentList) { this.studentList = studentList; }
+	public synchronized void setStudentList(ArrayList<Student> studentList) {
+		this.studentList = studentList;
+	}
 
-	public synchronized ArrayList<Course> getCourseList() { return courseList; }
+	public synchronized ArrayList<Course> getCourseList() {
+		return courseList;
+	}
 
-	public synchronized void setCourseList(ArrayList<Course> courseList) { this.courseList = courseList; }
+	public synchronized void setCourseList(ArrayList<Course> courseList) {
+		this.courseList = courseList;
+	}
 
-	public synchronized ArrayList<Registration> getRegistrationList() { return registrationList; }
-	
-	public synchronized void setRegistrationList(ArrayList<Registration> registrationList) {this.registrationList = registrationList; }
+	public synchronized ArrayList<Registration> getRegistrationList() {
+		return registrationList;
+	}
 
-	public synchronized ArrayList<CourseOffering> getCourseOfferingList() { return courseOfferingList; }
-	
-	public synchronized void setCourseOfferingList(ArrayList<CourseOffering> courseOfferingList)  {this.courseOfferingList = courseOfferingList; }
+	public synchronized void setRegistrationList(ArrayList<Registration> registrationList) {
+		this.registrationList = registrationList;
+	}
 
-	public ArrayList<Student> loadStudents() { return studentList; }
+	public synchronized ArrayList<CourseOffering> getCourseOfferingList() {
+		return courseOfferingList;
+	}
 
-	public ArrayList<Course> loadCourses() { return courseList; }
+	public synchronized void setCourseOfferingList(ArrayList<CourseOffering> courseOfferingList) {
+		this.courseOfferingList = courseOfferingList;
+	}
 
+	public ArrayList<Student> loadStudents() {
+		return studentList;
+	}
+
+	public ArrayList<Course> loadCourses() {
+		return courseList;
+	}
 
 	// GETTERS AND SETTERS FOR CLASS IDS
-	public int getIncrementStudentID(){ return studentID++; }
+	public int getIncrementStudentID() {
+		return studentID++;
+	}
 
-	public int getIncrementCourseID(){ return courseID++; }
+	public int getIncrementCourseID() {
+		return courseID++;
+	}
 
-	public int getIncrementCourseOfferingID(){ return courseOfferingID++; }
+	public int getIncrementCourseOfferingID() {
+		return courseOfferingID++;
+	}
 
-	public int getIncrementRegistrationID(){ return registrationID++; }
+	public int getIncrementRegistrationID() {
+		return registrationID++;
+	}
 
-	public static void main(String [] args) {
+	public static void main(String[] args) {
 		DatabaseController dbc = new DatabaseController();
 		dbc.readCoursesFromDatabase();
 		dbc.readStudentsFromDatabase();
 		dbc.registerStudentsInCourses();
-		
+
 		dbc.writeStudentsToFile("students.txt");
 		dbc.writeCoursesToFile("courses.txt");
 		dbc.writeCourseOfferingsToFile("courseofferings.txt");
 		dbc.writeRegistrationsToFile("registrations.txt");
 		dbc.writePreReqsToFile("prerequisites.txt");
 	}
-	
+
 }

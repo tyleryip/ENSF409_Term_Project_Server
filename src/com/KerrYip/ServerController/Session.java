@@ -16,6 +16,7 @@ import com.KerrYip.Model.Student;
 /**
  * This class implements the runnable interface so that user can interact with
  * the application during runtime
+ * 
  * @author Tyler Yip
  * @author Will Kerr
  * @version 2.0
@@ -48,7 +49,8 @@ public class Session implements Runnable {
 	 * @param courseController  a controller to manipulate courses
 	 * @param studentController a controller to manipulate students
 	 */
-	public Session(Socket aSocket, CourseController courseController, StudentController studentController, CourseOfferingController courseOfferingController, RegistrationController registrationController) {
+	public Session(Socket aSocket, CourseController courseController, StudentController studentController,
+			CourseOfferingController courseOfferingController, RegistrationController registrationController) {
 		formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		/*
 		 * stringIn = new BufferedReader(new
@@ -123,7 +125,7 @@ public class Session implements Runnable {
 		int i;
 		try {
 			i = Integer.parseInt(readString());
-		} catch(NumberFormatException e) {
+		} catch (NumberFormatException e) {
 			return -1;
 		}
 		return i;
@@ -158,7 +160,7 @@ public class Session implements Runnable {
 		courseOfferingController.syncData();
 		saveAll();
 	}
-	
+
 	/**
 	 * Saves everything in the master array lists in database to a text file
 	 */
@@ -449,13 +451,12 @@ public class Session implements Runnable {
 	private boolean adminLogin() {
 		String credentials = "";
 		credentials = readString();
-		if(credentials != null) {
+		if (credentials != null) {
 			if (credentials.contentEquals(adminUser.getPassword())) { // Check to see if the password matches
 				adminUser.setActive(true);
 				writeString("login successful");
 				return true;
-			}
-			else {
+			} else {
 				writeString("User already logged in");
 				return false;
 			}
@@ -488,16 +489,18 @@ public class Session implements Runnable {
 		}
 		Course toAdd = readCourseFromClient();
 
-		//Check to see if the coruse already exists, if not, we can add it
+		// Check to see if the coruse already exists, if not, we can add it
 		if (courseController.searchCat(toAdd.getNameNum()) == null) {
 			courseController.addCourse(toAdd.getNameNum());
-			
-			//We need to know how many sections
+
+			// We need to know how many sections
 			String input = readString();
-			String [] sections = input.split(";");
-			for(int i = 0; i<sections.length; i++) {
-				courseOfferingController.addCourseOffering(courseController.searchCat(toAdd.getNameNum()), i+1, Integer.parseInt(sections[i]));
-				courseController.createCourseOffering(courseController.searchCat(toAdd.getNameNum()), i+1, Integer.parseInt(sections[i]));
+			String[] sections = input.split(";");
+			for (int i = 0; i < sections.length; i++) {
+				courseOfferingController.addCourseOffering(courseController.searchCat(toAdd.getNameNum()), i + 1,
+						Integer.parseInt(sections[i]));
+				courseController.createCourseOffering(courseController.searchCat(toAdd.getNameNum()), i + 1,
+						Integer.parseInt(sections[i]));
 			}
 			writeString("Course added");
 			return true;

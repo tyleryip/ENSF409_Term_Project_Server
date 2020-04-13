@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 /**
  * This class represents a student
+ * 
  * @author Tyler Yip
  * @author Will Kerr
  * @version 2.0
@@ -69,7 +70,7 @@ public class Student implements Serializable {
 		return st;
 	}
 
-	public String toData(){
+	public String toData() {
 		return getStudentId() + ";" + getStudentName();
 	}
 

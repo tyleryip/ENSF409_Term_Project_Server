@@ -11,6 +11,7 @@ import java.util.concurrent.Executors;
 /**
  * This class is primarily used to communicate with clients and handle
  * multi-threading tasks
+ * 
  * @author Tyler Yip
  * @author Will Kerr
  * @version 1.0
@@ -33,7 +34,7 @@ public class ServerCommunicationController {
 	private StudentController studentController;
 	private CourseOfferingController courseOfferingController;
 	private RegistrationController registrationController;
-	
+
 	private SimpleDateFormat formatter;
 
 	/**
@@ -44,7 +45,7 @@ public class ServerCommunicationController {
 	 */
 	public ServerCommunicationController(int port) {
 		formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		
+
 		try {
 			serverSocket = new ServerSocket(port);
 		} catch (IOException e) {
@@ -56,7 +57,7 @@ public class ServerCommunicationController {
 		// Create the database first so we can let course controller and student
 		// controller use it
 		DatabaseController databaseController = new DatabaseController();
-		
+
 		courseController = new CourseController(databaseController);
 		studentController = new StudentController(databaseController);
 		courseOfferingController = new CourseOfferingController(databaseController);
@@ -67,16 +68,18 @@ public class ServerCommunicationController {
 	 * Accept connections from clients and start threads when they connect
 	 */
 	public void listen() {
-		System.out.println("[Server @" + formatter.format(new Date()) + "] Server is now active and accepting new connections");
+		System.out.println(
+				"[Server @" + formatter.format(new Date()) + "] Server is now active and accepting new connections");
 		int connections = 0;
 		while (true) {
 			try {
 				aSocket = serverSocket.accept();
-				System.out.println(
-						"[Server @" + formatter.format(new Date()) + "] Client connection accepted by server! New connection running on thread #" + ++connections);
+				System.out.println("[Server @" + formatter.format(new Date())
+						+ "] Client connection accepted by server! New connection running on thread #" + ++connections);
 
 				// Create a new session for the new client that joined
-				Session Session = new Session(aSocket, courseController, studentController, courseOfferingController, registrationController);
+				Session Session = new Session(aSocket, courseController, studentController, courseOfferingController,
+						registrationController);
 
 				// Add client to the thread pool and execute
 				pool.execute(Session);

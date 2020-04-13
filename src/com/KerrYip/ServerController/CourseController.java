@@ -7,6 +7,7 @@ import com.KerrYip.Model.CourseOffering;
 
 /**
  * This class manages everything to do with courses
+ * 
  * @author Tyler Yip
  * @author Will Kerr
  * @version 1.0
@@ -202,7 +203,7 @@ public class CourseController {
 	public void setMyCourseList(ArrayList<Course> myCourseList) {
 		this.myCourseList = myCourseList;
 	}
-	
+
 	public DatabaseController getDatabaseController() {
 		return databaseController;
 	}
