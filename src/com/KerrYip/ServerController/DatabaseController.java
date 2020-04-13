@@ -70,6 +70,7 @@ public class DatabaseController {
 		
 		try {
 			myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/registration_app_database", properties);
+			System.out.println("[Database Controller] Connection with SQL Database was successfully established!");
 		} catch(SQLException e){
 			e.printStackTrace();
 		}
