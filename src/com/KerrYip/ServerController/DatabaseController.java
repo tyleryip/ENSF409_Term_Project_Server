@@ -167,9 +167,8 @@ public class DatabaseController {
 	
 	/**
 	 * Overwrites the student ArrayList to database
-	 * @param theStudentList
 	 */
-	public void writeStudentsToDatabase(ArrayList<Student> theStudentList) {
+	public void writeStudentsToDatabase() {
 		try {
 			//Delete everything from the database to overwrite
 			String query = "DELETE FROM student";
@@ -177,10 +176,116 @@ public class DatabaseController {
 			pStat.executeUpdate();
 			
 			query = "INSERT INTO student (id, name) values (?, ?)";
-			for(Student s: theStudentList) {
+			pStat = myConn.prepareStatement(query);
+			for(Student s: studentList) {
 				pStat.setInt(1, s.getStudentId());
 				pStat.setString(2, s.getStudentName());
 				pStat.executeUpdate();
+			}
+			pStat.close();
+		} catch(SQLException e) {
+			System.err.println("Error: SQL erros LOL");
+		}
+	}
+	
+	/**
+	 * Overwrites the course ArrayList to database
+	 */
+	public void writeCoursesToDatabase() {
+		try {
+			//Delete everything from the database to overwrite
+			String query = "DELETE FROM course";
+			pStat = myConn.prepareStatement(query);
+			pStat.executeUpdate();
+			
+			query = "INSERT INTO course (id, name, num) values (?, ?, ?)";
+			pStat = myConn.prepareStatement(query);
+			for(Course c: courseList) {
+				pStat.setInt(1, c.getID());
+				pStat.setString(2, c.getCourseName());
+				pStat.setInt(3, c.getCourseNum());
+				pStat.executeUpdate();
+			}
+			pStat.close();
+		} catch(SQLException e) {
+			System.err.println("Error: SQL erros LOL");
+		}
+	}
+	
+	/**
+	 * Overwrites the course offering ArrayList to database
+	 */
+	public void writeCourseOfferingsToDatabase() {
+		try {
+			//Delete everything from the database to overwrite
+			String query = "DELETE FROM course_offering";
+			pStat = myConn.prepareStatement(query);
+			pStat.executeUpdate();
+			
+			query = "INSERT INTO course_offering (id, course_id, sec_num, sec_cap) values (?, ?, ?, ?)";
+			pStat = myConn.prepareStatement(query);
+			for(CourseOffering co: courseOfferingList) {
+				pStat.setInt(1, co.getID());
+				pStat.setInt(2, co.getTheCourse().getID());
+				pStat.setInt(3, co.getSecNum());
+				pStat.setInt(4, co.getSecCap());
+				pStat.executeUpdate();
+			}
+			pStat.close();
+		} catch(SQLException e) {
+			System.err.println("Error: SQL erros LOL");
+		}
+	}
+	
+	/**
+	 * Overwrites the registration ArrayList to database
+	 */
+	public void writeRegistrationToDatabase() {
+		try {
+			//Delete everything from the database to overwrite
+			String query = "DELETE FROM registration";
+			pStat = myConn.prepareStatement(query);
+			pStat.executeUpdate();
+			
+			query = "INSERT INTO registration (id, student_id, course_offering_id, grade) values (?, ?, ?, ?)";
+			pStat = myConn.prepareStatement(query);
+			for(Registration r: registrationList) {
+				pStat.setInt(1, r.getID());
+				pStat.setInt(2, r.getTheStudent().getStudentId());
+				pStat.setInt(3, r.getTheOffering().getID());
+				pStat.setString(4, r.getGrade() + "");
+				pStat.executeUpdate();
+			}
+			pStat.close();
+		} catch(SQLException e) {
+			System.err.println("Error: SQL erros LOL");
+		}
+	}
+	
+	/**
+	 * Overwrites the prereq ArrayList to database
+	 */
+	public void writePreReqToDatabase() {
+		try {
+			//Delete everything from the database to overwrite
+			String query = "DELETE FROM prereq";
+			pStat = myConn.prepareStatement(query);
+			pStat.executeUpdate();
+			
+			query = "INSERT INTO prereq (id, parent_course_id, prereq_course_id) values (?, ?, ?)";
+			pStat = myConn.prepareStatement(query);
+			int i = 40000;
+			//Write all prereqs to the database
+			for(Course c: courseList) {
+				if(c.getPreReq().size() > 0) {
+					for(Course p: c.getPreReq()) {
+						pStat.setInt(1, i++); //For each prereq that we add, we will up the counter on the IDs
+						pStat.setInt(2, c.getID());
+						pStat.setInt(3, p.getID());
+						pStat.executeUpdate();
+					}
+				}
+				
 			}
 			pStat.close();
 		} catch(SQLException e) {
