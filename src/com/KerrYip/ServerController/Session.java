@@ -496,7 +496,7 @@ public class Session implements Runnable {
 			String input = readString();
 			String [] sections = input.split(";");
 			for(int i = 0; i<sections.length; i++) {
-				courseOfferingController.addCourseOffering(toAdd, i+1, Integer.parseInt(sections[i]));
+				courseOfferingController.addCourseOffering(courseController.searchCat(toAdd.getNameNum()), i+1, Integer.parseInt(sections[i]));
 			}
 			writeString("Course added");
 			return true;
