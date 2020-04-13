@@ -165,13 +165,26 @@ public class DatabaseController {
 		registrationList.add(r);
 	}
 	
-	public void writeStudentsToDatabase() {
+	/**
+	 * Overwrites the student ArrayList to database
+	 * @param theStudentList
+	 */
+	public void writeStudentsToDatabase(ArrayList<Student> theStudentList) {
 		try {
+			//Delete everything from the database to overwrite
 			String query = "DELETE FROM student";
 			pStat = myConn.prepareStatement(query);
+			pStat.executeUpdate();
 			
-		} catch(Exception e) {
-			
+			query = "INSERT INTO student (id, name) values (?, ?)";
+			for(Student s: theStudentList) {
+				pStat.setInt(1, s.getStudentId());
+				pStat.setString(2, s.getStudentName());
+				pStat.executeUpdate();
+			}
+			pStat.close();
+		} catch(SQLException e) {
+			System.err.println("Error: SQL erros LOL");
 		}
 	}
 
