@@ -289,13 +289,16 @@ public class DatabaseController {
 			System.err.println("Error: Could not read file with filename " + filename);
 			e.printStackTrace();
 		}
-		input = new File(filename);
+	}
+
+	public void readPreReqFromFile(String filename){
+		File input = new File(filename);
 		try {
 			Scanner scan = new Scanner(input);
 			String s;
 			while (scan.hasNext()) {
 				s = scan.nextLine();
-				dataToCoursePreReqs(s);
+				dataToPreReqs(s);
 			}
 			scan.close();
 		} catch (IOException e) {
@@ -426,24 +429,18 @@ public class DatabaseController {
 	 * Adds Prereqs to all the courses that have been added
 	 * @param data Data from the database used to make the Prereqs for Course
 	 */
-	public void dataToCoursePreReqs(String data) {
+	public void dataToPreReqs(String data) {
 		String[] variables = data.split(";");
-		ArrayList<Course> prereqList = new ArrayList<Course>();
-		Course tempCourse;
 		try {
-			for (int i = 3; i < variables.length; i++) {
-				tempCourse = getCourseList().get(searchCourse(Integer.parseInt(variables[i])));
-				if (tempCourse == null) {
-					System.err.println("Couldn't find data");
-					return;
-				}
-				prereqList.add(tempCourse);
-			}
-			int i = (searchCourse(Integer.parseInt(variables[0])));
-			if(i != -1){
-				return;
-			}
-			getCourseList().get(i).setPreReq(prereqList);
+		int parent = searchCourse(Integer.parseInt(variables[0]));
+		int preReq = searchCourse(Integer.parseInt(variables[1]));
+		if(parent == -1){
+			System.err.println("Parent not found for preReq");
+		}
+		if(preReq == -1){
+			System.err.println("PreReq not found for preReq");
+		}
+		getCourseList().get(parent).getPreReq().add(getCourseList().get(preReq));
 		}catch(NumberFormatException e){
 			e.printStackTrace();
 		}catch(ArrayIndexOutOfBoundsException e){
