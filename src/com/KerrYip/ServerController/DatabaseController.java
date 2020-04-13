@@ -55,11 +55,7 @@ public class DatabaseController {
 		readCoursesFromFile("courses.txt");
 		readCourseOfferingsFromFile("courseofferings.txt");
 		readRegistrationsFromFile("registrations.txt");
-		
-		//Load the simulated data in
-		//readCoursesFromDatabase();
-		//readStudentsFromDatabase();
-		//registerStudentsInCourses();
+
 	}
 
 	// The following methods create and add the simulated data, in the future we
@@ -522,6 +518,10 @@ public class DatabaseController {
 
 	public static void main(String [] args) {
 		DatabaseController dbc = new DatabaseController();
+		dbc.readCoursesFromDatabase();
+		dbc.readStudentsFromDatabase();
+		dbc.registerStudentsInCourses();
+		
 		dbc.writeStudentsToFile("students.txt");
 		dbc.writeCoursesToFile("courses.txt");
 		dbc.writeCourseOfferingsToFile("courseofferings.txt");
