@@ -141,7 +141,7 @@ public class DatabaseController {
 		}
 		
 		try {
-			FileWriter writer = new FileWriter(output);
+			FileWriter writer = new FileWriter(output, false);
 			for(Student s: studentList) {
 				writer.write(s.toData() + "\n");
 			}
@@ -166,7 +166,7 @@ public class DatabaseController {
 		}
 		
 		try {
-			FileWriter writer = new FileWriter(output);
+			FileWriter writer = new FileWriter(output, false);
 			for(Course c: courseList) {
 				writer.write(c.toData() + "\n");
 			}
@@ -191,7 +191,7 @@ public class DatabaseController {
 		}
 		
 		try {
-			FileWriter writer = new FileWriter(output);
+			FileWriter writer = new FileWriter(output, false);
 			for(CourseOffering co: courseOfferingList) {
 				writer.write(co.toData() + "\n");
 			}
@@ -216,7 +216,7 @@ public class DatabaseController {
 		}
 		
 		try {
-			FileWriter writer = new FileWriter(output);
+			FileWriter writer = new FileWriter(output, false);
 			for(Registration r: registrationList) {
 				writer.write(r.toData() + "\n");
 			}

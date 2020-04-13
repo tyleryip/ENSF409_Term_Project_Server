@@ -575,6 +575,7 @@ public class Session implements Runnable {
 		if (clientCourse != null) {
 			try {
 				writeString("course found");
+				toClient.reset();
 				toClient.writeObject(clientCourse);
 				return true;
 			} catch (IOException e) {
@@ -599,6 +600,7 @@ public class Session implements Runnable {
 		// Write each course into the output stream
 		for (Course c : courseController.getCourseList()) {
 			try {
+				toClient.reset();
 				toClient.writeObject(c);
 			} catch (IOException e) {
 				serverError("Could not write the course to the output strean");
