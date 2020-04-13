@@ -167,6 +167,7 @@ public class Session implements Runnable {
 		courseController.getDatabaseController().writeCoursesToFile("courses.txt");
 		courseOfferingController.getDatabaseController().writeCourseOfferingsToFile("courseofferings.txt");
 		registrationController.getDatabaseController().writeRegistrationsToFile("registrations.txt");
+		courseController.getDatabaseController().writePreReqsToFile("prerequisites.txt");
 	}
 
 	/**

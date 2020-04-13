@@ -118,6 +118,16 @@ public class Course implements Serializable {
 		}
 		return st;
 	}
+	
+	public String toPreReqData() {
+		String st = "";
+		for(Course c: preReq) {
+			st += this.getID() + ";" + c.getID();
+			st += "\n";
+		}
+		return st;
+
+	}
 
 	// GETTERS and SETTERS
 	public ArrayList<CourseOffering> getOfferingList() {
