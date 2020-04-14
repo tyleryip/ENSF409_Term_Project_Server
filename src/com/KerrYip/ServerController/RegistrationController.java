@@ -17,16 +17,24 @@ import com.KerrYip.Model.Registration;
 public class RegistrationController {
 
 	private DatabaseController databaseController;
+	private CourseOfferingController courseOfferingController;
+	private StudentController studentController;
+	
 	private ArrayList<Registration> myRegistrationList;
 
 	/**
 	 * Constructor for the class RegistrationController
 	 *
 	 * @param db the DatabaseController for the student manager to use
+	 * @param studentController 
+	 * @param courseOfferingController 
 	 */
-	public RegistrationController(DatabaseController db) {
+	public RegistrationController(DatabaseController db, CourseOfferingController courseOfferingController, StudentController studentController) {
 		this.databaseController = db;
-		setMyRegistrationList(databaseController.getRegistrationList());
+		this.courseOfferingController = courseOfferingController;
+		this.studentController = studentController;
+		myRegistrationList = databaseController.readRegistrationsFromFile(courseOfferingController.getMyCourseOfferingList(), studentController.getMyStudentList());
+		databaseController.updateRegistrationID(getUpdatedRegistrationID());
 	}
 
 	public void removeRegistration(Registration toRemove) {
@@ -41,9 +49,9 @@ public class RegistrationController {
 			}
 		}
 	}
-
-	public void syncData() {
-		databaseController.setRegistrationList(myRegistrationList);
+	
+	public int getUpdatedRegistrationID() {
+		return myRegistrationList.get(myRegistrationList.size() -1).getID() + 1;
 	}
 
 	/**
@@ -54,6 +62,7 @@ public class RegistrationController {
 	public Registration addRegistration() {
 		Registration r = new Registration(databaseController.getIncrementRegistrationID());
 		myRegistrationList.add(r);
+		databaseController.insertRegistrationToDatabase(r);
 		return r;
 	}
 

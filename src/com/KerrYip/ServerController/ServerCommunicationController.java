@@ -58,8 +58,8 @@ public class ServerCommunicationController {
 		// controller use it
 		DatabaseController databaseController = new DatabaseController();
 
-		courseController = new CourseController(databaseController);
 		studentController = new StudentController(databaseController);
+		courseController = new CourseController(databaseController);
 		courseOfferingController = new CourseOfferingController(databaseController);
 		registrationController = new RegistrationController(databaseController);
 	}

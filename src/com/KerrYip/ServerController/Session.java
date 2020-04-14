@@ -151,34 +151,6 @@ public class Session implements Runnable {
 	}
 
 	/**
-	 * Syncs data with the database controller
-	 */
-	public void syncData() {
-		studentController.syncData();
-		courseController.syncData();
-		registrationController.syncData();
-		courseOfferingController.syncData();
-		saveAll();
-	}
-
-	/**
-	 * Saves everything in the master array lists in database to a text file
-	 */
-	private void saveAll() {
-		studentController.getDatabaseController().writeStudentsToDatabase();
-		courseController.getDatabaseController().writeCoursesToDatabase();
-		courseOfferingController.getDatabaseController().writeCourseOfferingsToDatabase();
-		registrationController.getDatabaseController().writeRegistrationToDatabase();
-		courseController.getDatabaseController().writePreReqToDatabase();
-		
-//		studentController.getDatabaseController().writeStudentsToFile("students.txt");
-//		courseController.getDatabaseController().writeCoursesToFile("courses.txt");
-//		courseOfferingController.getDatabaseController().writeCourseOfferingsToFile("courseofferings.txt");
-//		registrationController.getDatabaseController().writeRegistrationsToFile("registrations.txt");
-//		courseController.getDatabaseController().writePreReqsToFile("prerequisites.txt");
-	}
-
-	/**
 	 * Used to log events on the server's console
 	 * 
 	 * @param message the message to log
@@ -203,14 +175,12 @@ public class Session implements Runnable {
 		String command = "";
 
 		while (!command.contentEquals("QUIT")) {
-			syncData();
 			command = readString();
 
 			if (executeCommand(command))
 				serverLog("Command: " + command + ", executed successfully");
 			else
 				serverLog("Command: " + command + ", failed to execute");
-			syncData();
 		}
 
 		// Now we have to close all connections to the client

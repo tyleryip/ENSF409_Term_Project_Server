@@ -32,6 +32,16 @@ public class Registration implements Serializable {
 		this.id = id;
 		this.grade = '-';
 	}
+	
+	/**
+	 * Constructor for Registration
+	 */
+	public Registration(int id, char grade) {
+		this.theStudent = null;
+		this.theOffering = null;
+		this.id = id;
+		this.grade = '-';
+	}
 
 	/**
 	 * Constructor for Registration

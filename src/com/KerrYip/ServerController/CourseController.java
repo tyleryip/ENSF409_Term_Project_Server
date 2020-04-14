@@ -27,11 +27,22 @@ public class CourseController {
 	 */
 	public CourseController(DatabaseController db) {
 		this.databaseController = db;
-		setMyCourseList(databaseController.getCourseList());
+		myCourseList = databaseController.readCoursesFromFile();
+		databaseController.readPreReqFromFile(myCourseList);
+		databaseController.updateCourseID(getUpdatedCourseID());
+		databaseController.updatePreReqID(getUpdatedPreReqID());
 	}
 
-	public void syncData() {
-		databaseController.setCourseList(myCourseList);
+	private int getUpdatedPreReqID() {
+		int count = 40000;
+		for(Course c: myCourseList) { //Go through every course and increment the count of prereqs
+			count += c.getPreReq().size();
+		}
+		return count;
+	}
+
+	private int getUpdatedCourseID() {
+		return myCourseList.get(myCourseList.size() - 1).getID() + 1;
 	}
 
 	/**
@@ -101,6 +112,7 @@ public class CourseController {
 		if (searchCat(split[0], Integer.parseInt(split[1])) == null) {
 			Course newCourse = new Course(split[0], Integer.parseInt(split[1]), newID);
 			myCourseList.add(newCourse);
+			databaseController.insertCourseToDatabase(newCourse);
 			return newCourse;
 		}
 		System.out.println("Error: Course already exists in the catalogue!");
@@ -154,6 +166,7 @@ public class CourseController {
 		if (checkThis != null) {
 			Course preReq = new Course(split2[0], Integer.parseInt(split2[1]));
 			checkThis.addPreReq(preReq);
+			databaseController.insertPreReqToDatabase(checkThis, preReq);
 			return;
 		}
 		displayCourseNotFoundError();

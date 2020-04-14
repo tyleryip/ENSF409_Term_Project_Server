@@ -17,6 +17,7 @@ import com.KerrYip.Model.CourseOffering;
 public class CourseOfferingController {
 
 	private DatabaseController databaseController;
+	private CourseController courseController;
 	private ArrayList<CourseOffering> myCourseOfferingList;
 
 	/**
@@ -24,9 +25,15 @@ public class CourseOfferingController {
 	 * 
 	 * @param db the DatabaseController for the student manager to use
 	 */
-	public CourseOfferingController(DatabaseController db) {
+	public CourseOfferingController(DatabaseController db, CourseController courseController) {
 		this.databaseController = db;
-		setMyCourseOfferingList(databaseController.getCourseOfferingList());
+		this.courseController = courseController;
+		myCourseOfferingList = databaseController.readCourseOfferingsFromFile(courseController.getCourseList());
+		databaseController.updateCourseOfferingID(getUpdatedCourseOfferingID());
+	}
+
+	private int getUpdatedCourseOfferingID() {
+		return myCourseOfferingList.get(myCourseOfferingList.size()-1).getID() + 1;
 	}
 
 	public void removeAllCourseOfferings(Course c) {
@@ -37,14 +44,11 @@ public class CourseOfferingController {
 		}
 	}
 
-	public void syncData() {
-		databaseController.setCourseOfferingList(myCourseOfferingList);
-	}
-
 	public void addCourseOffering(Course c, int secNum, int secCap) {
 		CourseOffering updatedCourseOffering = new CourseOffering(databaseController.getIncrementCourseOfferingID(), c,
 				secNum, secCap);
 		myCourseOfferingList.add(updatedCourseOffering);
+		databaseController.insertCourseOfferingToDatabase(updatedCourseOffering);
 	}
 
 	public DatabaseController getDatabaseController() {

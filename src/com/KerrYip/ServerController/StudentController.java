@@ -29,7 +29,12 @@ public class StudentController {
 	 */
 	public StudentController(DatabaseController db) {
 		this.databaseController = db;
-		setMyStudentList(databaseController.getStudentList());
+		myStudentList = databaseController.readStudentsFromFile();
+		databaseController.updateStudentID(getUpdatedStudentID());
+	}
+
+	private int getUpdatedStudentID() {
+		return myStudentList.get(myStudentList.size() - 1).getStudentId() + 1;
 	}
 
 	/**
@@ -102,10 +107,6 @@ public class StudentController {
 
 	}
 
-	public void syncData() {
-		databaseController.setStudentList(myStudentList);
-	}
-
 	/**
 	 * Adds a student to the student list and automatically assigns ID
 	 * 
@@ -114,7 +115,8 @@ public class StudentController {
 	public void addStudent(String name) {
 		int newID = databaseController.getIncrementStudentID();
 		Student newStudent = new Student(name, newID);
-		databaseController.getStudentList().add(newStudent);
+		myStudentList.add(newStudent);
+		databaseController.insertStudentToDatabase(newStudent);
 		System.out.println("[Server] New student " + name + " created successfully with an id of: " + newID);
 	}
 

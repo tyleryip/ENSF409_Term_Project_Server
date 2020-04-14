@@ -1,17 +1,12 @@
 package com.KerrYip.ServerController;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Properties;
-import java.util.Scanner;
 
 import com.KerrYip.Model.Course;
 import com.KerrYip.Model.CourseOffering;
@@ -29,17 +24,6 @@ import com.KerrYip.Model.Student;
  *
  */
 public class DatabaseController {
-
-	private ArrayList<Student> studentList;
-	private ArrayList<Course> courseList;
-
-	/**
-	 * These two array lists are currently inactive, but will be needed for the SQL
-	 * database
-	 */
-	private ArrayList<Registration> registrationList;
-	private ArrayList<CourseOffering> courseOfferingList;
-
 	/*
 	 * IDs for all variable types for SQL integration
 	 */
@@ -47,6 +31,7 @@ public class DatabaseController {
 	int courseID = 10000;
 	int courseOfferingID = 20000;
 	int registrationID = 30000;
+	int prereqID = 40000;
 	
 	private Connection myConn;
 	private Properties properties;
@@ -60,11 +45,6 @@ public class DatabaseController {
 	 * database in a future milestone
 	 */
 	public DatabaseController() {
-		courseList = new ArrayList<Course>();
-		studentList = new ArrayList<Student>();
-		registrationList = new ArrayList<Registration>();
-		courseOfferingList = new ArrayList<CourseOffering>();
-
 		properties = new Properties();
 		properties.setProperty("user", "ENSF409");
 		properties.setProperty("password", "ENSF_409");
@@ -78,327 +58,62 @@ public class DatabaseController {
 			System.err.println("Error: Unknown SQL error has occured");
 			e.printStackTrace();
 		}
-		
-		readStudentsFromFile();
-		readCoursesFromFile();
-		readCourseOfferingsFromFile();
-		readRegistrationsFromFile();
-		readPreReqFromFile();
-
-		updateIDs();
-	}
-
-	public void updateIDs() {
-		studentID = studentList.get(studentList.size() - 1).getStudentId() + 1;
-		courseID = courseList.get(courseList.size() - 1).getID() + 1;
-		courseOfferingID = courseOfferingList.get(courseOfferingList.size() - 1).getID() + 1;
-		registrationID = registrationList.get(registrationList.size() - 1).getID() + 1;
 	}
 	
-	/**
-	 * Overwrites the student ArrayList to database
-	 */
-	public void writeStudentsToDatabase() {
-		try {
-			//Delete everything from the database to overwrite
-			String query = "DELETE FROM student";
-			pStat = myConn.prepareStatement(query);
-			pStat.executeUpdate();
-			
-			query = "INSERT INTO student (id, name) values (?, ?)";
-			pStat = myConn.prepareStatement(query);
-			for(Student s: studentList) {
-				pStat.setInt(1, s.getStudentId());
-				pStat.setString(2, s.getStudentName());
-				pStat.executeUpdate();
-			}
-			pStat.close();
-		} catch(SQLException e) {
-			System.err.println("Error: SQL erros LOL");
-		}
-	}
-	
-	/**
-	 * Overwrites the course ArrayList to database
-	 */
-	public void writeCoursesToDatabase() {
-		try {
-			//Delete everything from the database to overwrite
-			String query = "DELETE FROM course";
-			pStat = myConn.prepareStatement(query);
-			pStat.executeUpdate();
-			
-			query = "INSERT INTO course (id, name, num) values (?, ?, ?)";
-			pStat = myConn.prepareStatement(query);
-			for(Course c: courseList) {
-				pStat.setInt(1, c.getID());
-				pStat.setString(2, c.getCourseName());
-				pStat.setInt(3, c.getCourseNum());
-				pStat.executeUpdate();
-			}
-			pStat.close();
-		} catch(SQLException e) {
-			System.err.println("Error: SQL erros LOL");
-		}
-	}
-	
-	/**
-	 * Overwrites the course offering ArrayList to database
-	 */
-	public void writeCourseOfferingsToDatabase() {
-		try {
-			//Delete everything from the database to overwrite
-			String query = "DELETE FROM course_offering";
-			pStat = myConn.prepareStatement(query);
-			pStat.executeUpdate();
-			
-			query = "INSERT INTO course_offering (id, course_id, sec_num, sec_cap) values (?, ?, ?, ?)";
-			pStat = myConn.prepareStatement(query);
-			for(CourseOffering co: courseOfferingList) {
-				pStat.setInt(1, co.getID());
-				pStat.setInt(2, co.getTheCourse().getID());
-				pStat.setInt(3, co.getSecNum());
-				pStat.setInt(4, co.getSecCap());
-				pStat.executeUpdate();
-			}
-			pStat.close();
-		} catch(SQLException e) {
-			System.err.println("Error: SQL erros LOL");
-		}
-	}
-	
-	/**
-	 * Overwrites the registration ArrayList to database
-	 */
-	public void writeRegistrationToDatabase() {
-		try {
-			//Delete everything from the database to overwrite
-			String query = "DELETE FROM registration";
-			pStat = myConn.prepareStatement(query);
-			pStat.executeUpdate();
-			
-			query = "INSERT INTO registration (id, student_id, course_offering_id, grade) values (?, ?, ?, ?)";
-			pStat = myConn.prepareStatement(query);
-			for(Registration r: registrationList) {
-				pStat.setInt(1, r.getID());
-				pStat.setInt(2, r.getTheStudent().getStudentId());
-				pStat.setInt(3, r.getTheOffering().getID());
-				pStat.setString(4, r.getGrade() + "");
-				pStat.executeUpdate();
-			}
-			pStat.close();
-		} catch(SQLException e) {
-			System.err.println("Error: SQL erros LOL");
-		}
-	}
-	
-	/**
-	 * Overwrites the prereq ArrayList to database
-	 */
-	public void writePreReqToDatabase() {
-		try {
-			//Delete everything from the database to overwrite
-			String query = "DELETE FROM prereq";
-			pStat = myConn.prepareStatement(query);
-			pStat.executeUpdate();
-			
-			query = "INSERT INTO prereq (id, parent_course_id, prereq_course_id) values (?, ?, ?)";
-			pStat = myConn.prepareStatement(query);
-			int i = 40000;
-			//Write all prereqs to the database
-			for(Course c: courseList) {
-				if(c.getPreReq().size() > 0) {
-					for(Course p: c.getPreReq()) {
-						pStat.setInt(1, i++); //For each prereq that we add, we will up the counter on the IDs
-						pStat.setInt(2, c.getID());
-						pStat.setInt(3, p.getID());
-						pStat.executeUpdate();
-					}
-				}
-				
-			}
-			pStat.close();
-		} catch(SQLException e) {
-			System.err.println("Error: SQL erros LOL");
-		}
-	}
-
-	/**
-	 * Test method for writing the students to a file
-	 * 
-	 * @param filename the filename
-	 */
-	public void writeStudentsToFile(String filename) {
-		File output = new File(filename);
-		try {
-			output.createNewFile();
-		} catch (IOException e) {
-			System.err.println("Error: Could not create file with filename " + filename);
-			e.printStackTrace();
-		}
-
-		try {
-			FileWriter writer = new FileWriter(output, false);
-			for (Student s : studentList) {
-				writer.write(s.toData() + "\n");
-			}
-			writer.close();
-		} catch (IOException e) {
-			System.err.println("Error: unknown I/O error");
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Test method for writing the courses to a file
-	 * 
-	 * @param filename the filename
-	 */
-	public void writeCoursesToFile(String filename) {
-		File output = new File(filename);
-		try {
-			output.createNewFile();
-		} catch (IOException e) {
-			System.err.println("Error: Could not create file with filename " + filename);
-			e.printStackTrace();
-		}
-
-		try {
-			FileWriter writer = new FileWriter(output, false);
-			for (Course c : courseList) {
-				writer.write(c.toData() + "\n");
-			}
-			writer.close();
-		} catch (IOException e) {
-			System.err.println("Error: unknown I/O error");
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Test method for writing the course offerings to a file
-	 * 
-	 * @param filename the filename
-	 */
-	public void writeCourseOfferingsToFile(String filename) {
-		File output = new File(filename);
-		try {
-			output.createNewFile();
-		} catch (IOException e) {
-			System.err.println("Error: Could not create file with filename " + filename);
-			e.printStackTrace();
-		}
-
-		try {
-			FileWriter writer = new FileWriter(output, false);
-			for (CourseOffering co : courseOfferingList) {
-				writer.write(co.toData() + "\n");
-			}
-			writer.close();
-		} catch (IOException e) {
-			System.err.println("Error: unknown I/O error");
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Test method for writing the registrations to a file
-	 * 
-	 * @param filename the filename
-	 */
-	public void writeRegistrationsToFile(String filename) {
-		File output = new File(filename);
-		try {
-			output.createNewFile();
-		} catch (IOException e) {
-			System.err.println("Error: Could not create file with filename " + filename);
-			e.printStackTrace();
-		}
-
-		try {
-			FileWriter writer = new FileWriter(output, false);
-			for (Registration r : registrationList) {
-				writer.write(r.toData() + "\n");
-			}
-			writer.close();
-		} catch (IOException e) {
-			System.err.println("Error: unknown I/O error");
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Test method for writing the prerequisites to a file
-	 * 
-	 * @param filename the filename
-	 */
-	public void writePreReqsToFile(String filename) {
-		File output = new File(filename);
-		try {
-			output.createNewFile();
-		} catch (IOException e) {
-			System.err.println("Error: Could not create file with filename " + filename);
-			e.printStackTrace();
-		}
-
-		try {
-			FileWriter writer = new FileWriter(output, false);
-			for (Course c : courseList) {
-				writer.write(c.toPreReqData());
-			}
-			writer.close();
-		} catch (IOException e) {
-			System.err.println("Error: unknown I/O error");
-			e.printStackTrace();
-		}
-	}
-
 	/**
 	 * Method for reading the Students from the database
 	 */
-	public void readStudentsFromFile() {
+	public ArrayList<Student> readStudentsFromFile() {
+		ArrayList<Student> fromFile = new ArrayList<Student>();
+		
 		try {
 			String query = "SELECT * FROM student";
 			PreparedStatement pStat = myConn.prepareStatement(query);
 			myRs = pStat.executeQuery();
 			while(myRs.next()){
-				dataToStudent(myRs.getInt("id"),myRs.getString("name"));
+				fromFile.add(dataToStudent(myRs.getInt("id"),myRs.getString("name")));
 			}
 			pStat.close();
 		} catch (SQLException e) {
 			System.err.println("Error: Could not read Student from database");
 			e.printStackTrace();
 		}
+		
+		return fromFile;
 	}
 
 	/**
 	 * Method for reading the Courses from the database
 	 */
-	public void readCoursesFromFile() {
+	public ArrayList<Course> readCoursesFromFile() {
+		ArrayList<Course> fromFile = new ArrayList<Course>();
+		
 		try {
 			String query = "SELECT * FROM course";
 			PreparedStatement pStat = myConn.prepareStatement(query);
 			myRs = pStat.executeQuery();
 			while(myRs.next()){
-				dataToCourse(myRs.getInt("id"),myRs.getString("name"),myRs.getInt("num"));
+				fromFile.add(dataToCourse(myRs.getInt("id"),myRs.getString("name"),myRs.getInt("num")));
 			}
 			pStat.close();
 		} catch (SQLException e) {
 			System.err.println("Error: Could not read Student from database");
 			e.printStackTrace();
 		}
+		
+		return fromFile;
 	}
 
 	/**
 	 * Method for reading the Prereqs for courses from the database
 	 */
-	public void readPreReqFromFile() {
+	public void readPreReqFromFile(ArrayList<Course> courseList) {
 		try {
 			String query = "SELECT * FROM prereq";
 			PreparedStatement pStat = myConn.prepareStatement(query);
 			myRs = pStat.executeQuery();
 			while(myRs.next()){
-				dataToPreReqs(myRs.getInt("parent_course_id"),myRs.getInt("prereq_course_id"));
+				dataToPreReqs(courseList, myRs.getInt("parent_course_id"),myRs.getInt("prereq_course_id"));
 			}
 			pStat.close();
 		} catch (SQLException e) {
@@ -410,36 +125,44 @@ public class DatabaseController {
 	/**
 	 * Method for reading the course offerings from the database
 	 */
-	public void readCourseOfferingsFromFile() {
+	public ArrayList<CourseOffering> readCourseOfferingsFromFile(ArrayList<Course> courseList) {
+		ArrayList<CourseOffering> fromFile = new ArrayList<CourseOffering>();
+		
 		try {
 			String query = "SELECT * FROM course_offering";
 			PreparedStatement pStat = myConn.prepareStatement(query);
 			myRs = pStat.executeQuery();
 			while(myRs.next()){
-				dataToCourseOffering(myRs.getInt("id"),myRs.getInt("course_id"),myRs.getInt("sec_num"),myRs.getInt("sec_cap"));
+				fromFile.add(dataToCourseOffering(courseList, myRs.getInt("id"),myRs.getInt("course_id"),myRs.getInt("sec_num"),myRs.getInt("sec_cap")));
 			}
 			pStat.close();
 		} catch (SQLException e) {
 			System.err.println("Error: Could not read Student from database");
 			e.printStackTrace();
 		}
+		
+		return fromFile;
 	}
 
 	/**
 	 * Method for reading the registrations from the database
 	 */
-	public void readRegistrationsFromFile() {
+	public ArrayList<Registration> readRegistrationsFromFile(ArrayList<CourseOffering> courseOfferingList, ArrayList<Student> studentList) {
+		ArrayList<Registration> fromFile = new ArrayList<Registration>();
+		
 		try {
 			String query = "SELECT * FROM registration";
 			PreparedStatement pStat = myConn.prepareStatement(query);
 			myRs = pStat.executeQuery();
 			while(myRs.next()){
-				dataToRegistration(myRs.getInt("id"),myRs.getInt("student_id"),myRs.getInt("course_offering_id"),myRs.getString("grade"));
+				fromFile.add(dataToRegistration(courseOfferingList, studentList, myRs.getInt("id"),myRs.getInt("student_id"),myRs.getInt("course_offering_id"),myRs.getString("grade")));
 			}
 			pStat.close();
+			return fromFile;
 		} catch (SQLException e) {
 			System.err.println("Error: Could not read Student from database");
 			e.printStackTrace();
+			return null;
 		}
 	}
 
@@ -449,11 +172,12 @@ public class DatabaseController {
 	 * @param name The name of the student
 	 * @param id The ID of the student
 	 */
-	public void dataToStudent(int id, String name) {
+	public Student dataToStudent(int id, String name) {
 		try {
-			getStudentList().add(new Student(name,id));
+			return new Student(name,id);
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
+			return null;
 		}
 	}
 
@@ -465,26 +189,25 @@ public class DatabaseController {
 	 * @param courseOfferingID ID of courseOffering that is being registered
 	 * @param grade grade of the registration
 	 */
-	public void dataToRegistration(int id, int studentID, int courseOfferingID, String grade) {
+	public Registration dataToRegistration(ArrayList<CourseOffering> courseOfferingList, ArrayList<Student> studentList, int id, int studentID, int courseOfferingID, String grade) {
 		try {
-			int s = searchStudent(studentID);
-			int co = searchCourseOffering(courseOfferingID);
+			int s = searchStudent(studentList, studentID);
+			int co = searchCourseOffering(courseOfferingList, courseOfferingID);
 			if (s == -1) {
 				System.err.println("Couldn't find Student for Registration");
-				return;
+				return null;
 			}
 			if (co == -1) {
 				System.err.println("Couldn't find CourseOffering for Registration");
-				return;
+				return null;
 			}
-			getRegistrationList().add(new Registration(id, getStudentList().get(s),
-					getCourseOfferingList().get(co), grade.charAt(0)));
-			getStudentList().get(s).getStudentRegList()
-					.add(getRegistrationList().get(getRegistrationList().size() - 1));
-			getCourseOfferingList().get(co).getOfferingRegList()
-					.add(getRegistrationList().get(getRegistrationList().size() - 1));
+			Registration newReg = new Registration(id, grade.charAt(0));
+			//The following method call ensures that the student and course offering will recieve the registration
+			newReg.completeRegistration(studentList.get(s), courseOfferingList.get(co));
+			return newReg;
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
+			return null;
 		}
 	}
 
@@ -496,18 +219,19 @@ public class DatabaseController {
 	 * @param num Number of offering
 	 * @param cap Maximum capacity of offering
 	 */
-	public void dataToCourseOffering(int id, int courseID, int num, int cap) {
+	public CourseOffering dataToCourseOffering(ArrayList<Course> courseList, int id, int courseID, int num, int cap) {
 		try {
-			int c = searchCourse(courseID);
+			int c = searchCourse(courseList, courseID);
 			if (c == -1) {
 				System.err.println("Couldn't find Course for Course Offering");
-				return;
+				return null;
 			}
-			getCourseOfferingList().add(new CourseOffering(id, getCourseList().get(c), num, cap));
-			getCourseList().get(c).getOfferingList()
-					.add(getCourseOfferingList().get(getCourseOfferingList().size() - 1));
+			CourseOffering newOffering = new CourseOffering(id, courseList.get(c), num, cap);
+			courseList.get(c).addOffering(newOffering);
+			 return newOffering;
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
+			return null;
 		}
 	}
 
@@ -518,11 +242,12 @@ public class DatabaseController {
 	 * @param name name of course
 	 * @param num number of course
 	 */
-	public void dataToCourse(int id, String name, int num) {
+	public Course dataToCourse(int id, String name, int num) {
 		try {
-			getCourseList().add(new Course(name,num,id));
+			return (new Course(name, num, id));
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
+			return null;
 		}
 	}
 
@@ -531,17 +256,17 @@ public class DatabaseController {
 	 * @param parentId ID of the course that will has a pre requisite
 	 * @param prereqId ID of the course that will be the pre requisite
 	 */
-	public void dataToPreReqs(int parentId, int prereqId) {
+	public void dataToPreReqs(ArrayList<Course> courseList, int parentId, int prereqId) {
 		try {
-			int parent = searchCourse(parentId);
-			int preReq = searchCourse(prereqId);
+			int parent = searchCourse(courseList, parentId);
+			int preReq = searchCourse(courseList, prereqId);
 			if (parent == -1) {
 				System.err.println("Parent not found for preReq");
 			}
 			if (preReq == -1) {
 				System.err.println("PreReq not found for preReq");
 			}
-			getCourseList().get(parent).getPreReq().add(getCourseList().get(preReq));
+			courseList.get(parent).addPreReq(courseList.get(preReq));
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		}
@@ -554,9 +279,9 @@ public class DatabaseController {
 	 * @param id The ID of the student we are searching for
 	 * @return Returns the index that the student is found if found, -1 if not found
 	 */
-	public int searchStudent(int id) {
-		for (int i = 0; i < getStudentList().size(); i++) {
-			if (id == getStudentList().get(i).getStudentId()) {
+	public int searchStudent(ArrayList<Student> list, int id) {
+		for(int i = 0; i<list.size(); i++) {
+			if(list.get(i).getStudentId() == id) {
 				return i;
 			}
 		}
@@ -570,9 +295,9 @@ public class DatabaseController {
 	 * @return Returns the index that the registration is found if found, -1 if not
 	 *         found
 	 */
-	public int searchRegistration(int id) {
-		for (int i = 0; i < getRegistrationList().size(); i++) {
-			if (id == getRegistrationList().get(i).getID()) {
+	public int searchRegistration(ArrayList<Registration> list, int id) {
+		for(int i = 0; i<list.size(); i++) {
+			if(list.get(i).getID() == id) {
 				return i;
 			}
 		}
@@ -585,9 +310,9 @@ public class DatabaseController {
 	 * @param id The ID of the Course we are searching for
 	 * @return Returns the index that the Course is found if found, -1 if not found
 	 */
-	public int searchCourse(int id) {
-		for (int i = 0; i < getCourseList().size(); i++) {
-			if (id == getCourseList().get(i).getID()) {
+	public int searchCourse(ArrayList<Course> list, int id) {
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i).getID() == id) {
 				return i;
 			}
 		}
@@ -601,54 +326,113 @@ public class DatabaseController {
 	 * @return Returns the index that the CourseOffering is found if found, -1 if
 	 *         not found
 	 */
-	public int searchCourseOffering(int id) {
-		for (int i = 0; i < getCourseOfferingList().size(); i++) {
-			if (id == getCourseOfferingList().get(i).getID()) {
+	public int searchCourseOffering(ArrayList<CourseOffering> list, int id) {
+		for(int i = 0; i < list.size(); i++) {
+			if(list.get(i).getID() == id) {
 				return i;
 			}
 		}
 		return -1;
 	}
-
-	// GETTERS and SETTERS
-	public synchronized ArrayList<Student> getStudentList() {
-		return studentList;
+	
+	/**
+	 * Inserts a new student into the SQL database
+	 * @param s the student to insert
+	 */
+	public void insertStudentToDatabase(Student s) {
+		try {
+			String query = "INSERT INTO student(id, name) values (?,?)";
+			pStat = myConn.prepareStatement(query);
+			pStat.setInt(1, s.getStudentId());
+			pStat.setString(2, s.getStudentName());
+			pStat.executeUpdate();
+			pStat.close();
+		} catch(SQLException e) {
+			System.err.println("Error: SQL error with writing student into student table");
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Inserts a new course into the SQL database
+	 * @param c the course to insert
+	 */
+	public void insertCourseToDatabase(Course c) {
+		try {
+			String query = "INSERT INTO course(id, name, num) values (?, ?, ?)";
+			pStat = myConn.prepareStatement(query);
+			pStat.setInt(1, c.getID());
+			pStat.setString(2, c.getCourseName());
+			pStat.setInt(3, c.getCourseNum());
+			pStat.executeUpdate();
+			pStat.close();
+		} catch(SQLException e) {
+			System.err.println("Error: SQL error with writing course into course table");
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Inserts a new course offering into the SQL database
+	 * @param co the course offering to insert
+	 */
+	public void insertCourseOfferingToDatabase(CourseOffering co) {
+		try {
+			String query = "INSERT INTO course_offering(id, course_id, sec_num, sec_cap) values (?, ?, ?, ?)";
+			pStat = myConn.prepareStatement(query);
+			pStat.setInt(1, co.getID());
+			pStat.setInt(2, co.getTheCourse().getID());
+			pStat.setInt(3, co.getSecNum());
+			pStat.setInt(4, co.getSecCap());
+			pStat.executeUpdate();
+			pStat.close();
+		} catch(SQLException e) {
+			System.err.println("Error: SQL error with writing course offering into course offering table");
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Inserts a new registration into the SQL database
+	 * @param r the registration to insert
+	 */
+	public void insertRegistrationToDatabase(Registration r) {
+		try {
+			String query = "INSERT INTO registration (id, student_id, course_offering_id, grade) values (?, ?, ?, ?)";
+			pStat = myConn.prepareStatement(query);
+			pStat.setInt(1, r.getID());
+			pStat.setInt(2, r.getTheStudent().getStudentId());
+			pStat.setInt(3, r.getTheOffering().getID());
+			pStat.setString(4, r.getGrade() + "");
+			pStat.executeUpdate();
+			pStat.close();
+		} catch(SQLException e) {
+			System.err.println("Error: SQL error with writing registration into registration table");
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Inserts a new registration into the SQL database
+	 * @param r the registration to insert
+	 */
+	public void insertPreReqToDatabase(Course parent, Course prereq) {
+		try {
+			String query = "INSERT INTO prereq (id, parent_course_id, prereq_course_id) values (?, ?, ?)";
+			pStat = myConn.prepareStatement(query);
+			pStat.setInt(1, getIncrementPreReqID());
+			pStat.setInt(2, parent.getID());
+			pStat.setInt(3, prereq.getID());
+			pStat.executeUpdate();
+			pStat.close();
+		} catch(SQLException e) {
+			System.err.println("Error: SQL error with writing prereq into prereq table");
+			e.printStackTrace();
+		}
 	}
 
-	public synchronized void setStudentList(ArrayList<Student> studentList) {
-		this.studentList = studentList;
-	}
-
-	public synchronized ArrayList<Course> getCourseList() {
-		return courseList;
-	}
-
-	public synchronized void setCourseList(ArrayList<Course> courseList) {
-		this.courseList = courseList;
-	}
-
-	public synchronized ArrayList<Registration> getRegistrationList() {
-		return registrationList;
-	}
-
-	public synchronized void setRegistrationList(ArrayList<Registration> registrationList) {
-		this.registrationList = registrationList;
-	}
-
-	public synchronized ArrayList<CourseOffering> getCourseOfferingList() {
-		return courseOfferingList;
-	}
-
-	public synchronized void setCourseOfferingList(ArrayList<CourseOffering> courseOfferingList) {
-		this.courseOfferingList = courseOfferingList;
-	}
-
-	public ArrayList<Student> loadStudents() {
-		return studentList;
-	}
-
-	public ArrayList<Course> loadCourses() {
-		return courseList;
+	private int getIncrementPreReqID() {
+		return prereqID++;
 	}
 
 	// GETTERS AND SETTERS FOR CLASS IDS
@@ -666,6 +450,26 @@ public class DatabaseController {
 
 	public int getIncrementRegistrationID() {
 		return registrationID++;
+	}
+
+	public void updateRegistrationID(int updatedRegistrationID) {
+		registrationID = updatedRegistrationID;
+	}
+
+	public void updateCourseOfferingID(int updatedCourseOfferingID) {
+		courseOfferingID = updatedCourseOfferingID;
+	}
+
+	public void updateCourseID(int updatedCourseID) {
+		courseID = updatedCourseID;
+	}
+
+	public void updateStudentID(int updatedStudentID) {
+		studentID = updatedStudentID;
+	}
+
+	public void updatePreReqID(int updatedPreReqID) {
+		prereqID = updatedPreReqID;
 	}
 
 }
