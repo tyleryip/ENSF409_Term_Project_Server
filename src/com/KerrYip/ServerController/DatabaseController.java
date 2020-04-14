@@ -94,76 +94,6 @@ public class DatabaseController {
 		courseOfferingID = courseOfferingList.get(courseOfferingList.size() - 1).getID() + 1;
 		registrationID = registrationList.get(registrationList.size() - 1).getID() + 1;
 	}
-
-	// The following methods create and add the simulated data, in the future we
-	// will have to put the SQL data here
-	private void readStudentsFromDatabase() {
-		studentList.add(new Student("Sara", getIncrementStudentID()));
-		studentList.add(new Student("Sam", getIncrementStudentID()));
-		studentList.add(new Student("Tom", getIncrementStudentID()));
-		studentList.add(new Student("David", getIncrementStudentID()));
-		studentList.add(new Student("John", getIncrementStudentID()));
-		studentList.add(new Student("Jenny", getIncrementStudentID()));
-		studentList.add(new Student("Alex", getIncrementStudentID()));
-		studentList.add(new Student("Megan", getIncrementStudentID()));
-		studentList.add(new Student("Mike", getIncrementStudentID()));
-		studentList.add(new Student("Sugar Tits", getIncrementStudentID()));
-	}
-
-	private void readCoursesFromDatabase() {
-		// Simulating courses
-		courseList.add(new Course("ENGG", 233, getIncrementCourseID()));
-		courseOfferingList.add(new CourseOffering(1, 100, getIncrementCourseOfferingID()));
-		courseList.get(0).addOffering(courseOfferingList.get(0));
-
-		courseList.add(new Course("ENSF", 409, getIncrementCourseID()));
-		courseOfferingList.add(new CourseOffering(1, 100, getIncrementCourseOfferingID()));
-		courseList.get(1).addOffering(courseOfferingList.get(1));
-		courseOfferingList.add(new CourseOffering(2, 200, getIncrementCourseOfferingID()));
-		courseList.get(1).addOffering(courseOfferingList.get(2));
-
-		courseList.add(new Course("PHYS", 259, getIncrementCourseID()));
-		courseOfferingList.add(new CourseOffering(1, 100, getIncrementCourseOfferingID()));
-		courseList.get(2).addOffering(courseOfferingList.get(3));
-		courseOfferingList.add(new CourseOffering(2, 320, getIncrementCourseOfferingID()));
-		courseList.get(2).addOffering(courseOfferingList.get(4));
-
-		courseList.add(new Course("MATH", 211, getIncrementCourseID()));
-		courseOfferingList.add(new CourseOffering(1, 150, getIncrementCourseOfferingID()));
-		courseList.get(3).addOffering(courseOfferingList.get(5));
-		courseOfferingList.add(new CourseOffering(2, 250, getIncrementCourseOfferingID()));
-		courseList.get(3).addOffering(courseOfferingList.get(6));
-		courseOfferingList.add(new CourseOffering(3, 270, getIncrementCourseOfferingID()));
-		courseList.get(3).addOffering(courseOfferingList.get(7));
-
-		courseList.add(new Course("ENGG", 202, getIncrementCourseID()));
-		courseOfferingList.add(new CourseOffering(1, 120, getIncrementCourseOfferingID()));
-		courseList.get(4).addOffering(courseOfferingList.get(8));
-
-		// Added prerequisites
-		courseList.get(1).addPreReq(courseList.get(4));
-		courseList.get(4).addPreReq(courseList.get(3));
-		courseList.get(2).addPreReq(courseList.get(3));
-	}
-
-	private void registerStudentsInCourses() {
-		// We register everyone in MATH 211 because we want to drink the tears of
-		// depressed engineers (aka we need to test if running course works)
-		Registration r;
-		for (int i = 0; i < studentList.size(); i++) {
-			r = new Registration(getIncrementRegistrationID());
-			r.completeRegistration(studentList.get(i), courseList.get(3).getCourseOfferingAt(0));
-			registrationList.add(r);
-		}
-
-		r = new Registration(getIncrementRegistrationID());
-		r.completeRegistration(studentList.get(1), courseList.get(2).getCourseOfferingAt(1));
-		registrationList.add(r);
-
-		r = new Registration(getIncrementRegistrationID());
-		r.completeRegistration(studentList.get(2), courseList.get(3).getCourseOfferingAt(1));
-		registrationList.add(r);
-	}
 	
 	/**
 	 * Overwrites the student ArrayList to database
@@ -736,19 +666,6 @@ public class DatabaseController {
 
 	public int getIncrementRegistrationID() {
 		return registrationID++;
-	}
-
-	public static void main(String[] args) {
-		DatabaseController dbc = new DatabaseController();
-		dbc.readCoursesFromDatabase();
-		dbc.readStudentsFromDatabase();
-		dbc.registerStudentsInCourses();
-
-		dbc.writeStudentsToFile("students.txt");
-		dbc.writeCoursesToFile("courses.txt");
-		dbc.writeCourseOfferingsToFile("courseofferings.txt");
-		dbc.writeRegistrationsToFile("registrations.txt");
-		dbc.writePreReqsToFile("prerequisites.txt");
 	}
 
 }
