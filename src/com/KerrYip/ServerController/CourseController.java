@@ -35,11 +35,12 @@ public class CourseController {
 
 	/**
 	 * Updates the databaseController's count of how many prereqs exist
-	 * @return the updated ID for the 
+	 * 
+	 * @return the updated ID for the
 	 */
 	private int getUpdatedPreReqID() {
 		int count = 40000;
-		for(Course c: myCourseList) { //Go through every course and increment the count of prereqs
+		for (Course c : myCourseList) { // Go through every course and increment the count of prereqs
 			count += c.getPreReq().size();
 		}
 		return count;
@@ -147,7 +148,7 @@ public class CourseController {
 				}
 			}
 		}
-		//Delete from the database and then the local cache
+		// Delete from the database and then the local cache
 		databaseController.deleteCourseFromDatabase(searchCat(nameNum));
 		myCourseList.remove(searchCat(nameNum));
 	}

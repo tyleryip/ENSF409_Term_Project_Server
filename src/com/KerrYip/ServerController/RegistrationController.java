@@ -19,21 +19,24 @@ public class RegistrationController {
 	private DatabaseController databaseController;
 	private CourseOfferingController courseOfferingController;
 	private StudentController studentController;
-	
+
 	private ArrayList<Registration> myRegistrationList;
 
 	/**
 	 * Constructor for the class RegistrationController
 	 *
-	 * @param db the DatabaseController for the student manager to use
-	 * @param studentController 
-	 * @param courseOfferingController 
+	 * @param db                       the DatabaseController for the student
+	 *                                 manager to use
+	 * @param studentController
+	 * @param courseOfferingController
 	 */
-	public RegistrationController(DatabaseController db, CourseOfferingController courseOfferingController, StudentController studentController) {
+	public RegistrationController(DatabaseController db, CourseOfferingController courseOfferingController,
+			StudentController studentController) {
 		this.databaseController = db;
 		this.courseOfferingController = courseOfferingController;
 		this.studentController = studentController;
-		myRegistrationList = databaseController.readRegistrationsFromFile(courseOfferingController.getMyCourseOfferingList(), studentController.getMyStudentList());
+		myRegistrationList = databaseController.readRegistrationsFromFile(
+				courseOfferingController.getMyCourseOfferingList(), studentController.getMyStudentList());
 		databaseController.updateRegistrationID(getUpdatedRegistrationID());
 	}
 
@@ -46,15 +49,15 @@ public class RegistrationController {
 		for (int i = 0; i < myRegistrationList.size(); i++) {
 			if (myRegistrationList.get(i).getTheOffering().getTheCourse().getNameNum()
 					.equalsIgnoreCase(c.getNameNum())) {
-				//Delete from the database and then the local cache
+				// Delete from the database and then the local cache
 				databaseController.deleteRegistrationFromDatabase(myRegistrationList.get(i));
 				myRegistrationList.remove(i);
 			}
 		}
 	}
-	
+
 	public int getUpdatedRegistrationID() {
-		return myRegistrationList.get(myRegistrationList.size() -1).getID() + 1;
+		return myRegistrationList.get(myRegistrationList.size() - 1).getID() + 1;
 	}
 
 	/**
@@ -65,12 +68,13 @@ public class RegistrationController {
 	public Registration addRegistration() {
 		Registration r = new Registration(databaseController.getIncrementRegistrationID());
 		myRegistrationList.add(r);
-		
+
 		return r;
 	}
-	
+
 	/**
-	 * Confirms with the database that a registration is complete and should be saved
+	 * Confirms with the database that a registration is complete and should be
+	 * saved
 	 */
 	public void confirmRegistration(Registration r) {
 		databaseController.insertRegistrationToDatabase(r);

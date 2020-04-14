@@ -61,7 +61,8 @@ public class ServerCommunicationController {
 		studentController = new StudentController(databaseController);
 		courseController = new CourseController(databaseController);
 		courseOfferingController = new CourseOfferingController(databaseController, courseController);
-		registrationController = new RegistrationController(databaseController, courseOfferingController, studentController);
+		registrationController = new RegistrationController(databaseController, courseOfferingController,
+				studentController);
 	}
 
 	/**
