@@ -33,6 +33,10 @@ public class CourseController {
 		databaseController.updatePreReqID(getUpdatedPreReqID());
 	}
 
+	/**
+	 * Updates the databaseController's count of how many prereqs exist
+	 * @return the updated ID for the 
+	 */
 	private int getUpdatedPreReqID() {
 		int count = 40000;
 		for(Course c: myCourseList) { //Go through every course and increment the count of prereqs
@@ -143,10 +147,9 @@ public class CourseController {
 				}
 			}
 		}
-		// Now that prereqs are dealt with, we can finally remove the course itself from
-		// the catalog
-		String[] split = nameNum.split(" ");
-		myCourseList.remove(searchCat(split[0], Integer.parseInt(split[1])));
+		//Delete from the database and then the local cache
+		databaseController.deleteCourseFromDatabase(searchCat(nameNum));
+		myCourseList.remove(searchCat(nameNum));
 	}
 
 	/**

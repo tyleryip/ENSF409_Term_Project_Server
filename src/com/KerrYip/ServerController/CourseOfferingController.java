@@ -39,6 +39,8 @@ public class CourseOfferingController {
 	public void removeAllCourseOfferings(Course c) {
 		for (int i = 0; i < myCourseOfferingList.size(); i++) {
 			if (myCourseOfferingList.get(i).getTheCourse().getNameNum().equalsIgnoreCase(c.getNameNum())) {
+				//Delete from the database and then the local cache
+				databaseController.deleteCourseOfferingFromDatabase(myCourseOfferingList.get(i));
 				myCourseOfferingList.remove(i);
 			}
 		}

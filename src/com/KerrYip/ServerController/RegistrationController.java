@@ -38,13 +38,16 @@ public class RegistrationController {
 	}
 
 	public void removeRegistration(Registration toRemove) {
-		databaseController.getRegistrationList().remove(toRemove);
+		databaseController.deleteRegistrationFromDatabase(toRemove);
+		myRegistrationList.remove(toRemove);
 	}
 
 	public void removeAllRegistrations(Course c) {
 		for (int i = 0; i < myRegistrationList.size(); i++) {
 			if (myRegistrationList.get(i).getTheOffering().getTheCourse().getNameNum()
 					.equalsIgnoreCase(c.getNameNum())) {
+				//Delete from the database and then the local cache
+				databaseController.deleteRegistrationFromDatabase(myRegistrationList.get(i));
 				myRegistrationList.remove(i);
 			}
 		}

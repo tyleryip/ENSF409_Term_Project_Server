@@ -378,7 +378,7 @@ public class DatabaseController {
 	 */
 	public void insertCourseOfferingToDatabase(CourseOffering co) {
 		try {
-			String query = "INSERT INTO course_offering(id, course_id, sec_num, sec_cap) values (?, ?, ?, ?)";
+			String query = "INSERT INTO course_offering (id, course_id, sec_num, sec_cap) values (?, ?, ?, ?)";
 			pStat = myConn.prepareStatement(query);
 			pStat.setInt(1, co.getID());
 			pStat.setInt(2, co.getTheCourse().getID());
@@ -427,6 +427,74 @@ public class DatabaseController {
 			pStat.close();
 		} catch(SQLException e) {
 			System.err.println("Error: SQL error with writing prereq into prereq table");
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Removes a course from the database
+	 * @param c the course to remove
+	 */
+	public void deleteCourseFromDatabase(Course c) {
+		try {
+			String query = "DELETE FROM course WHERE id = ?";
+			pStat = myConn.prepareStatement(query);
+			pStat.setInt(1, c.getID());
+			pStat.executeUpdate();
+			pStat.close();
+		} catch(SQLException e) {
+			System.err.println("Error: SQL error with deleting course from course offering table");
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Removes a course offering from the database
+	 * @param co the course offering to remove
+	 */
+	public void deleteCourseOfferingFromDatabase(CourseOffering co) {
+		try {
+			String query = "DELETE FROM course_offering WHERE id = ?";
+			pStat = myConn.prepareStatement(query);
+			pStat.setInt(1, co.getID());
+			pStat.executeUpdate();
+			pStat.close();
+		} catch(SQLException e) {
+			System.err.println("Error: SQL error with deleting course offeering from course offering table");
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Removes a registration from the database
+	 * @param r the registration to remove
+	 */
+	public void deleteRegistrationFromDatabase(Registration r) {
+		try {
+			String query = "DELETE FROM registration WHERE id = ?";
+			pStat = myConn.prepareStatement(query);
+			pStat.setInt(1, r.getID());
+			pStat.executeUpdate();
+			pStat.close();
+		} catch(SQLException e) {
+			System.err.println("Error: SQL error with deleting registration from registration table");
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Removes a Course from the database
+	 * @param prereq the Course to remove
+	 */
+	public void deletePreReqFromDatabase(Course prereq) {
+		try {
+			String query = "DELETE FROM registration WHERE prereq_course_id = ?";
+			pStat = myConn.prepareStatement(query);
+			pStat.setInt(1, prereq.getID());
+			pStat.executeUpdate();
+			pStat.close();
+		} catch(SQLException e) {
+			System.err.println("Error: SQL error with deleting prereq from prereq table");
 			e.printStackTrace();
 		}
 	}

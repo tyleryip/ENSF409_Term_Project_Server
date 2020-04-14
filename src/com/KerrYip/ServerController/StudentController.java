@@ -92,6 +92,11 @@ public class StudentController {
 		}
 	}
 
+	/**
+	 * Gets the index of the student with a matching id number
+	 * @param id the id to check against
+	 * @return the index of the student
+	 */
 	public int searchStudentIndex(int id) {
 		Iterator<Student> itr = myStudentList.iterator();
 		int i = 0;

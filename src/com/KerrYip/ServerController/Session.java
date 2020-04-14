@@ -507,11 +507,14 @@ public class Session implements Runnable {
 			writeString("course not removed");
 			return false;
 		}
-		// We need to remove the course from any student that may be registered in it
+		//We need to remove the course from any student that may be registered in it
 		studentController.removeCourseFromAll(toRemove);
-		courseController.removeCourse(toRemove.getCourseName() + " " + toRemove.getCourseNum());
-		courseOfferingController.removeAllCourseOfferings(toRemove);
+		//We need to remove all registrations that have the course in it
 		registrationController.removeAllRegistrations(toRemove);
+		//We need to remove the all course offerings that have the course
+		courseOfferingController.removeAllCourseOfferings(toRemove);
+		//Now that all dependencies are taken care off, we can remove it
+		courseController.removeCourse(toRemove.getNameNum());
 		writeString("course removed");
 		return true;
 	}
