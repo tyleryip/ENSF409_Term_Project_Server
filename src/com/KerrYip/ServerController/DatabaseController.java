@@ -460,7 +460,7 @@ public class DatabaseController {
 			pStat.executeUpdate();
 			pStat.close();
 		} catch(SQLException e) {
-			System.err.println("Error: SQL error with deleting course offeering from course offering table");
+			System.err.println("Error: SQL error with deleting course offering from course offering table");
 			e.printStackTrace();
 		}
 	}

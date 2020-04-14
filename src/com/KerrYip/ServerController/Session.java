@@ -334,6 +334,7 @@ public class Session implements Runnable {
 				if (section == offer.getSecNum()) {
 					writeString("enroll successful");
 					newReg.completeRegistration(studentUser, clientCourse.getCourseOfferingAt(section - 1));
+					registrationController.confirmRegistration(newReg);
 					try {
 						for (Registration r : studentUser.getStudentRegList()) {
 							toClient.writeObject(r);

@@ -65,8 +65,15 @@ public class RegistrationController {
 	public Registration addRegistration() {
 		Registration r = new Registration(databaseController.getIncrementRegistrationID());
 		myRegistrationList.add(r);
-		databaseController.insertRegistrationToDatabase(r);
+		
 		return r;
+	}
+	
+	/**
+	 * Confirms with the database that a registration is complete and should be saved
+	 */
+	public void confirmRegistration(Registration r) {
+		databaseController.insertRegistrationToDatabase(r);
 	}
 
 	public DatabaseController getDatabaseController() {
