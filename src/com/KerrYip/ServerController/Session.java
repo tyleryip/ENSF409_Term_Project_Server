@@ -278,6 +278,7 @@ public class Session implements Runnable {
 
 					studentUser.setActive(true);
 					serverLog("User logged in using id: " + checkID);
+					writeString("login successful");
 					writeString(studentUser.getStudentName());
 					try {
 						for (Registration r : studentUser.getStudentRegList()) {
