@@ -443,7 +443,7 @@ public class Session implements Runnable {
 	 */
 	private boolean adminLogin() {
 		String username = readString();
-		String password = readString();
+		String password = readString();	
 		if (!username.contentEquals("")) { //Ensure input is valid
 			Administrator theAdmin = administratorController.searchAdmin(username);
 			if (theAdmin != null) { 
@@ -455,7 +455,7 @@ public class Session implements Runnable {
 					if(!password.contentEquals("") && theAdmin.getPassword().contentEquals(password)) {
 						this.adminUser = theAdmin;
 						theAdmin.setActive(true);
-						writeString("login success");
+						writeString("login successful");
 						return true;
 					}
 			}
