@@ -590,6 +590,20 @@ public class DatabaseController {
 			System.err.println("Error: SQL error with creating table student");
 			e.printStackTrace();
 		}
+		
+		try {
+			String query = "CREATE TABLE IF NOT EXISTS admin("
+					+ "id INT PRIMARY KEY NOT NULL,"
+					+ "username VARCHAR(45) NOT NULL,"
+					+ "password VARCHAR(45) NOT NULL"
+					+ ")";
+			pStat = myConn.prepareStatement(query);
+			pStat.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println("Error: SQL error with creating table admin");
+			e.printStackTrace();
+		}
+		
 	}
 
 	private int getIncrementPreReqID() {

@@ -259,10 +259,11 @@ public class Session implements Runnable {
 		int checkID = -1;
 		checkID = readInt();
 		studentUser = studentController.searchStudent(checkID);
+		String passwordInput = readString();
+		
 		if (studentUser != null) {
 			if (!studentUser.isActive()) { // Check to make sure that this student is not already logged in to the
 											// system
-				String passwordInput = readString();
 				if (passwordInput.contentEquals(studentUser.getPassword())) { //Validate the user's password against the password in the system
 
 					studentUser.setActive(true);
@@ -278,11 +279,15 @@ public class Session implements Runnable {
 						e.printStackTrace();
 					}
 				}
-				serverError("User entered an invalid password");
-				writeString("Invalid password");
+				else {
+					serverError("User entered an invalid password");
+					writeString("Invalid password");
+				}
 			}
-			serverError("User " + checkID + " is already logged in to the system");
-			writeString("User already logged in");
+			else {
+				serverError("User " + checkID + " is already logged in to the system");
+				writeString("User already logged in");
+			}
 		}
 		// If search fails write null to the client
 		writeString("login failed");
