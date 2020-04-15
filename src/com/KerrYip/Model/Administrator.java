@@ -20,7 +20,7 @@ public class Administrator {
 	public Administrator(int id, String username, String password) {
 		this.id = id;
 		this.username = username;
-		this.password = "admin";
+		this.password = password;
 		this.active = false;
 	}
 
