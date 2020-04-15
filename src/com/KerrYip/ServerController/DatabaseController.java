@@ -57,6 +57,8 @@ public class DatabaseController {
 			System.err.println("Error: Unknown SQL error has occured");
 			e.printStackTrace();
 		}
+		
+		createTables();
 	}
 
 	/**
@@ -514,6 +516,78 @@ public class DatabaseController {
 			pStat.close();
 		} catch (SQLException e) {
 			System.err.println("Error: SQL error with deleting prereq from prereq table");
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * This method creates the necessary tables in the database if they be missing
+	 */
+	public void createTables() {
+		try {
+			String query = "CREATE TABLE IF NOT EXISTS student("
+					+ "id INT PRIMARY KEY NOT NULL,"
+					+ "name VARCHAR(45) NOT NULL,"
+					+ "password VARCHAR(45) NOT NULL"
+					+ ")";
+			pStat = myConn.prepareStatement(query);
+			pStat.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println("Error: SQL error with creating table student");
+			e.printStackTrace();
+		}
+		
+		try {
+			String query = "CREATE TABLE IF NOT EXISTS course("
+					+ "id INT PRIMARY KEY NOT NULL,"
+					+ "name VARCHAR(45) NOT NULL,"
+					+ "num INT NOT NULL"
+					+ ")";
+			pStat = myConn.prepareStatement(query);
+			pStat.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println("Error: SQL error with creating table course");
+			e.printStackTrace();
+		}
+		
+		try {
+			String query = "CREATE TABLE IF NOT EXISTS course_offering("
+					+ "id INT PRIMARY KEY NOT NULL,"
+					+ "course_id VARCHAR(45) NOT NULL,"
+					+ "sec_num INT NOT NULL,"
+					+ "sec_cap INT NOT NULL"
+					+ ")";
+			pStat = myConn.prepareStatement(query);
+			pStat.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println("Error: SQL error with creating table course_offering");
+			e.printStackTrace();
+		}
+		
+		try {
+			String query = "CREATE TABLE IF NOT EXISTS registration("
+					+ "id INT PRIMARY KEY NOT NULL,"
+					+ "student_id INT NOT NULL,"
+					+ "course_offering_id INT NOT NULL,"
+					+ "grade CHAR(1) NOT NULL"
+					+ ")";
+			pStat = myConn.prepareStatement(query);
+			pStat.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println("Error: SQL error with creating table registration");
+			e.printStackTrace();
+		}
+		
+		try {
+			String query = "CREATE TABLE IF NOT EXISTS prereq("
+					+ "id INT PRIMARY KEY NOT NULL,"
+					+ "parent_course_id INT NOT NULL,"
+					+ "prereq_course_id INT NOT NULL"
+					+ ")";
+			pStat = myConn.prepareStatement(query);
+			pStat.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println("Error: SQL error with creating table student");
 			e.printStackTrace();
 		}
 	}
