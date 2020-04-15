@@ -1,5 +1,7 @@
 package com.KerrYip.ServerController;
 
+import com.KerrYip.Model.Administrator;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -34,6 +36,7 @@ public class ServerCommunicationController {
 	private StudentController studentController;
 	private CourseOfferingController courseOfferingController;
 	private RegistrationController registrationController;
+	private AdministratorController administratorController;
 
 	private SimpleDateFormat formatter;
 
@@ -65,6 +68,7 @@ public class ServerCommunicationController {
 		courseOfferingController = new CourseOfferingController(databaseController, courseController);
 		registrationController = new RegistrationController(databaseController, courseOfferingController,
 				studentController);
+		administratorController = new AdministratorController(databaseController);
 	}
 
 	/**
@@ -82,7 +86,7 @@ public class ServerCommunicationController {
 
 				// Create a new session for the new client that joined
 				Session Session = new Session(aSocket, courseController, studentController, courseOfferingController,
-						registrationController);
+						registrationController, administratorController);
 
 				// Add client to the thread pool and execute
 				pool.execute(Session);

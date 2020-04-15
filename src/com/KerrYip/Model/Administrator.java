@@ -12,11 +12,14 @@ package com.KerrYip.Model;
  */
 public class Administrator {
 
+	private int id;
 	private String username;
 	private String password;
 	private boolean active;
 
-	public Administrator() {
+	public Administrator(int id, String username, String password) {
+		this.id = id;
+		this.username = username;
 		this.password = "admin";
 		this.active = false;
 	}

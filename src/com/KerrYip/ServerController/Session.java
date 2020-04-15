@@ -36,6 +36,7 @@ public class Session implements Runnable {
 	private StudentController studentController;
 	private CourseOfferingController courseOfferingController;
 	private RegistrationController registrationController;
+	private AdministratorController administratorController;
 
 	private Student studentUser;
 	private Administrator adminUser;
@@ -50,7 +51,8 @@ public class Session implements Runnable {
 	 * @param studentController a controller to manipulate students
 	 */
 	public Session(Socket aSocket, CourseController courseController, StudentController studentController,
-			CourseOfferingController courseOfferingController, RegistrationController registrationController) {
+			CourseOfferingController courseOfferingController, RegistrationController registrationController,
+				   AdministratorController administratorController) {
 		formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		/*
 		 * stringIn = new BufferedReader(new
@@ -75,9 +77,10 @@ public class Session implements Runnable {
 		this.courseController = courseController;
 		this.courseOfferingController = courseOfferingController;
 		this.registrationController = registrationController;
+		this.administratorController = administratorController;
 
 		this.studentUser = null;
-		this.adminUser = new Administrator();
+		this.adminUser = null;
 	}
 
 	// THE FOLLOWING METHODS DEAL WITH CLIENT/SERVER I/O
