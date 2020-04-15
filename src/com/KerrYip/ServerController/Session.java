@@ -444,7 +444,7 @@ public class Session implements Runnable {
 	private boolean adminLogin() {
 		String username = readString();
 		String password = readString();
-		if (!username.contentEquals(null)) { //Ensure input is valid
+		if (!username.contentEquals("")) { //Ensure input is valid
 			Administrator theAdmin = administratorController.searchAdmin(username);
 			if (theAdmin != null) { 
 				if(theAdmin.isActive()) { // Check to make sure that this student is not already logged in to the system
@@ -452,7 +452,7 @@ public class Session implements Runnable {
 					writeString("user already logged in");
 					return false;
 				}
-					if(!password.contentEquals(null) && theAdmin.getPassword().contentEquals(password)) {
+					if(!password.contentEquals("") && theAdmin.getPassword().contentEquals(password)) {
 						this.adminUser = theAdmin;
 						theAdmin.setActive(true);
 						writeString("login success");
@@ -461,12 +461,6 @@ public class Session implements Runnable {
 			}
 		}
 		writeString("login failed");
-		try {
-			toClient.writeObject(null);
-		} 
-		catch (IOException e) {
-			e.printStackTrace();
-		}
 		return false;
 	}
 
@@ -700,7 +694,7 @@ public class Session implements Runnable {
 		String courseNameNum = readString();
 		String grade = readString();
 		Student theStudent = studentController.searchStudent(studentId);
-		if(theStudent != null && !grade.contentEquals(null)) {
+		if(theStudent != null && !grade.contentEquals("")) {
 			Registration theReg = theStudent.searchStudentReg(courseController.searchCat(courseNameNum));
 			if(theReg != null) {
 				theReg.setGrade(grade.charAt(0));
