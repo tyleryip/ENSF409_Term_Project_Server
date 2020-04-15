@@ -77,7 +77,7 @@ public class Session implements Runnable {
 		this.courseController = courseController;
 		this.courseOfferingController = courseOfferingController;
 		this.registrationController = registrationController;
-		this.administratorController = administratorController;
+		this.setAdministratorController(administratorController);
 
 		this.studentUser = null;
 		this.adminUser = null;
@@ -244,6 +244,10 @@ public class Session implements Runnable {
 			
 		case "assign grade":
 			return assignGrade();
+			
+		case "add prereq":
+			//TODO complete the implementation of this method
+			return false;
 
 		case "QUIT":
 			return true;
@@ -287,19 +291,15 @@ public class Session implements Runnable {
 					}
 				}
 			}
-			else {
+			else 
+			{
 				serverError("User " + checkID + " is already logged in to the system");
 				writeString("User already logged in");
+				return false;
 			}
 		}
-		// If search fails write null to the client
+		
 		writeString("login failed");
-		try {
-			toClient.writeObject(null);
-		} 
-		catch (IOException e) {
-			e.printStackTrace();
-		}
 		return false;
 	}
 
@@ -316,7 +316,7 @@ public class Session implements Runnable {
 	}
 
 	/**
-	 * Logs the user out
+	 * Logs the user out, works for both student and admin
 	 * 
 	 * @return true if successful
 	 */
@@ -325,8 +325,9 @@ public class Session implements Runnable {
 			studentUser.setActive(false);
 			setStudentUser(null);
 		}
-		if (adminUser.isActive()) {
+		if (adminUser != null) {
 			adminUser.setActive(false);
+			setAdminUser(null);
 		}
 		return true;
 	}
@@ -441,19 +442,31 @@ public class Session implements Runnable {
 	 * This method allows administrator users to log into the system
 	 */
 	private boolean adminLogin() {
-		String credentials = readString();
-		credentials = readString();
-		if (credentials != null) {
-			if (credentials.contentEquals(adminUser.getPassword())) { // Check to see if the password matches
-				adminUser.setActive(true);
-				writeString("login successful");
-				return true;
-			} else {
-				writeString("User already logged in");
-				return false;
+		String username = readString();
+		String password = readString();
+		if (!username.contentEquals(null)) { //Ensure input is valid
+			Administrator theAdmin = administratorController.searchAdmin(username);
+			if (theAdmin != null) { 
+				if(theAdmin.isActive()) { // Check to make sure that this student is not already logged in to the system
+					serverLog("Admin user " + theAdmin.getUsername() +"is already logged in");
+					writeString("user already logged in");
+					return false;
+				}
+					if(!password.contentEquals(null) && theAdmin.getPassword().contentEquals(password)) {
+						this.adminUser = theAdmin;
+						theAdmin.setActive(true);
+						writeString("login success");
+						return true;
+					}
 			}
 		}
 		writeString("login failed");
+		try {
+			toClient.writeObject(null);
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
@@ -464,7 +477,7 @@ public class Session implements Runnable {
 	 *         account, false otherwise
 	 */
 	private boolean adminLoggedIn() {
-		if (adminUser.isActive()) {
+		if (adminUser != null) {
 			return true;
 		}
 		return false;
@@ -754,6 +767,14 @@ public class Session implements Runnable {
 
 	public void setRegistrationController(RegistrationController registrationController) {
 		this.registrationController = registrationController;
+	}
+
+	public AdministratorController getAdministratorController() {
+		return administratorController;
+	}
+
+	public void setAdministratorController(AdministratorController administratorController) {
+		this.administratorController = administratorController;
 	}
 
 }
