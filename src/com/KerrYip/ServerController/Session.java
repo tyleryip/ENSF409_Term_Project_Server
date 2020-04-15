@@ -238,6 +238,9 @@ public class Session implements Runnable {
 
 		case "add student":
 			return addNewStudent();
+			
+		case "assign grade":
+			return assignGrade();
 
 		case "QUIT":
 			return true;
@@ -666,6 +669,31 @@ public class Session implements Runnable {
 		writeString("" + (studentController.getMyStudentList().get(studentController.getMyStudentList().size() - 1)
 				.getStudentId()));
 		return true;
+	}
+	
+	/**
+	 * Assigns a grade to a student
+	 * @return true if successful, false if failed
+	 */
+	private boolean assignGrade() {
+		if (!adminLoggedIn()) {
+			return false;
+		}
+		//We need to get the name of the student to assign a grade to
+		int studentId = readInt();
+		String courseNameNum = readString();
+		String grade = readString();
+		Student theStudent = studentController.searchStudent(studentId);
+		if(theStudent != null && !grade.contentEquals(null)) {
+			Registration theReg = theStudent.searchStudentReg(courseController.searchCat(courseNameNum));
+			if(theReg != null) {
+				theReg.setGrade(grade.charAt(0));
+				writeString("grade set successfully");
+				return true;
+			}
+		}
+		writeString("failed to set grade");
+		return false;
 	}
 
 	// GETTERS and SETTERS
