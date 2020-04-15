@@ -21,7 +21,13 @@ public class Student implements Serializable {
 
 	private String studentName;
 	private int studentId;
+	private String password;
+	
+	/**
+	 * The following boolean is used to ensure only one user can be logged into this student at a time
+	 */
 	private boolean active;
+	
 	private ArrayList<Registration> studentRegList;
 
 	/**
@@ -30,9 +36,10 @@ public class Student implements Serializable {
 	 * @param studentName the name of the student
 	 * @param studentId   the ID number of the student
 	 */
-	public Student(String studentName, int studentId) {
+	public Student(String studentName, int studentId, String password) {
 		this.setStudentName(studentName);
 		this.setStudentId(studentId);
+		this.setPassword(password);
 		this.setActive(false);
 		studentRegList = new ArrayList<Registration>();
 	}
@@ -106,5 +113,15 @@ public class Student implements Serializable {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	
 
 }

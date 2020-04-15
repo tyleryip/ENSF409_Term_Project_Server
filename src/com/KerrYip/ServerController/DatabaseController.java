@@ -70,7 +70,7 @@ public class DatabaseController {
 			PreparedStatement pStat = myConn.prepareStatement(query);
 			myRs = pStat.executeQuery();
 			while (myRs.next()) {
-				fromFile.add(dataToStudent(myRs.getInt("id"), myRs.getString("name")));
+				fromFile.add(dataToStudent(myRs.getInt("id"), myRs.getString("name"), myRs.getString("password")));
 			}
 			pStat.close();
 		} catch (SQLException e) {
@@ -175,9 +175,9 @@ public class DatabaseController {
 	 * @param name The name of the student
 	 * @param id   The ID of the student
 	 */
-	public Student dataToStudent(int id, String name) {
+	public Student dataToStudent(int id, String name, String password) {
 		try {
-			return new Student(name, id);
+			return new Student(name, id, password);
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			return null;
@@ -351,10 +351,11 @@ public class DatabaseController {
 	 */
 	public synchronized void insertStudentToDatabase(Student s) {
 		try {
-			String query = "INSERT INTO student(id, name) values (?,?)";
+			String query = "INSERT INTO student(id, name, password) values (?,?,?)";
 			pStat = myConn.prepareStatement(query);
 			pStat.setInt(1, s.getStudentId());
 			pStat.setString(2, s.getStudentName());
+			pStat.setString(3, s.getPassword());
 			pStat.executeUpdate();
 			pStat.close();
 		} catch (SQLException e) {

@@ -118,12 +118,12 @@ public class StudentController {
 	 * 
 	 * @param name the name of the student
 	 */
-	public void addStudent(String name) {
+	public void addStudent(String name, String password) {
 		int newID = databaseController.getIncrementStudentID();
-		Student newStudent = new Student(name, newID);
+		Student newStudent = new Student(name, newID, password);
 		myStudentList.add(newStudent);
 		databaseController.insertStudentToDatabase(newStudent);
-		System.out.println("[Server] New student " + name + " created successfully with an id of: " + newID);
+		System.out.println("[Server] New student " + name + " created successfully with an id of: " + newID + " and a password: " + password);
 	}
 
 	/**

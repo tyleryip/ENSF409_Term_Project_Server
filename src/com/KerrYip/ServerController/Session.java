@@ -262,18 +262,24 @@ public class Session implements Runnable {
 		if (studentUser != null) {
 			if (!studentUser.isActive()) { // Check to make sure that this student is not already logged in to the
 											// system
-				studentUser.setActive(true);
-				serverLog("User logged in using id: " + checkID);
-				writeString(studentUser.getStudentName());
-				try {
-					for (Registration r : studentUser.getStudentRegList()) {
-						toClient.writeObject(r);
+				String passwordInput = readString();
+				if (passwordInput.contentEquals(studentUser.getPassword())) { //Validate the user's password against the password in the system
+
+					studentUser.setActive(true);
+					serverLog("User logged in using id: " + checkID);
+					writeString(studentUser.getStudentName());
+					try {
+						for (Registration r : studentUser.getStudentRegList()) {
+							toClient.writeObject(r);
+						}
+						toClient.writeObject(null);
+						return true;
+					} catch (IOException e) {
+						e.printStackTrace();
 					}
-					toClient.writeObject(null);
-					return true;
-				} catch (IOException e) {
-					e.printStackTrace();
 				}
+				serverError("User entered an invalid password");
+				writeString("Invalid password");
 			}
 			serverError("User " + checkID + " is already logged in to the system");
 			writeString("User already logged in");
@@ -646,12 +652,14 @@ public class Session implements Runnable {
 			return false;
 		}
 		String newName = readString();
+		String newPassword = readString();
 
-		if (newName.contentEquals("")) {
+		if (newName.contentEquals("") || newPassword.contentEquals("")) {
 			writeString("failed to add");
 			return false;
 		}
-		studentController.addStudent(newName);
+
+		studentController.addStudent(newName, newPassword);
 		writeString("" + (studentController.getMyStudentList().get(studentController.getMyStudentList().size() - 1)
 				.getStudentId()));
 		return true;
