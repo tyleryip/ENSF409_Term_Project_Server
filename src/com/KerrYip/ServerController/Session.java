@@ -275,13 +275,10 @@ public class Session implements Runnable {
 						}
 						toClient.writeObject(null);
 						return true;
-					} catch (IOException e) {
+					} 
+					catch (IOException e) {
 						e.printStackTrace();
 					}
-				}
-				else {
-					serverError("User entered an invalid password");
-					writeString("Invalid password");
 				}
 			}
 			else {
@@ -293,7 +290,8 @@ public class Session implements Runnable {
 		writeString("login failed");
 		try {
 			toClient.writeObject(null);
-		} catch (IOException e) {
+		} 
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 		return false;
@@ -437,7 +435,7 @@ public class Session implements Runnable {
 	 * This method allows administrator users to log into the system
 	 */
 	private boolean adminLogin() {
-		String credentials = "";
+		String credentials = readString();
 		credentials = readString();
 		if (credentials != null) {
 			if (credentials.contentEquals(adminUser.getPassword())) { // Check to see if the password matches

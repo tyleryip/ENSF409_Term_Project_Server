@@ -587,7 +587,7 @@ public class DatabaseController {
 			pStat = myConn.prepareStatement(query);
 			pStat.executeUpdate();
 		} catch (SQLException e) {
-			System.err.println("Error: SQL error with creating table student");
+			System.err.println("Error: SQL error with creating table prereq");
 			e.printStackTrace();
 		}
 		
