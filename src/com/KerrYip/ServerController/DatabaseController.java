@@ -8,10 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import com.KerrYip.Model.Course;
-import com.KerrYip.Model.CourseOffering;
-import com.KerrYip.Model.Registration;
-import com.KerrYip.Model.Student;
+import com.KerrYip.Model.*;
 
 /**
  * This class manages our database, including loading and saving data on
@@ -171,6 +168,27 @@ public class DatabaseController {
 	}
 
 	/**
+	 * Method for reading the registrations from the database
+	 */
+	public ArrayList<Administrator> readAdminsFromFile() {
+		ArrayList<Administrator> fromFile = new ArrayList<Administrator>();
+
+		try {
+			String query = "SELECT * FROM admin";
+			PreparedStatement pStat = myConn.prepareStatement(query);
+			myRs = pStat.executeQuery();
+			while (myRs.next()) {
+				fromFile.add(dataToAdmin(myRs.getInt("id"), myRs.getString("username"), myRs.getString("password")));
+			}
+			pStat.close();
+		} catch (SQLException e) {
+			System.err.println("Error: Could not read Admin from database");
+			e.printStackTrace();
+		}
+		return fromFile;
+	}
+
+	/**
 	 * Creates Student from the data provided. Will not make the Student if data is
 	 * missing or not found
 	 * 
@@ -280,6 +298,23 @@ public class DatabaseController {
 			courseList.get(parent).addPreReq(courseList.get(preReq));
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Creates Admin from the data provided. Will not make the Student if data is
+	 * missing or not found
+	 *
+	 * @param username The username of the admin
+	 * @param password The name of the admin
+	 * @param id   The ID of the admin
+	 */
+	public Administrator dataToAdmin(int id, String username, String password) {
+		try {
+			return new Administrator(id, username, password);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 
@@ -431,7 +466,8 @@ public class DatabaseController {
 	/**
 	 * Inserts a new registration into the SQL database
 	 * 
-	 * @param r the registration to insert
+	 * @param parent the course that will have a pre requisite
+	 * @param prereq the course that will become the pre requisite
 	 */
 	public synchronized void insertPreReqToDatabase(Course parent, Course prereq) {
 		try {
