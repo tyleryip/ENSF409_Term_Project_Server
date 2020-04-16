@@ -290,9 +290,11 @@ public class DatabaseController {
 			int preReq = searchCourse(courseList, prereqId);
 			if (parent == -1) {
 				System.err.println("Parent not found for preReq");
+				return;
 			}
 			if (preReq == -1) {
 				System.err.println("PreReq not found for preReq");
+				return;
 			}
 			courseList.get(parent).addPreReq(courseList.get(preReq));
 		} catch (NumberFormatException e) {
@@ -544,9 +546,10 @@ public class DatabaseController {
 	 */
 	public synchronized void deletePreReqFromDatabase(Course prereq) {
 		try {
-			String query = "DELETE FROM registration WHERE prereq_course_id = ?";
+			String query = "DELETE FROM registration WHERE prereq_course_id = ? OR parent_course_id = ?";
 			pStat = myConn.prepareStatement(query);
 			pStat.setInt(1, prereq.getID());
+			pStat.setInt(2, prereq.getID());
 			pStat.executeUpdate();
 			pStat.close();
 		} catch (SQLException e) {

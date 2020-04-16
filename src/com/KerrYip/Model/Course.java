@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * @since 04/07/20
  *
  */
-public class Course implements Serializable {
+public class Course implements Serializable, Comparable{
 
 	/**
 	 * This long is used for serialization
@@ -93,6 +93,27 @@ public class Course implements Serializable {
 		} else
 			return offeringList.get(i);
 	}
+	
+	public String toData() {
+		String st = getID() + ";" + getCourseName() + ";" + getCourseNum();
+		return st;
+	}
+
+	public String toPreReqData() {
+		String st = "";
+		for (Course c : preReq) {
+			st += this.getID() + ";" + c.getID();
+			st += "\n";
+		}
+		return st;
+
+	}
+	
+	@Override
+	public int compareTo(Object o) {
+		Course other = (Course) o;
+		return this.getNameNum().compareTo(other.getNameNum());
+	}
 
 	@Override
 	public String toString() {
@@ -111,21 +132,6 @@ public class Course implements Serializable {
 		}
 		st += "\n---------------------------------------\n";
 		return st;
-	}
-
-	public String toData() {
-		String st = getID() + ";" + getCourseName() + ";" + getCourseNum();
-		return st;
-	}
-
-	public String toPreReqData() {
-		String st = "";
-		for (Course c : preReq) {
-			st += this.getID() + ";" + c.getID();
-			st += "\n";
-		}
-		return st;
-
 	}
 
 	// GETTERS and SETTERS
