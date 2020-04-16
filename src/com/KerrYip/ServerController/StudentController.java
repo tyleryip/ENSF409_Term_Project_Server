@@ -19,7 +19,6 @@ import com.KerrYip.Model.Student;
 public class StudentController {
 
 	private DatabaseController databaseController;
-
 	private ArrayList<Student> myStudentList;
 
 	/**
@@ -126,24 +125,6 @@ public class StudentController {
 		System.out.println("[Server] New student " + name + " created successfully with an id of: " + newID + " and a password: " + password);
 	}
 
-	/**
-	 * Checks to see if the proposed ID is available for use
-	 * 
-	 * @param newID the ID to check
-	 * @return true if the ID is not in use, false otherwise
-	 */
-	public boolean isUniqueID(int newID) {
-		if (newID < 0) {
-			System.err.println("Error: ID numbers cannot be negative");
-			return false;
-		}
-		for (Student s : myStudentList) {
-			if (s.getStudentId() == newID) {
-				return false;
-			}
-		}
-		return true;
-	}
 
 	// GETTERS and SETTERS
 	public DatabaseController getDatabaseController() {

@@ -44,21 +44,6 @@ public class Registration implements Serializable {
 	}
 
 	/**
-	 * Constructor for Registration
-	 * 
-	 * @param id          the registration ID for the database
-	 * @param theStudent  the student
-	 * @param theOffering the course offering
-	 * @param grade       the grade
-	 */
-	public Registration(int id, Student theStudent, CourseOffering theOffering, char grade) {
-		this.id = id;
-		this.theStudent = theStudent;
-		this.theOffering = theOffering;
-		this.grade = grade;
-	}
-
-	/**
 	 * Links a student and course offering together via a registration
 	 * 
 	 * @param st the student
