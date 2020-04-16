@@ -565,13 +565,13 @@ public class DatabaseController {
 	}
 
 	/**
-	 * Removes a Course from the database
+	 * Removes a Course from the database prereq table
 	 * 
-	 * @param prereq the Course to remove
+	 * @param prereq the Course to remove from the table
 	 */
 	public synchronized void deletePreReqFromDatabase(Course prereq) {
 		try {
-			String query = "DELETE FROM registration WHERE prereq_course_id = ? OR parent_course_id = ?";
+			String query = "DELETE FROM prereq WHERE parent_course_id = ? OR prereq_course_id = ?";
 			pStat = myConn.prepareStatement(query);
 			pStat.setInt(1, prereq.getID());
 			pStat.setInt(2, prereq.getID());
