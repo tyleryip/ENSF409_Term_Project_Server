@@ -142,13 +142,14 @@ public class CourseController {
 		// We now need to deal with other courses that may have this course listed as a
 		// prerequisite
 		for (Course c : myCourseList) {
-			for (Course p : c.getPreReq()) {
-				if (p.getNameNum().contentEquals(nameNum)) {
-					c.getPreReq().remove(p);
+			for (int i = 0; i<c.getPreReq().size(); i++) {
+				if (c.getPreReq().get(i).getNameNum().contentEquals(nameNum)) {
+					c.getPreReq().remove(i);
 				}
 			}
 		}
 		// Delete from the database and then the local cache
+		databaseController.deletePreReqFromDatabase(searchCat(nameNum));
 		databaseController.deleteCourseFromDatabase(searchCat(nameNum));
 		myCourseList.remove(searchCat(nameNum));
 	}
@@ -168,10 +169,12 @@ public class CourseController {
 		String[] split2 = preReqCourse.split(" ");
 		Course checkThis = searchCat(split[0], Integer.parseInt(split[1]));
 		if (checkThis != null) {
-			Course preReq = new Course(split2[0], Integer.parseInt(split2[1]));
-			checkThis.addPreReq(preReq);
-			databaseController.insertPreReqToDatabase(checkThis, preReq);
-			return;
+			Course preReq = searchCat(split2[0], Integer.parseInt(split2[1]));
+			if(preReq != null) {
+				checkThis.addPreReq(preReq);
+				databaseController.insertPreReqToDatabase(checkThis, preReq);
+				return;
+			}
 		}
 		displayCourseNotFoundError();
 	}

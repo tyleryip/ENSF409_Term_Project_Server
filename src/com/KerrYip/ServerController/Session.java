@@ -5,7 +5,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import com.KerrYip.Model.Administrator;
 import com.KerrYip.Model.Course;
@@ -607,12 +610,15 @@ public class Session implements Runnable {
 	 * 
 	 * @return true if successful, false if failed
 	 */
+	@SuppressWarnings("unchecked")
 	private boolean browseCourses() {
 		if (!studentLoggedIn() && !adminLoggedIn()) {
 			return false;
 		}
 		// Write each course into the output stream
-		for (Course c : courseController.getCourseList()) {
+		ArrayList<Course> toSend = courseController.getMyCourseList();
+		Collections.sort(toSend); //This alphabetizes the list so it will appear in alphabetical order on the client side but remain in id order on the server side
+		for (Course c : toSend) {
 			try {
 				toClient.reset();
 				toClient.writeObject(c);
