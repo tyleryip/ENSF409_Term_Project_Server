@@ -33,29 +33,44 @@ public class RegistrationController {
 	public RegistrationController(DatabaseController db, CourseOfferingController courseOfferingController,
 			StudentController studentController) {
 		this.databaseController = db;
-		this.courseOfferingController = courseOfferingController;
-		this.studentController = studentController;
+		this.setCourseOfferingController(courseOfferingController);
+		this.setStudentController(studentController);
 		myRegistrationList = databaseController.readRegistrationsFromFile(
 				courseOfferingController.getMyCourseOfferingList(), studentController.getMyStudentList());
 		databaseController.updateRegistrationID(getUpdatedRegistrationID());
+		System.out.println("[Registration Controller] Systems are online.");
 	}
 
+	/**
+	 * Removes a registration from the cache and database
+	 * 
+	 * @param toRemove the registration to remove
+	 */
 	public void removeRegistration(Registration toRemove) {
 		databaseController.deleteRegistrationFromDatabase(toRemove);
 		myRegistrationList.remove(toRemove);
 	}
 
+	/**
+	 * Removes all registrations from the database and cache
+	 * 
+	 * @param c the course to remove all registrations from
+	 */
 	public void removeAllRegistrations(Course c) {
 		for (int i = 0; i < myRegistrationList.size(); i++) {
 			if (myRegistrationList.get(i).getTheOffering().getTheCourse().getNameNum()
 					.equalsIgnoreCase(c.getNameNum())) {
-				// Delete from the database and then the local cache
-				databaseController.deleteRegistrationFromDatabase(myRegistrationList.get(i));
-				myRegistrationList.remove(i);
+				removeRegistration(myRegistrationList.get(i));
 			}
 		}
 	}
 
+	/**
+	 * Updates the databaseController's count of how many registrations exist in the
+	 * system
+	 * 
+	 * @return the ID of the next registration to make
+	 */
 	public int getUpdatedRegistrationID() {
 		return myRegistrationList.get(myRegistrationList.size() - 1).getID() + 1;
 	}
@@ -80,6 +95,7 @@ public class RegistrationController {
 		databaseController.insertRegistrationToDatabase(r);
 	}
 
+	// GETTERS and SETTERS
 	public DatabaseController getDatabaseController() {
 		return databaseController;
 	}
@@ -94,6 +110,22 @@ public class RegistrationController {
 
 	public void setMyRegistrationList(ArrayList<Registration> myRegistrationList) {
 		this.myRegistrationList = myRegistrationList;
+	}
+
+	public CourseOfferingController getCourseOfferingController() {
+		return courseOfferingController;
+	}
+
+	public void setCourseOfferingController(CourseOfferingController courseOfferingController) {
+		this.courseOfferingController = courseOfferingController;
+	}
+
+	public StudentController getStudentController() {
+		return studentController;
+	}
+
+	public void setStudentController(StudentController studentController) {
+		this.studentController = studentController;
 	}
 
 }

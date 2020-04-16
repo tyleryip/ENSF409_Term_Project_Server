@@ -13,15 +13,20 @@ import java.util.ArrayList;
  */
 public class CourseOffering implements Serializable {
 
-	/**
-	 * This long is used for serialization
-	 */
+	// This long is used for serialization
 	private static final long serialVersionUID = 1L;
 
+	// Properties of the course offering
 	private int secNum;
 	private int secCap;
+
+	// The course that this offering belongs to
 	private Course theCourse;
+
+	// A list of all students who are registered in this offering
 	private ArrayList<Registration> offeringRegList;
+
+	// Used to identify the instance of this class in the SQL database
 	private int id;
 
 	/**
@@ -84,10 +89,6 @@ public class CourseOffering implements Serializable {
 		st += "Section Num: " + getSecNum() + ", section cap: " + getSecCap() + "\n";
 		// We also want to print the names of all students in the section
 		return st;
-	}
-
-	public String toData() {
-		return getID() + ";" + getTheCourse().getID() + ";" + getSecNum() + ";" + getSecCap();
 	}
 
 	// GETTERS and SETTERS

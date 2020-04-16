@@ -27,15 +27,28 @@ public class CourseOfferingController {
 	 */
 	public CourseOfferingController(DatabaseController db, CourseController courseController) {
 		this.databaseController = db;
-		this.courseController = courseController;
+		this.setCourseController(courseController);
 		myCourseOfferingList = databaseController.readCourseOfferingsFromFile(courseController.getCourseList());
 		databaseController.updateCourseOfferingID(getUpdatedCourseOfferingID());
+		System.out.println("[Course Offering Controller] Systems are online.");
 	}
 
+	/**
+	 * Updates the databaseController's count of how many course offerings exist in
+	 * the system
+	 * 
+	 * @return the next id number that should be used for the next course created
+	 */
 	private int getUpdatedCourseOfferingID() {
 		return myCourseOfferingList.get(myCourseOfferingList.size() - 1).getID() + 1;
 	}
 
+	/**
+	 * Removes all course offerings from the database and cache for a specific
+	 * course
+	 * 
+	 * @param c the course to remove course offerings for
+	 */
 	public void removeAllCourseOfferings(Course c) {
 		for (int i = 0; i < myCourseOfferingList.size(); i++) {
 			if (myCourseOfferingList.get(i).getTheCourse().getNameNum().equalsIgnoreCase(c.getNameNum())) {
@@ -46,6 +59,13 @@ public class CourseOfferingController {
 		}
 	}
 
+	/**
+	 * Adss a new course offering for a course
+	 * 
+	 * @param c      the course to add the offering to
+	 * @param secNum the number for the section
+	 * @param secCap the capacity of the section
+	 */
 	public void addCourseOffering(Course c, int secNum, int secCap) {
 		CourseOffering updatedCourseOffering = new CourseOffering(databaseController.getIncrementCourseOfferingID(), c,
 				secNum, secCap);
@@ -53,6 +73,7 @@ public class CourseOfferingController {
 		databaseController.insertCourseOfferingToDatabase(updatedCourseOffering);
 	}
 
+	// GETTERS and SETTERS
 	public DatabaseController getDatabaseController() {
 		return databaseController;
 	}
@@ -67,6 +88,14 @@ public class CourseOfferingController {
 
 	public void setMyCourseOfferingList(ArrayList<CourseOffering> myCourseOfferingList) {
 		this.myCourseOfferingList = myCourseOfferingList;
+	}
+
+	public CourseController getCourseController() {
+		return courseController;
+	}
+
+	public void setCourseController(CourseController courseController) {
+		this.courseController = courseController;
 	}
 
 }

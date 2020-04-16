@@ -31,6 +31,7 @@ public class CourseController {
 		databaseController.readPreReqFromFile(myCourseList);
 		databaseController.updateCourseID(getUpdatedCourseID());
 		databaseController.updatePreReqID(getUpdatedPreReqID());
+		System.out.println("[Course Controller] Systems are online.");
 	}
 
 	/**
@@ -46,6 +47,11 @@ public class CourseController {
 		return count;
 	}
 
+	/**
+	 * Updates the databaseController's count of how many courses exist
+	 * 
+	 * @return
+	 */
 	private int getUpdatedCourseID() {
 		return myCourseList.get(myCourseList.size() - 1).getID() + 1;
 	}
@@ -96,9 +102,9 @@ public class CourseController {
 		return searchCat(split[0], Integer.parseInt(split[1]));
 	}
 
-	// Typically, methods that are called from other methods of the class
-	// are private and are not exposed for use by other classes.
-	// These methods are refereed to as helper methods or utility methods
+	/**
+	 * Displays an error to the console
+	 */
 	private void displayCourseNotFoundError() {
 		// TODO Auto-generated method stub
 		System.err.println("Course was not found!");
@@ -142,15 +148,16 @@ public class CourseController {
 		// We now need to deal with other courses that may have this course listed as a
 		// prerequisite
 		for (Course c : myCourseList) {
-			for (int i = 0; i<c.getPreReq().size(); i++) {
+			for (int i = 0; i < c.getPreReq().size(); i++) {
 				if (c.getPreReq().get(i).getNameNum().contentEquals(nameNum)) {
 					c.getPreReq().remove(i);
 				}
 			}
 		}
-		// Delete from the database and then the local cache
+		// Delete from the database
 		databaseController.deletePreReqFromDatabase(searchCat(nameNum));
 		databaseController.deleteCourseFromDatabase(searchCat(nameNum));
+		// Now delete from the cache
 		myCourseList.remove(searchCat(nameNum));
 	}
 
@@ -170,7 +177,7 @@ public class CourseController {
 		Course checkThis = searchCat(split[0], Integer.parseInt(split[1]));
 		if (checkThis != null) {
 			Course preReq = searchCat(split2[0], Integer.parseInt(split2[1]));
-			if(preReq != null) {
+			if (preReq != null) {
 				checkThis.addPreReq(preReq);
 				databaseController.insertPreReqToDatabase(checkThis, preReq);
 				return;

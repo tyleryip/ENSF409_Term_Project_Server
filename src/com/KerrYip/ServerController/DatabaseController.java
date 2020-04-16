@@ -21,24 +21,23 @@ import com.KerrYip.Model.*;
  *
  */
 public class DatabaseController {
-	/*
-	 * IDs for all variable types for SQL integration
-	 */
+
+	// IDs for all variable types for SQL integration
 	int studentID = 1;
 	int courseID = 10000;
 	int courseOfferingID = 20000;
 	int registrationID = 30000;
 	int prereqID = 40000;
 
+	// SQL communications members
 	private Connection myConn;
 	private Properties properties;
 	private PreparedStatement pStat;
 	private ResultSet myRs;
 
 	/**
-	 * Constructor for class DatabaseController creates ArrayLists and populates
-	 * them with simulated data, this data will be replaced with data from the SQL
-	 * database in a future milestone
+	 * Constructor for class DatabaseController establishes a connection with a
+	 * server-side database
 	 */
 	public DatabaseController() {
 		properties = new Properties();
@@ -49,7 +48,8 @@ public class DatabaseController {
 
 		try {
 			myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/registration_app_database", properties);
-			System.out.println("[Database Controller] Connection with SQL Database was successfully established!");
+			System.out.println(
+					"[Database Controller] Connection with SQL Database was successfully established, systems are online.");
 			createTables();
 		} catch (SQLException e) {
 			System.err.println("Error: Unknown SQL error has occured");
@@ -59,6 +59,8 @@ public class DatabaseController {
 
 	/**
 	 * Method for reading the Students from the database
+	 * 
+	 * @return an ArrayList of students or null
 	 */
 	public ArrayList<Student> readStudentsFromFile() {
 		ArrayList<Student> fromFile = new ArrayList<Student>();
@@ -81,6 +83,8 @@ public class DatabaseController {
 
 	/**
 	 * Method for reading the Courses from the database
+	 * 
+	 * @return an ArrayList of courses or null
 	 */
 	public ArrayList<Course> readCoursesFromFile() {
 		ArrayList<Course> fromFile = new ArrayList<Course>();
@@ -103,6 +107,8 @@ public class DatabaseController {
 
 	/**
 	 * Method for reading the Prereqs for courses from the database
+	 * 
+	 * @param an ArrayList of Courses to set prereqs for
 	 */
 	public void readPreReqFromFile(ArrayList<Course> courseList) {
 		try {
@@ -121,6 +127,9 @@ public class DatabaseController {
 
 	/**
 	 * Method for reading the course offerings from the database
+	 * 
+	 * @param courseList an ArrayList of Courses to add offerings for
+	 * @return an ArrayList of CourseOfferings
 	 */
 	public ArrayList<CourseOffering> readCourseOfferingsFromFile(ArrayList<Course> courseList) {
 		ArrayList<CourseOffering> fromFile = new ArrayList<CourseOffering>();
@@ -144,6 +153,11 @@ public class DatabaseController {
 
 	/**
 	 * Method for reading the registrations from the database
+	 * 
+	 * @param courseOfferingList an ArrayList of course offerings to add
+	 *                           registrations to
+	 * @param studentList        an ArrayList of students to add registrations to
+	 * @return an ArrayList of Registrations
 	 */
 	public ArrayList<Registration> readRegistrationsFromFile(ArrayList<CourseOffering> courseOfferingList,
 			ArrayList<Student> studentList) {
@@ -168,6 +182,8 @@ public class DatabaseController {
 
 	/**
 	 * Method for reading the registrations from the database
+	 * 
+	 * @return an ArrayList of Administrators
 	 */
 	public ArrayList<Administrator> readAdminsFromFile() {
 		ArrayList<Administrator> fromFile = new ArrayList<Administrator>();
@@ -191,8 +207,10 @@ public class DatabaseController {
 	 * Creates Student from the data provided. Will not make the Student if data is
 	 * missing or not found
 	 * 
-	 * @param name The name of the student
-	 * @param id   The ID of the student
+	 * @param name     the name of the student
+	 * @param id       the ID of the student
+	 * @param password the passwword to set for the student
+	 * @return a Student or null
 	 */
 	public Student dataToStudent(int id, String name, String password) {
 		try {
@@ -211,6 +229,7 @@ public class DatabaseController {
 	 * @param studentID        ID of student that is registerijg
 	 * @param courseOfferingID ID of courseOffering that is being registered
 	 * @param grade            grade of the registration
+	 * @return a Registration or null
 	 */
 	public Registration dataToRegistration(ArrayList<CourseOffering> courseOfferingList, ArrayList<Student> studentList,
 			int id, int studentID, int courseOfferingID, String grade) {
@@ -244,6 +263,7 @@ public class DatabaseController {
 	 * @param courseID ID of the course the offering is for
 	 * @param num      Number of offering
 	 * @param cap      Maximum capacity of offering
+	 * @return a CourseOffering or null
 	 */
 	public CourseOffering dataToCourseOffering(ArrayList<Course> courseList, int id, int courseID, int num, int cap) {
 		try {
@@ -262,12 +282,13 @@ public class DatabaseController {
 	}
 
 	/**
-	 * Creates Course from the data provided. Will not make the Course if data is *
+	 * Creates Course from the data provided. Will not make the Course if data is
 	 * missing or not found
 	 * 
 	 * @param id   Id of course
 	 * @param name name of course
 	 * @param num  number of course
+	 * @return a Course or null
 	 */
 	public Course dataToCourse(int id, String name, int num) {
 		try {
@@ -308,7 +329,8 @@ public class DatabaseController {
 	 *
 	 * @param username The username of the admin
 	 * @param password The name of the admin
-	 * @param id   The ID of the admin
+	 * @param id       The ID of the admin
+	 * @return an Administrator
 	 */
 	public Administrator dataToAdmin(int id, String username, String password) {
 		try {
@@ -319,7 +341,8 @@ public class DatabaseController {
 		}
 	}
 
-	// Searches for data type with matching ID
+	// THE FOLLOWING METHODS ARE USED TO PERFORM SEARCHES WITH SQL ID's FOR
+	// REBUILDING PURPOSES
 	/**
 	 * Searches for the Student with the matching ID
 	 * 
@@ -382,6 +405,7 @@ public class DatabaseController {
 		return -1;
 	}
 
+	// THE FOLLOWING METHODS ARE USED FOR INSERTION INTO THE SQL DATABASE
 	/**
 	 * Inserts a new student into the SQL database
 	 * 
@@ -485,6 +509,7 @@ public class DatabaseController {
 		}
 	}
 
+	// THE FOLLOWING METHODS ARE USED FOR DELETIONS FROM THE SQL DATABASE
 	/**
 	 * Removes a course from the database
 	 * 
@@ -557,98 +582,79 @@ public class DatabaseController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * This method creates the necessary tables in the database if they be missing
 	 */
 	public void createTables() {
 		try {
-			String query = "CREATE TABLE IF NOT EXISTS student("
-					+ "id INT PRIMARY KEY NOT NULL,"
-					+ "name VARCHAR(45) NOT NULL,"
-					+ "password VARCHAR(45) NOT NULL"
-					+ ")";
+			String query = "CREATE TABLE IF NOT EXISTS student(" + "id INT PRIMARY KEY NOT NULL,"
+					+ "name VARCHAR(45) NOT NULL," + "password VARCHAR(45) NOT NULL" + ")";
 			pStat = myConn.prepareStatement(query);
 			pStat.executeUpdate();
 		} catch (SQLException e) {
 			System.err.println("Error: SQL error with creating table student");
 			e.printStackTrace();
 		}
-		
+
 		try {
-			String query = "CREATE TABLE IF NOT EXISTS course("
-					+ "id INT PRIMARY KEY NOT NULL,"
-					+ "name VARCHAR(45) NOT NULL,"
-					+ "num INT NOT NULL"
-					+ ")";
+			String query = "CREATE TABLE IF NOT EXISTS course(" + "id INT PRIMARY KEY NOT NULL,"
+					+ "name VARCHAR(45) NOT NULL," + "num INT NOT NULL" + ")";
 			pStat = myConn.prepareStatement(query);
 			pStat.executeUpdate();
 		} catch (SQLException e) {
 			System.err.println("Error: SQL error with creating table course");
 			e.printStackTrace();
 		}
-		
+
 		try {
-			String query = "CREATE TABLE IF NOT EXISTS course_offering("
-					+ "id INT PRIMARY KEY NOT NULL,"
-					+ "course_id VARCHAR(45) NOT NULL,"
-					+ "sec_num INT NOT NULL,"
-					+ "sec_cap INT NOT NULL"
-					+ ")";
+			String query = "CREATE TABLE IF NOT EXISTS course_offering(" + "id INT PRIMARY KEY NOT NULL,"
+					+ "course_id VARCHAR(45) NOT NULL," + "sec_num INT NOT NULL," + "sec_cap INT NOT NULL" + ")";
 			pStat = myConn.prepareStatement(query);
 			pStat.executeUpdate();
 		} catch (SQLException e) {
 			System.err.println("Error: SQL error with creating table course_offering");
 			e.printStackTrace();
 		}
-		
+
 		try {
-			String query = "CREATE TABLE IF NOT EXISTS registration("
-					+ "id INT PRIMARY KEY NOT NULL,"
-					+ "student_id INT NOT NULL,"
-					+ "course_offering_id INT NOT NULL,"
-					+ "grade CHAR(1) NOT NULL"
-					+ ")";
+			String query = "CREATE TABLE IF NOT EXISTS registration(" + "id INT PRIMARY KEY NOT NULL,"
+					+ "student_id INT NOT NULL," + "course_offering_id INT NOT NULL," + "grade CHAR(1) NOT NULL" + ")";
 			pStat = myConn.prepareStatement(query);
 			pStat.executeUpdate();
 		} catch (SQLException e) {
 			System.err.println("Error: SQL error with creating table registration");
 			e.printStackTrace();
 		}
-		
+
 		try {
-			String query = "CREATE TABLE IF NOT EXISTS prereq("
-					+ "id INT PRIMARY KEY NOT NULL,"
-					+ "parent_course_id INT NOT NULL,"
-					+ "prereq_course_id INT NOT NULL"
-					+ ")";
+			String query = "CREATE TABLE IF NOT EXISTS prereq(" + "id INT PRIMARY KEY NOT NULL,"
+					+ "parent_course_id INT NOT NULL," + "prereq_course_id INT NOT NULL" + ")";
 			pStat = myConn.prepareStatement(query);
 			pStat.executeUpdate();
 		} catch (SQLException e) {
 			System.err.println("Error: SQL error with creating table prereq");
 			e.printStackTrace();
 		}
-		
+
 		try {
-			String query = "CREATE TABLE IF NOT EXISTS admin("
-					+ "id INT PRIMARY KEY NOT NULL,"
-					+ "username VARCHAR(45) NOT NULL,"
-					+ "password VARCHAR(45) NOT NULL"
-					+ ")";
+			String query = "CREATE TABLE IF NOT EXISTS admin(" + "id INT PRIMARY KEY NOT NULL,"
+					+ "username VARCHAR(45) NOT NULL," + "password VARCHAR(45) NOT NULL" + ")";
 			pStat = myConn.prepareStatement(query);
 			pStat.executeUpdate();
 		} catch (SQLException e) {
 			System.err.println("Error: SQL error with creating table admin");
 			e.printStackTrace();
 		}
-		
+
 	}
 
+	// THE FOLLOWING METHODS ARE USED TO UPDATE AND HANDLE CLASS ID's FOR SQL
+	// STORAGE
 	private int getIncrementPreReqID() {
 		return prereqID++;
 	}
 
-	// GETTERS AND SETTERS FOR CLASS IDS
 	public int getIncrementStudentID() {
 		return studentID++;
 	}
