@@ -246,8 +246,7 @@ public class Session implements Runnable {
 			return assignGrade();
 			
 		case "add prereq":
-			//TODO complete the implementation of this method
-			return false;
+			return addPreReq();
 
 		case "QUIT":
 			return true;
@@ -257,6 +256,12 @@ public class Session implements Runnable {
 
 		default:
 			serverLog("No option available that matched: " + command);
+			try { //We need to clear any arguments that may have entered the input stream on a failed command
+				fromClient.readAllBytes();
+			} catch (IOException e) {
+				serverError("Problem flushing the input stream");
+				e.printStackTrace();
+			}
 			return false;
 		}
 	}
@@ -704,6 +709,23 @@ public class Session implements Runnable {
 			}
 		}
 		writeString("failed to set grade");
+		return false;
+	}
+	
+	private boolean addPreReq() {
+		if (!adminLoggedIn()) {
+			return false;
+		}
+		String parentNameNum = readString();
+		String prereqNameNum = readString();
+		Course parent = courseController.searchCat(parentNameNum);
+		Course prereq = courseController.searchCat(prereqNameNum);
+		if(parent != null && prereq != null) {
+			courseController.addPreRequisite(parentNameNum, prereqNameNum);
+			writeString("prereq added successfully");
+			return true;
+		}
+		writeString("adding prereq failed");
 		return false;
 	}
 

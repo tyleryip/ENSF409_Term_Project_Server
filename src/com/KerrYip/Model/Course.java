@@ -79,7 +79,7 @@ public class Course implements Serializable {
 	/**
 	 * Adds a prerequisite course to this course
 	 * 
-	 * @param preReqCourse the coruse to add as a prereq
+	 * @param preReqCourse the course to add as a prereq
 	 */
 	public void addPreReq(Course preReqCourse) {
 		preReq.add(preReqCourse);
