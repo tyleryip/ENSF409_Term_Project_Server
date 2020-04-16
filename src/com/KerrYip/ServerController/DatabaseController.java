@@ -50,12 +50,11 @@ public class DatabaseController {
 		try {
 			myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/registration_app_database", properties);
 			System.out.println("[Database Controller] Connection with SQL Database was successfully established!");
+			createTables();
 		} catch (SQLException e) {
 			System.err.println("Error: Unknown SQL error has occured");
 			e.printStackTrace();
 		}
-		
-		createTables();
 	}
 
 	/**
