@@ -154,7 +154,7 @@ public class StudentTest {
         //Making Student
         Student student = new Student("Tyler",16,"password");
         //Testing toString()
-        String expected = "Student Name : Tyler\nStudent Id: 16\n\n";
+        String expected = "Student Name: Tyler\nStudent Id: 16\n\n";
         assertEquals(expected,student.toString());
     }
 }
