@@ -51,6 +51,7 @@ public class DatabaseController {
 			System.out.println(
 					"[Database Controller] Connection with SQL Database was successfully established, systems are online.");
 			createTables();
+			
 		} catch (SQLException e) {
 			System.err.println("Error: Unknown SQL error has occured");
 			e.printStackTrace();
@@ -70,7 +71,11 @@ public class DatabaseController {
 			PreparedStatement pStat = myConn.prepareStatement(query);
 			myRs = pStat.executeQuery();
 			while (myRs.next()) {
-				fromFile.add(dataToStudent(myRs.getInt("id"), myRs.getString("name"), myRs.getString("password")));
+				int id = myRs.getInt("id");
+				if(id > studentID) {
+					studentID = id;
+				}
+				fromFile.add(dataToStudent(id , myRs.getString("name"), myRs.getString("password")));
 			}
 			pStat.close();
 		} catch (SQLException e) {
@@ -94,7 +99,11 @@ public class DatabaseController {
 			PreparedStatement pStat = myConn.prepareStatement(query);
 			myRs = pStat.executeQuery();
 			while (myRs.next()) {
-				fromFile.add(dataToCourse(myRs.getInt("id"), myRs.getString("name"), myRs.getInt("num")));
+				int id = myRs.getInt("id");
+				if(id > courseID) {
+					courseID = id;
+				}
+				fromFile.add(dataToCourse(id, myRs.getString("name"), myRs.getInt("num")));
 			}
 			pStat.close();
 		} catch (SQLException e) {
@@ -116,6 +125,10 @@ public class DatabaseController {
 			PreparedStatement pStat = myConn.prepareStatement(query);
 			myRs = pStat.executeQuery();
 			while (myRs.next()) {
+				int id = myRs.getInt("id");
+				if(id > prereqID) {
+					prereqID = id;
+				}
 				dataToPreReqs(courseList, myRs.getInt("parent_course_id"), myRs.getInt("prereq_course_id"));
 			}
 			pStat.close();
@@ -139,7 +152,11 @@ public class DatabaseController {
 			PreparedStatement pStat = myConn.prepareStatement(query);
 			myRs = pStat.executeQuery();
 			while (myRs.next()) {
-				fromFile.add(dataToCourseOffering(courseList, myRs.getInt("id"), myRs.getInt("course_id"),
+				int id = myRs.getInt("id");
+				if(id > courseOfferingID) {
+					courseOfferingID = id;
+				}
+				fromFile.add(dataToCourseOffering(courseList, id, myRs.getInt("course_id"),
 						myRs.getInt("sec_num"), myRs.getInt("sec_cap")));
 			}
 			pStat.close();
@@ -168,7 +185,11 @@ public class DatabaseController {
 			PreparedStatement pStat = myConn.prepareStatement(query);
 			myRs = pStat.executeQuery();
 			while (myRs.next()) {
-				fromFile.add(dataToRegistration(courseOfferingList, studentList, myRs.getInt("id"),
+				int id = myRs.getInt("id");
+				if(id > registrationID) {
+					registrationID = id;
+				}
+				fromFile.add(dataToRegistration(courseOfferingList, studentList, id,
 						myRs.getInt("student_id"), myRs.getInt("course_offering_id"), myRs.getString("grade")));
 			}
 			pStat.close();

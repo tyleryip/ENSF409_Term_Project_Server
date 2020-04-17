@@ -37,7 +37,6 @@ public class RegistrationController {
 		this.setStudentController(studentController);
 		myRegistrationList = databaseController.readRegistrationsFromFile(
 				courseOfferingController.getMyCourseOfferingList(), studentController.getMyStudentList());
-		databaseController.updateRegistrationID(getUpdatedRegistrationID());
 		System.out.println("[Registration Controller] Systems are online.");
 	}
 
@@ -60,19 +59,10 @@ public class RegistrationController {
 		for (int i = 0; i < myRegistrationList.size(); i++) {
 			if (myRegistrationList.get(i).getTheOffering().getTheCourse().getNameNum()
 					.equalsIgnoreCase(c.getNameNum())) {
+				databaseController.deleteRegistrationFromDatabase(myRegistrationList.get(i));
 				removeRegistration(myRegistrationList.get(i));
 			}
 		}
-	}
-
-	/**
-	 * Updates the databaseController's count of how many registrations exist in the
-	 * system
-	 * 
-	 * @return the ID of the next registration to make
-	 */
-	public int getUpdatedRegistrationID() {
-		return myRegistrationList.get(myRegistrationList.size() - 1).getID() + 1;
 	}
 
 	/**

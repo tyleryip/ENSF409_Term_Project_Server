@@ -29,31 +29,7 @@ public class CourseController {
 		this.databaseController = db;
 		myCourseList = databaseController.readCoursesFromFile();
 		databaseController.readPreReqFromFile(myCourseList);
-		databaseController.updateCourseID(getUpdatedCourseID());
-		databaseController.updatePreReqID(getUpdatedPreReqID());
 		System.out.println("[Course Controller] Systems are online.");
-	}
-
-	/**
-	 * Updates the databaseController's count of how many prereqs exist
-	 * 
-	 * @return the updated ID for the
-	 */
-	private int getUpdatedPreReqID() {
-		int count = 40000;
-		for (Course c : myCourseList) { // Go through every course and increment the count of prereqs
-			count += c.getPreReq().size();
-		}
-		return count;
-	}
-
-	/**
-	 * Updates the databaseController's count of how many courses exist
-	 * 
-	 * @return
-	 */
-	private int getUpdatedCourseID() {
-		return myCourseList.get(myCourseList.size() - 1).getID() + 1;
 	}
 
 	/**

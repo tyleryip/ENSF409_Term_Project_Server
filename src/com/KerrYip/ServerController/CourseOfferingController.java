@@ -29,18 +29,7 @@ public class CourseOfferingController {
 		this.databaseController = db;
 		this.setCourseController(courseController);
 		myCourseOfferingList = databaseController.readCourseOfferingsFromFile(courseController.getCourseList());
-		databaseController.updateCourseOfferingID(getUpdatedCourseOfferingID());
 		System.out.println("[Course Offering Controller] Systems are online.");
-	}
-
-	/**
-	 * Updates the databaseController's count of how many course offerings exist in
-	 * the system
-	 * 
-	 * @return the next id number that should be used for the next course created
-	 */
-	private int getUpdatedCourseOfferingID() {
-		return myCourseOfferingList.get(myCourseOfferingList.size() - 1).getID() + 1;
 	}
 
 	/**

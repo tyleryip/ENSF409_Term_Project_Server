@@ -28,18 +28,7 @@ public class StudentController {
 	public StudentController(DatabaseController db) {
 		this.databaseController = db;
 		myStudentList = databaseController.readStudentsFromFile();
-		databaseController.updateStudentID(getUpdatedStudentID());
 		System.out.println("[Student Controller] Systems are online.");
-	}
-
-	/**
-	 * Updates the databaseController's count of how many student's exist in the
-	 * system
-	 * 
-	 * @return the id number that the next student should be made with
-	 */
-	private int getUpdatedStudentID() {
-		return myStudentList.get(myStudentList.size() - 1).getStudentId() + 1;
 	}
 
 	/**
