@@ -474,7 +474,6 @@ public class Session implements Runnable {
 		}
 		Course clientCourse = readCourseFromClient();
 		clientCourse = courseController.searchCat(clientCourse.getCourseName(), clientCourse.getCourseNum());
-		System.out.println("[TEST] " + clientCourse);
 		Registration removeReg = null;
 		removeReg = studentUser.searchStudentReg(clientCourse);
 		if (removeReg != null) {
