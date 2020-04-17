@@ -14,6 +14,9 @@ import static org.junit.Assert.assertEquals;
 public class CourseTest {
 
     @Test
+    /**
+     * Tests all methods in Course
+     */
     public void CourseTest(){
         //Testing getters and setters
         testing_getID_and_setID();
@@ -138,7 +141,7 @@ public class CourseTest {
         Course course = new Course("ENSF",409,20005);
         int resultID = course.getID();
         String resultNameNum = course.getNameNum();
-        assertEquals("ENSF 409 20005",resultNameNum + " " + resultID);
+        assertEquals("ENSF 409;20005",resultNameNum + ";" + resultID);
     }
 
     @Test
