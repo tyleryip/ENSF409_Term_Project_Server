@@ -77,12 +77,12 @@ public class DatabaseController {
 				}
 				fromFile.add(dataToStudent(id , myRs.getString("name"), myRs.getString("password")));
 			}
+			studentID++;
 			pStat.close();
 		} catch (SQLException e) {
 			System.err.println("Error: Could not read Student from database");
 			e.printStackTrace();
 		}
-
 		return fromFile;
 	}
 
@@ -105,6 +105,7 @@ public class DatabaseController {
 				}
 				fromFile.add(dataToCourse(id, myRs.getString("name"), myRs.getInt("num")));
 			}
+			courseID++;
 			pStat.close();
 		} catch (SQLException e) {
 			System.err.println("Error: Could not read Student from database");
@@ -131,6 +132,7 @@ public class DatabaseController {
 				}
 				dataToPreReqs(courseList, myRs.getInt("parent_course_id"), myRs.getInt("prereq_course_id"));
 			}
+			prereqID++;
 			pStat.close();
 		} catch (SQLException e) {
 			System.err.println("Error: Could not read Student from database");
@@ -159,6 +161,7 @@ public class DatabaseController {
 				fromFile.add(dataToCourseOffering(courseList, id, myRs.getInt("course_id"),
 						myRs.getInt("sec_num"), myRs.getInt("sec_cap")));
 			}
+			courseOfferingID++;
 			pStat.close();
 		} catch (SQLException e) {
 			System.err.println("Error: Could not read Student from database");
@@ -192,6 +195,7 @@ public class DatabaseController {
 				fromFile.add(dataToRegistration(courseOfferingList, studentList, id,
 						myRs.getInt("student_id"), myRs.getInt("course_offering_id"), myRs.getString("grade")));
 			}
+			registrationID++;
 			pStat.close();
 			return fromFile;
 		} catch (SQLException e) {
