@@ -27,8 +27,8 @@ public class RegistrationController {
 	 *
 	 * @param db                       the DatabaseController for the student
 	 *                                 manager to use
-	 * @param studentController
-	 * @param courseOfferingController
+	 * @param studentController	the student controller to use
+	 * @param courseOfferingController the course offering controller to use
 	 */
 	public RegistrationController(DatabaseController db, CourseOfferingController courseOfferingController,
 			StudentController studentController) {
@@ -80,6 +80,7 @@ public class RegistrationController {
 	/**
 	 * Confirms with the database that a registration is complete and should be
 	 * saved
+	 * @param r the registration to confirm
 	 */
 	public void confirmRegistration(Registration r) {
 		databaseController.insertRegistrationToDatabase(r);

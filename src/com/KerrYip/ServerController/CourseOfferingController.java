@@ -24,6 +24,7 @@ public class CourseOfferingController {
 	 * Constructor for the class RegistrationController
 	 * 
 	 * @param db the DatabaseController for the student manager to use
+	 * @param courseController the coruseController
 	 */
 	public CourseOfferingController(DatabaseController db, CourseController courseController) {
 		this.databaseController = db;

@@ -109,7 +109,7 @@ public class StudentController {
 
 	/**
 	 * Adds a student to the student list and automatically assigns ID
-	 * 
+	 * @param password the student's login password
 	 * @param name the name of the student
 	 */
 	public void addStudent(String name, String password) {

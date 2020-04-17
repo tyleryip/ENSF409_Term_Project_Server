@@ -118,7 +118,7 @@ public class DatabaseController {
 	/**
 	 * Method for reading the Prereqs for courses from the database
 	 * 
-	 * @param an ArrayList of Courses to set prereqs for
+	 * @param courseList an ArrayList of Courses to set prereqs for
 	 */
 	public void readPreReqFromFile(ArrayList<Course> courseList) {
 		try {
@@ -246,16 +246,17 @@ public class DatabaseController {
 		}
 	}
 
-	/**
-	 * Creates Registration from the data provided. Will not make the Registration *
-	 * if data is missing or not found
-	 * 
-	 * @param id               ID of registration
-	 * @param studentID        ID of student that is registerijg
-	 * @param courseOfferingID ID of courseOffering that is being registered
-	 * @param grade            grade of the registration
-	 * @return a Registration or null
-	 */
+/**
+ * Creates Registration from the data provided. Will not make the Registration if data is missing or not found
+ *  
+ * @param courseOfferingList the courseOffering list
+ * @param studentList the student list
+ * @param id the id
+ * @param studentID the student id
+ * @param courseOfferingID the course offering id
+ * @param grade the grade
+ * @return a registration
+ */
 	public Registration dataToRegistration(ArrayList<CourseOffering> courseOfferingList, ArrayList<Student> studentList,
 			int id, int studentID, int courseOfferingID, String grade) {
 		try {
@@ -283,12 +284,12 @@ public class DatabaseController {
 	/**
 	 * Creates CourseOffering from the data provided. Will not make the
 	 * CourseOffering if data is missing or not found
-	 * 
-	 * @param id       ID of the course offering
-	 * @param courseID ID of the course the offering is for
-	 * @param num      Number of offering
-	 * @param cap      Maximum capacity of offering
-	 * @return a CourseOffering or null
+	 * @param courseList the course list
+	 * @param id the id
+	 * @param courseID the course id
+	 * @param num the section number
+	 * @param cap the section capacity
+	 * @return a course offering or null
 	 */
 	public CourseOffering dataToCourseOffering(ArrayList<Course> courseList, int id, int courseID, int num, int cap) {
 		try {
@@ -329,6 +330,7 @@ public class DatabaseController {
 	 * 
 	 * @param parentId ID of the course that will has a pre requisite
 	 * @param prereqId ID of the course that will be the pre requisite
+	 * @param courseList the course list
 	 */
 	public void dataToPreReqs(ArrayList<Course> courseList, int parentId, int prereqId) {
 		try {
@@ -372,6 +374,7 @@ public class DatabaseController {
 	 * Searches for the Student with the matching ID
 	 * 
 	 * @param id The ID of the student we are searching for
+	 * @param list the arraylist to search
 	 * @return Returns the index that the student is found if found, -1 if not found
 	 */
 	public int searchStudent(ArrayList<Student> list, int id) {
@@ -387,6 +390,7 @@ public class DatabaseController {
 	 * Searches for the Registration with the matching ID
 	 * 
 	 * @param id The ID of the registration we are searching for
+	 * @param list the list to search
 	 * @return Returns the index that the registration is found if found, -1 if not
 	 *         found
 	 */
@@ -403,6 +407,7 @@ public class DatabaseController {
 	 * Searches for the Course with the matching ID
 	 * 
 	 * @param id The ID of the Course we are searching for
+	 * @param list the list to search
 	 * @return Returns the index that the Course is found if found, -1 if not found
 	 */
 	public int searchCourse(ArrayList<Course> list, int id) {
@@ -418,6 +423,7 @@ public class DatabaseController {
 	 * Searches for the CourseOffering with the matching ID
 	 * 
 	 * @param id The ID of the CourseOffering we are searching for
+	 * @param list the list to search
 	 * @return Returns the index that the CourseOffering is found if found, -1 if
 	 *         not found
 	 */
