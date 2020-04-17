@@ -213,7 +213,9 @@ public class CourseTest {
     }
 
     @Test
-
+    /**
+     * Tests method toString() which puts Course into a String
+     */
     public void testing_toString(){
         //Making courses
         Course course = new Course("ENSF",409);
