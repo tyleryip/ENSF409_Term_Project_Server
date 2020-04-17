@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.KerrYip.Model.Course;
-import com.KerrYip.Model.Registration;
 import com.KerrYip.Model.Student;
 
 /**
@@ -30,8 +29,15 @@ public class StudentController {
 		this.databaseController = db;
 		myStudentList = databaseController.readStudentsFromFile();
 		databaseController.updateStudentID(getUpdatedStudentID());
+		System.out.println("[Student Controller] Systems are online.");
 	}
 
+	/**
+	 * Updates the databaseController's count of how many student's exist in the
+	 * system
+	 * 
+	 * @return the id number that the next student should be made with
+	 */
 	private int getUpdatedStudentID() {
 		return myStudentList.get(myStudentList.size() - 1).getStudentId() + 1;
 	}
@@ -122,9 +128,9 @@ public class StudentController {
 		Student newStudent = new Student(name, newID, password);
 		myStudentList.add(newStudent);
 		databaseController.insertStudentToDatabase(newStudent);
-		System.out.println("[Server] New student " + name + " created successfully with an id of: " + newID + " and a password: " + password);
+		System.out.println("[Server] New student " + name + " created successfully with an id of: " + newID
+				+ " and a password: " + password);
 	}
-
 
 	// GETTERS and SETTERS
 	public DatabaseController getDatabaseController() {

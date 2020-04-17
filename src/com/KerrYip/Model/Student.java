@@ -14,20 +14,21 @@ import java.util.ArrayList;
  */
 public class Student implements Serializable {
 
-	/**
-	 * This long is used for serialization
-	 */
+	// This long is used for serialization
 	private static final long serialVersionUID = 1L;
 
 	private String studentName;
+
+	// Used to identify the instance of this class in the SQL database, as well as
+	// login and logout
 	private int studentId;
 	private String password;
-	
-	/**
-	 * The following boolean is used to ensure only one user can be logged into this student at a time
-	 */
+
+	// The following boolean is used to ensure only one user can be logged into this
+	// student at a time
 	private boolean active;
-	
+
+	// Stores all of the student's registrations
 	private ArrayList<Registration> studentRegList;
 
 	/**
@@ -77,10 +78,6 @@ public class Student implements Serializable {
 		return st;
 	}
 
-	public String toData() {
-		return getStudentId() + ";" + getStudentName();
-	}
-
 	// GETTERS and SETTERS
 	public String getStudentName() {
 		return studentName;
@@ -121,7 +118,5 @@ public class Student implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
 
 }

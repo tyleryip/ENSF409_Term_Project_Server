@@ -13,18 +13,19 @@ import java.util.ArrayList;
  * @since 04/07/20
  *
  */
-public class Course implements Serializable, Comparable{
+public class Course implements Serializable, Comparable<Course> {
 
-	/**
-	 * This long is used for serialization
-	 */
+	// This long is used for serialization
 	private static final long serialVersionUID = 1L;
 
+	// Properties of the Course
 	private String courseName;
 	private int courseNum;
 
 	// This id number is used to store in the SQL database
 	private int id;
+
+	// Used to store this course's offerings and prereqs
 	private ArrayList<Course> preReq;
 	private ArrayList<CourseOffering> offeringList;
 
@@ -44,7 +45,6 @@ public class Course implements Serializable, Comparable{
 
 	/**
 	 * Constructor for the class Course
-	 * 
 	 * @param courseID   ID number used to store in the SQL database
 	 * @param courseName the name of the course
 	 * @param courseNum  the number of the course
@@ -85,33 +85,22 @@ public class Course implements Serializable, Comparable{
 		preReq.add(preReqCourse);
 	}
 
+	/**
+	 * Gets the course offering at a specified index
+	 * 
+	 * @param i the index
+	 * @return the course offering at index i
+	 */
 	public CourseOffering getCourseOfferingAt(int i) {
-		// TODO Auto-generated method stub
 		if (i < 0 || i >= offeringList.size()) {
 			System.out.println("Offering " + i + " does not exist.");
 			return null;
 		} else
 			return offeringList.get(i);
 	}
-	
-	public String toData() {
-		String st = getID() + ";" + getCourseName() + ";" + getCourseNum();
-		return st;
-	}
 
-	public String toPreReqData() {
-		String st = "";
-		for (Course c : preReq) {
-			st += this.getID() + ";" + c.getID();
-			st += "\n";
-		}
-		return st;
-
-	}
-	
 	@Override
-	public int compareTo(Object o) {
-		Course other = (Course) o;
+	public int compareTo(Course other) {
 		return this.getNameNum().compareTo(other.getNameNum());
 	}
 

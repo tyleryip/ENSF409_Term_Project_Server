@@ -1,7 +1,5 @@
 package com.KerrYip.ServerController;
 
-import com.KerrYip.Model.Administrator;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -38,6 +36,7 @@ public class ServerCommunicationController {
 	private RegistrationController registrationController;
 	private AdministratorController administratorController;
 
+	// Used to format timestamps on the server logs
 	private SimpleDateFormat formatter;
 
 	/**
@@ -57,13 +56,11 @@ public class ServerCommunicationController {
 		}
 		pool = Executors.newCachedThreadPool();
 
-		// Create the database first so we can let course controller and student
-		// controller use it
+		// Create the database first so we can allow all the other controllers to use it
 		DatabaseController databaseController = new DatabaseController();
 
+		// Create the remaining controllers to manage their own respective models
 		studentController = new StudentController(databaseController);
-		
-		
 		courseController = new CourseController(databaseController);
 		courseOfferingController = new CourseOfferingController(databaseController, courseController);
 		registrationController = new RegistrationController(databaseController, courseOfferingController,
@@ -75,8 +72,9 @@ public class ServerCommunicationController {
 	 * Accept connections from clients and start threads when they connect
 	 */
 	public void listen() {
-		System.out.println(
-				"[Server @" + formatter.format(new Date()) + "] Server is now active and accepting new connections");
+		System.out.println("[Server Communications Controller] Systems are online");
+		System.out.println("[Server @" + formatter.format(new Date())
+				+ "] All systems online, server is now active and accepting new connections.");
 		int connections = 0;
 		while (true) {
 			try {
