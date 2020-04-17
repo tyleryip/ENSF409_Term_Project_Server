@@ -10,6 +10,8 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * Test Class for Unit Testing all components of Class Course
+ * @author Tyler Yip
+ * @author Will Kerr
  */
 public class CourseTest {
 

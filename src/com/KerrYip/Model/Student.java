@@ -36,6 +36,7 @@ public class Student implements Serializable {
 	 * 
 	 * @param studentName the name of the student
 	 * @param studentId   the ID number of the student
+	 * @param password    the student's password
 	 */
 	public Student(String studentName, int studentId, String password) {
 		this.setStudentName(studentName);
@@ -46,7 +47,7 @@ public class Student implements Serializable {
 	}
 
 	/**
-	 * Searchs a student's registration list for a registration that matches a
+	 * Searches a student's registration list for a registration that matches a
 	 * specified course
 	 * 
 	 * @param theCourse the course to search

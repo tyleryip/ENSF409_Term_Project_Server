@@ -10,6 +10,11 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Test Class for Unit Testing all components of Class Student
+ *  @author Tyler Yip
+ *  @author Will Kerr
+ */
 public class StudentTest {
     @Test
     /**
