@@ -85,6 +85,14 @@ public class RegistrationController {
 	public void confirmRegistration(Registration r) {
 		databaseController.insertRegistrationToDatabase(r);
 	}
+	
+	/**
+	 * Updates the grade for a registration in the database
+	 * @param registration the registration to update the grade for
+	 */
+	public void updateGrade(Registration registration) {
+		databaseController.updateGrade(registration);
+	}
 
 	// GETTERS and SETTERS
 	public DatabaseController getDatabaseController() {

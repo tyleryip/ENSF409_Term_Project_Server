@@ -615,6 +615,24 @@ public class DatabaseController {
 	}
 
 	/**
+	 * Updates the grade stored in the database for a registration
+	 * @param r the registration to update
+	 */
+	public void updateGrade(Registration r) {
+		try {
+			String query = "UPDATE registration SET grade = ? WHERE id = ?";
+			pStat = myConn.prepareStatement(query);
+			pStat.setInt(1, r.getGrade());
+			pStat.setInt(2, r.getTheStudent().getStudentId());
+			pStat.executeUpdate();
+			pStat.close();
+		} catch (SQLException e) {
+			System.err.println("Error: SQL error with updating grade for registration");
+			e.printStackTrace();
+		}
+	}
+
+	/**
 	 * This method creates the necessary tables in the database if they be missing
 	 */
 	public void createTables() {

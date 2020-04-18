@@ -620,7 +620,7 @@ public class Session implements Runnable {
 			return false;
 		}
 		Course toRemove = readCourseFromClient();
-
+		toRemove = courseController.searchCat(toRemove.getNameNum());
 		if (toRemove == null) {
 			writeString("course not removed");
 			return false;
@@ -734,6 +734,9 @@ public class Session implements Runnable {
 			Registration theReg = theStudent.searchStudentReg(courseController.searchCat(courseNameNum));
 			if (theReg != null) {
 				theReg.setGrade(grade.charAt(0));
+				//We need to update the data stored in the database as well
+				int index = registrationController.getMyRegistrationList().indexOf(theReg);
+				registrationController.updateGrade(registrationController.getMyRegistrationList().get(index));
 				writeString("grade set successfully");
 				return true;
 			}
