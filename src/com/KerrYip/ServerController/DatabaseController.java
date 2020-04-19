@@ -51,7 +51,7 @@ public class DatabaseController {
 			System.out.println(
 					"[Database Controller] Connection with SQL Database was successfully established, systems are online.");
 			createTables();
-			
+
 		} catch (SQLException e) {
 			System.err.println("Error: Unknown SQL error has occured");
 			e.printStackTrace();
@@ -72,10 +72,10 @@ public class DatabaseController {
 			myRs = pStat.executeQuery();
 			while (myRs.next()) {
 				int id = myRs.getInt("id");
-				if(id > studentID) {
+				if (id > studentID) {
 					studentID = id;
 				}
-				fromFile.add(dataToStudent(id , myRs.getString("name"), myRs.getString("password")));
+				fromFile.add(dataToStudent(id, myRs.getString("name"), myRs.getString("password")));
 			}
 			studentID++;
 			pStat.close();
@@ -100,7 +100,7 @@ public class DatabaseController {
 			myRs = pStat.executeQuery();
 			while (myRs.next()) {
 				int id = myRs.getInt("id");
-				if(id > courseID) {
+				if (id > courseID) {
 					courseID = id;
 				}
 				fromFile.add(dataToCourse(id, myRs.getString("name"), myRs.getInt("num")));
@@ -127,7 +127,7 @@ public class DatabaseController {
 			myRs = pStat.executeQuery();
 			while (myRs.next()) {
 				int id = myRs.getInt("id");
-				if(id > prereqID) {
+				if (id > prereqID) {
 					prereqID = id;
 				}
 				dataToPreReqs(courseList, myRs.getInt("parent_course_id"), myRs.getInt("prereq_course_id"));
@@ -155,11 +155,11 @@ public class DatabaseController {
 			myRs = pStat.executeQuery();
 			while (myRs.next()) {
 				int id = myRs.getInt("id");
-				if(id > courseOfferingID) {
+				if (id > courseOfferingID) {
 					courseOfferingID = id;
 				}
-				fromFile.add(dataToCourseOffering(courseList, id, myRs.getInt("course_id"),
-						myRs.getInt("sec_num"), myRs.getInt("sec_cap")));
+				fromFile.add(dataToCourseOffering(courseList, id, myRs.getInt("course_id"), myRs.getInt("sec_num"),
+						myRs.getInt("sec_cap")));
 			}
 			courseOfferingID++;
 			pStat.close();
@@ -189,11 +189,11 @@ public class DatabaseController {
 			myRs = pStat.executeQuery();
 			while (myRs.next()) {
 				int id = myRs.getInt("id");
-				if(id > registrationID) {
+				if (id > registrationID) {
 					registrationID = id;
 				}
-				fromFile.add(dataToRegistration(courseOfferingList, studentList, id,
-						myRs.getInt("student_id"), myRs.getInt("course_offering_id"), myRs.getString("grade")));
+				fromFile.add(dataToRegistration(courseOfferingList, studentList, id, myRs.getInt("student_id"),
+						myRs.getInt("course_offering_id"), myRs.getString("grade")));
 			}
 			registrationID++;
 			pStat.close();
@@ -246,17 +246,18 @@ public class DatabaseController {
 		}
 	}
 
-/**
- * Creates Registration from the data provided. Will not make the Registration if data is missing or not found
- *  
- * @param courseOfferingList the courseOffering list
- * @param studentList the student list
- * @param id the id
- * @param studentID the student id
- * @param courseOfferingID the course offering id
- * @param grade the grade
- * @return a registration
- */
+	/**
+	 * Creates Registration from the data provided. Will not make the Registration
+	 * if data is missing or not found
+	 * 
+	 * @param courseOfferingList the courseOffering list
+	 * @param studentList        the student list
+	 * @param id                 the id
+	 * @param studentID          the student id
+	 * @param courseOfferingID   the course offering id
+	 * @param grade              the grade
+	 * @return a registration
+	 */
 	public Registration dataToRegistration(ArrayList<CourseOffering> courseOfferingList, ArrayList<Student> studentList,
 			int id, int studentID, int courseOfferingID, String grade) {
 		try {
@@ -284,11 +285,12 @@ public class DatabaseController {
 	/**
 	 * Creates CourseOffering from the data provided. Will not make the
 	 * CourseOffering if data is missing or not found
+	 * 
 	 * @param courseList the course list
-	 * @param id the id
-	 * @param courseID the course id
-	 * @param num the section number
-	 * @param cap the section capacity
+	 * @param id         the id
+	 * @param courseID   the course id
+	 * @param num        the section number
+	 * @param cap        the section capacity
 	 * @return a course offering or null
 	 */
 	public CourseOffering dataToCourseOffering(ArrayList<Course> courseList, int id, int courseID, int num, int cap) {
@@ -328,8 +330,8 @@ public class DatabaseController {
 	/**
 	 * Adds Prereqs to all the courses that have been added
 	 * 
-	 * @param parentId ID of the course that will has a pre requisite
-	 * @param prereqId ID of the course that will be the pre requisite
+	 * @param parentId   ID of the course that will has a pre requisite
+	 * @param prereqId   ID of the course that will be the pre requisite
 	 * @param courseList the course list
 	 */
 	public void dataToPreReqs(ArrayList<Course> courseList, int parentId, int prereqId) {
@@ -373,7 +375,7 @@ public class DatabaseController {
 	/**
 	 * Searches for the Student with the matching ID
 	 * 
-	 * @param id The ID of the student we are searching for
+	 * @param id   The ID of the student we are searching for
 	 * @param list the arraylist to search
 	 * @return Returns the index that the student is found if found, -1 if not found
 	 */
@@ -389,7 +391,7 @@ public class DatabaseController {
 	/**
 	 * Searches for the Registration with the matching ID
 	 * 
-	 * @param id The ID of the registration we are searching for
+	 * @param id   The ID of the registration we are searching for
 	 * @param list the list to search
 	 * @return Returns the index that the registration is found if found, -1 if not
 	 *         found
@@ -406,7 +408,7 @@ public class DatabaseController {
 	/**
 	 * Searches for the Course with the matching ID
 	 * 
-	 * @param id The ID of the Course we are searching for
+	 * @param id   The ID of the Course we are searching for
 	 * @param list the list to search
 	 * @return Returns the index that the Course is found if found, -1 if not found
 	 */
@@ -422,7 +424,7 @@ public class DatabaseController {
 	/**
 	 * Searches for the CourseOffering with the matching ID
 	 * 
-	 * @param id The ID of the CourseOffering we are searching for
+	 * @param id   The ID of the CourseOffering we are searching for
 	 * @param list the list to search
 	 * @return Returns the index that the CourseOffering is found if found, -1 if
 	 *         not found
@@ -616,6 +618,7 @@ public class DatabaseController {
 
 	/**
 	 * Updates the grade stored in the database for a registration
+	 * 
 	 * @param r the registration to update
 	 */
 	public void updateGrade(Registration r) {

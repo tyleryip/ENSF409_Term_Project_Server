@@ -68,15 +68,6 @@ public class Session implements Runnable {
 			AdministratorController administratorController) {
 		// Used for formatting timestamps for the server logs
 		formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		/*
-		 * stringIn = new BufferedReader(new
-		 * InputStreamReader(aSocket.getInputStream())); stringOut = new
-		 * PrintWriter(aSocket.getOutputStream(), true); The boolean argument for this
-		 * line was added around 11:00am on 04/09/20, after a massive 4 hour debugging
-		 * session; when setting up communication sockets for the server and client, it
-		 * is imperative that this boolean be included or the client/server will hang
-		 * waiting, even if a println is used.
-		 */
 
 		// Set up object I/O
 		try {
@@ -734,7 +725,7 @@ public class Session implements Runnable {
 			Registration theReg = theStudent.searchStudentReg(courseController.searchCat(courseNameNum));
 			if (theReg != null) {
 				theReg.setGrade(grade.charAt(0));
-				//We need to update the data stored in the database as well
+				// We need to update the data stored in the database as well
 				int index = registrationController.getMyRegistrationList().indexOf(theReg);
 				registrationController.updateGrade(registrationController.getMyRegistrationList().get(index));
 				writeString("grade set successfully");

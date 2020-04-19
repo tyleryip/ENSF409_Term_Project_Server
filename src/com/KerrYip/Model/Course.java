@@ -45,6 +45,7 @@ public class Course implements Serializable, Comparable<Course> {
 
 	/**
 	 * Constructor for the class Course
+	 * 
 	 * @param courseID   ID number used to store in the SQL database
 	 * @param courseName the name of the course
 	 * @param courseNum  the number of the course
