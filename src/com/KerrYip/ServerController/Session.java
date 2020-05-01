@@ -299,6 +299,7 @@ public class Session implements Runnable {
 					serverLog("User logged in using id: " + checkID);
 					writeString("login successful");
 					writeString(studentUser.getStudentName());
+					//Now that we have logged into a student, we will send their registrations to the client one by one
 					try {
 						for (Registration r : studentUser.getStudentRegList()) {
 							toClient.writeObject(r);
@@ -309,13 +310,12 @@ public class Session implements Runnable {
 						e.printStackTrace();
 					}
 				}
-			} else {
+			} else { //This code runs if the user is already logged in
 				serverError("User " + checkID + " is already logged in to the system");
 				writeString("User already logged in");
 				return false;
 			}
 		}
-
 		writeString("login failed");
 		return false;
 	}
@@ -356,7 +356,6 @@ public class Session implements Runnable {
 	 * 
 	 * @return true if successful, false if failed
 	 */
-	@SuppressWarnings("unchecked")
 	private boolean browseCourses() {
 		if (!studentLoggedIn() && !adminLoggedIn()) {
 			return false;
@@ -471,6 +470,7 @@ public class Session implements Runnable {
 			studentUser.getStudentRegList().remove(removeReg);
 			registrationController.removeRegistration(removeReg);
 			writeString("drop successful");
+			//We want to send the updated list of registrations back to the client
 			try {
 				for (Registration r : studentUser.getStudentRegList()) {
 					toClient.writeObject(r);
